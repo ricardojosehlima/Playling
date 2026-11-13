@@ -1,0 +1,84 @@
+/* Componentes compartilhados pequenos; a identidade principal continua em cada página. */
+.course-sequence-nav{
+  width:min(1080px,92vw);
+  margin:28px auto 0;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+}
+.course-sequence-link{
+  min-width:0;
+  min-height:74px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  border:3px solid #171717;
+  background:#fffdf5;
+  color:#171717;
+  padding:12px 14px;
+  text-decoration:none;
+  box-shadow:3px 3px 0 #171717;
+  transition:transform .12s ease, box-shadow .12s ease, background .12s ease;
+}
+.course-sequence-link.next{text-align:right;align-items:flex-end}
+.course-sequence-link .direction{
+  font-family:"Press Start 2P",monospace;
+  font-size:8px;
+  line-height:1.5;
+  color:#3154d8;
+  margin-bottom:5px;
+}
+.course-sequence-link .nav-title{font-weight:700;font-size:13px;line-height:1.45}
+.course-sequence-link.available:hover,
+.course-sequence-link.available:focus-visible{
+  transform:translate(1px,1px);
+  box-shadow:1px 1px 0 #171717;
+  background:#fff;
+  outline:none;
+}
+.course-sequence-link.locked{
+  background:#e9e7df;
+  color:#747168;
+  box-shadow:none;
+  cursor:not-allowed;
+  opacity:.82;
+}
+.course-sequence-link.locked .direction{color:#747168}
+.course-sequence-link.empty{visibility:hidden}
+
+.text-portal-callout{
+  margin-top:18px;
+  border:3px solid #171717;
+  background:#fffdf5;
+  padding:16px 18px;
+  box-shadow:3px 3px 0 #171717;
+  line-height:1.6;
+  font-size:14px;
+}
+.text-portal-callout strong{color:#3154d8}
+.text-portal-link{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  margin-top:10px;
+  border:2px solid #171717;
+  background:#fff;
+  padding:9px 11px;
+  text-decoration:none;
+  font-weight:700;
+  box-shadow:2px 2px 0 #171717;
+}
+.text-portal-link:hover,.text-portal-link:focus-visible{
+  transform:translate(1px,1px);
+  box-shadow:1px 1px 0 #171717;
+  outline:none;
+}
+@media(max-width:680px){
+  .course-sequence-nav{grid-template-columns:1fr}
+  .course-sequence-link.next{text-align:left;align-items:flex-start}
+}
+@media print{
+  .course-sequence-nav,.text-portal-callout{display:none!important}
+}
+body.presentation .course-sequence-nav,
+body.presentation .text-portal-callout{display:none!important}

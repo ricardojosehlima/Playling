@@ -1,0 +1,1444 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<meta content="#f0c94c" name="theme-color"/>
+<title>Ciclo 01 — LEGO + Gerativismo | PlayLing</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="site-common.css" rel="stylesheet"/>
+<style>
+    :root{
+      --bg:#f3f0e8;
+      --paper:#fffdf5;
+      --ink:#171717;
+      --line:#171717;
+      --yellow:#f0c94c;
+      --yellow-soft:#fff2a8;
+      --yellow-pale:#fff9dc;
+      --blue:#3154d8;
+      --blue-pale:#eef2ff;
+      --green:#25865a;
+      --green-pale:#e6f4ed;
+      --red:#d83b46;
+      --red-pale:#fbe8ea;
+      --purple:#7057b8;
+      --purple-pale:#eee9ff;
+      --muted:#77736a;
+      --disabled:#dedbd2;
+      --shadow:6px 6px 0 var(--line);
+      --shadow-small:3px 3px 0 var(--line);
+      --speed:.14s;
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;background:var(--bg);color:var(--ink);font-family:"Space Mono",monospace}
+    a{color:inherit}
+    button,a{font:inherit}
+    button{color:inherit}
+    .wrap{width:min(1080px,92vw);margin:0 auto;padding:24px 0 76px}
+
+    /* ---------- Landing ---------- */
+    .topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}
+    .back-link,.utility-link{
+      display:inline-flex;align-items:center;justify-content:center;min-height:42px;
+      border:2px solid var(--line);background:var(--paper);padding:9px 12px;
+      text-decoration:none;font-weight:700;box-shadow:var(--shadow-small);
+      transition:transform var(--speed),box-shadow var(--speed),background var(--speed)
+    }
+    .back-link:hover,.back-link:focus-visible,.utility-link:hover,.utility-link:focus-visible{
+      transform:translate(2px,2px);box-shadow:1px 1px 0 var(--line);background:#fff;outline:none
+    }
+    .mini-nav{display:flex;gap:9px;flex-wrap:wrap;justify-content:flex-end}
+
+    .cycle-head{
+      position:relative;overflow:hidden;border:3px solid var(--line);background:var(--paper);
+      box-shadow:var(--shadow);padding:28px 28px 25px
+    }
+    .cycle-head::before{content:"";position:absolute;left:0;top:0;width:100%;height:10px;background:var(--yellow)}
+    .eyebrow{
+      font-family:"Press Start 2P",monospace;font-size:10px;line-height:1.7;
+      color:#9a7b00;margin:5px 0 14px
+    }
+    .cycle-head h1{
+      font-family:"Press Start 2P",monospace;font-size:clamp(23px,4.2vw,44px);
+      line-height:1.35;margin:0;color:#b18c00;text-shadow:2px 2px 0 #fff0a0
+    }
+    .cycle-subtitle{margin:15px 0 0;font-size:clamp(15px,2vw,19px);line-height:1.65;font-weight:700}
+    .cycle-challenge{
+      margin-top:21px;border:3px solid var(--line);background:var(--yellow-pale);
+      padding:17px 19px;box-shadow:var(--shadow-small)
+    }
+    .cycle-challenge small{
+      display:block;font-family:"Press Start 2P",monospace;color:#8d7000;
+      font-size:9px;line-height:1.5;margin-bottom:8px
+    }
+    .cycle-challenge strong{font-size:clamp(18px,2.5vw,28px);line-height:1.45}
+
+    .cycle-road{
+      margin:25px 0 0;display:grid;grid-template-columns:repeat(5,1fr);gap:7px
+    }
+    .road-step{
+      border:2px solid var(--line);background:var(--paper);padding:10px 8px;
+      text-align:center;font-size:11px;line-height:1.45;font-weight:700;min-width:0
+    }
+    .road-step b{
+      display:block;font-family:"Press Start 2P",monospace;color:#9a7b00;
+      font-size:8px;line-height:1.5;margin-bottom:5px
+    }
+
+    .accordion-list{display:grid;gap:16px;margin-top:28px}
+    details.lesson{
+      border:3px solid var(--line);background:var(--paper);box-shadow:var(--shadow-small);
+      position:relative;overflow:hidden
+    }
+    details.lesson::before{content:"";position:absolute;left:0;top:0;width:100%;height:8px;background:var(--yellow)}
+    details.lesson[open]{box-shadow:var(--shadow)}
+    details.lesson[data-state="locked"],details.lesson[data-state="next"]{background:#e9e7df;color:#747168}
+    details.lesson[data-state="locked"]::before,details.lesson[data-state="next"]::before{background:#aaa69b}
+
+    summary.lesson-summary{
+      list-style:none;cursor:pointer;padding:23px 22px 19px;display:grid;
+      grid-template-columns:auto 1fr auto auto;gap:15px;align-items:center
+    }
+    summary.lesson-summary::-webkit-details-marker{display:none}
+    summary.lesson-summary:focus-visible{outline:4px solid rgba(240,201,76,.45);outline-offset:-5px}
+    .lesson-number{
+      width:52px;height:52px;border:3px solid var(--line);display:grid;place-items:center;
+      background:var(--yellow);font-family:"Press Start 2P",monospace;font-size:12px;box-shadow:2px 2px 0 var(--line)
+    }
+    .lesson-summary-text{min-width:0}
+    .permanent-name{
+      font-family:"Press Start 2P",monospace;font-size:8px;line-height:1.55;color:#9a7b00;margin-bottom:7px
+    }
+    .lesson-summary h2{
+      font-family:"Press Start 2P",monospace;font-size:clamp(13px,2vw,18px);
+      line-height:1.55;margin:0;color:#8b7000
+    }
+    .lesson-status{
+      border:2px solid var(--line);padding:6px 8px;background:var(--yellow-soft);
+      font-weight:700;font-size:10px;white-space:nowrap
+    }
+    details.lesson[data-state="open"] .lesson-status::before{content:"✓ LIBERADO"}
+    details.lesson[data-state="current"] .lesson-status::before{content:"▶ AGORA"}
+    details.lesson[data-state="next"] .lesson-status::before{content:"→ A SEGUIR"}
+    details.lesson[data-state="locked"] .lesson-status::before{content:"🔒 BLOQUEADO"}
+    details.lesson[data-state="next"] .lesson-status,
+    details.lesson[data-state="locked"] .lesson-status{background:#d6d3ca}
+    .summary-arrow{
+      font-family:"Press Start 2P",monospace;font-size:12px;margin-left:2px
+    }
+    details[open] .summary-arrow{transform:rotate(90deg)}
+
+    .lesson-body{border-top:2px dashed #9e988b;padding:20px 22px 22px}
+    .lesson-intro{font-size:14px;line-height:1.65;margin:0 0 14px}
+    .lesson-question{
+      border-left:7px solid var(--yellow);background:var(--yellow-pale);
+      padding:13px 14px;font-weight:700;margin:15px 0;font-size:15px;line-height:1.6
+    }
+    .present-launch{
+      width:100%;border:3px solid var(--line);background:var(--yellow);color:var(--ink);
+      padding:15px 16px;cursor:pointer;box-shadow:3px 3px 0 var(--line);
+      font-family:"Press Start 2P",monospace;font-size:10px;line-height:1.5;
+      transition:transform var(--speed),box-shadow var(--speed),filter var(--speed)
+    }
+    .present-launch:hover,.present-launch:focus-visible{
+      transform:translate(2px,2px);box-shadow:1px 1px 0 var(--line);filter:brightness(1.03);outline:none
+    }
+    .text-portal-callout strong{color:#9a7b00}
+    .locked-message{
+      display:none;border-top:2px dashed #aaa69b;padding:15px 22px 19px;font-size:13px;font-weight:700
+    }
+    details.lesson[data-state="next"] .locked-message,
+    details.lesson[data-state="locked"] .locked-message{display:block}
+    details.lesson[data-state="next"] .lesson-body,
+    details.lesson[data-state="locked"] .lesson-body{display:none}
+
+    .unlock-help{
+      margin-top:20px;border:3px solid var(--line);background:var(--paper);
+      padding:17px 20px;box-shadow:var(--shadow-small);font-size:13px;line-height:1.65
+    }
+    .unlock-help strong{color:#9a7b00}
+
+    /* ============================================================
+       PRESENTATIONS
+       ============================================================ */
+    .presentations,.deck,.scene{display:none}
+    body.presentation{overflow:hidden;background:var(--bg)}
+    body.presentation .wrap{display:none}
+    body.presentation .presentations{display:block}
+    body.presentation .deck.active-deck{display:block}
+    body.presentation .deck.active-deck .scene.present-active{
+      display:flex;position:fixed;inset:0;z-index:100;background:var(--paper);
+      padding:60px clamp(24px,5vw,72px) 108px;flex-direction:column;
+      justify-content:center;align-items:flex-start;overflow:auto;animation:sceneIn .18s ease-out
+    }
+    body.presentation .deck.active-deck .scene.center{align-items:center;text-align:center}
+    body.presentation .deck.active-deck .scene::before{
+      content:"";position:fixed;left:0;top:0;width:100%;height:11px;background:var(--yellow);z-index:101
+    }
+    .scene-inner{width:min(1100px,100%);margin:0 auto}
+    .scene.center .scene-inner{display:flex;flex-direction:column;align-items:center}
+    .scene-label{
+      display:inline-block;font-family:"Press Start 2P",monospace;font-size:9px;line-height:1.4;
+      color:#9a7b00;border:2px solid #9a7b00;padding:6px 8px;margin-bottom:17px
+    }
+    .scene h3{
+      font-family:"Press Start 2P",monospace;font-size:clamp(21px,2.8vw,37px);
+      line-height:1.35;color:#a27f00;margin:0 0 19px;max-width:1050px
+    }
+    .scene h3.long-title{font-size:clamp(18px,2.2vw,31px);line-height:1.38}
+    .scene h3.very-long-title{font-size:clamp(16px,1.85vw,27px);line-height:1.4}
+    @media (min-width:800px) and (max-height:760px){
+      .scene h3{font-size:clamp(18px,2.25vw,31px);margin-bottom:13px}
+      .scene h3.long-title{font-size:clamp(16px,1.85vw,26px)}
+      .scene h3.very-long-title{font-size:clamp(15px,1.65vw,23px)}
+    }
+    .scene p,.scene li{font-size:clamp(16px,1.8vw,23px);line-height:1.55}
+    .scene p{margin:8px 0}.scene ul{margin:9px 0;padding-left:27px}.scene li{margin:7px 0}
+    .small{font-size:clamp(12px,1.3vw,16px)!important;line-height:1.55!important}
+    .lead{font-size:clamp(20px,2.45vw,30px)!important;font-weight:700;line-height:1.5!important}
+    .huge{
+      font-family:"Press Start 2P",monospace;font-size:clamp(29px,5.6vw,70px);
+      line-height:1.35;color:#a27f00;text-align:center;margin:0
+    }
+    .huge.black{color:var(--ink)}
+    .sub-question{max-width:900px;text-align:center;font-size:clamp(18px,2.2vw,27px)!important;margin-top:23px!important}
+
+    .box,.activity-box,.question-box,.model-box,.data-box,.warning-box,.compare-box{
+      width:min(1000px,100%);border:3px solid var(--line);padding:21px 24px;box-shadow:var(--shadow-small)
+    }
+    .activity-box{background:var(--yellow-pale)}
+    .question-box{background:#fff}
+    .model-box{background:var(--purple-pale)}
+    .data-box{background:var(--blue-pale)}
+    .warning-box{background:var(--red-pale)}
+    .compare-box{background:var(--green-pale)}
+    .box h4,.activity-box h4,.question-box h4,.model-box h4,.data-box h4,.warning-box h4,.compare-box h4{
+      font-family:"Press Start 2P",monospace;font-size:clamp(11px,1.4vw,16px);
+      line-height:1.55;margin:0 0 13px;color:#8d7000
+    }
+
+    .live-columns{display:grid;grid-template-columns:1fr 1fr;gap:18px;width:min(1050px,100%)}
+    .live-column{border:3px solid var(--line);background:var(--paper);box-shadow:var(--shadow-small);min-height:290px;overflow:hidden}
+    .live-column h4{
+      margin:0;background:var(--yellow);color:var(--ink);padding:13px 14px;
+      font-family:"Press Start 2P",monospace;font-size:clamp(10px,1.2vw,14px);line-height:1.5
+    }
+    .editable{min-height:230px;padding:17px;font-size:clamp(14px,1.5vw,19px);line-height:1.55;outline:none;white-space:pre-wrap}
+    .editable:empty::before{content:"Mais um espaço para registro individual sobre o que a turma respondeu...";color:#969084}
+    .editable:focus{background:var(--yellow-pale)}
+    .live-hint{font-size:12px!important;color:var(--muted);margin-top:10px!important}
+
+    .lego-pieces{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin:22px 0}
+    .brick{
+      min-width:88px;min-height:52px;border:3px solid var(--line);display:grid;place-items:center;
+      font-weight:700;box-shadow:3px 3px 0 var(--line);padding:8px 11px
+    }
+    .brick:nth-child(4n+1){background:var(--yellow)}
+    .brick:nth-child(4n+2){background:#73bdf0}
+    .brick:nth-child(4n+3){background:#ef747c}
+    .brick:nth-child(4n){background:#77c58e}
+
+    .two-options{display:grid;grid-template-columns:1fr auto 1fr;align-items:stretch;gap:18px;width:min(1000px,100%);margin-top:17px}
+    .option{
+      border:4px solid var(--line);background:var(--yellow-pale);min-height:180px;
+      display:flex;align-items:center;justify-content:center;text-align:center;padding:23px;
+      font-family:"Press Start 2P",monospace;font-size:clamp(14px,1.8vw,21px);line-height:1.55;
+      box-shadow:var(--shadow-small)
+    }
+    .or{display:flex;align-items:center;justify-content:center;font-family:"Press Start 2P",monospace;color:#9a7b00;font-size:15px}
+
+    .flow{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:9px;margin:23px 0 0;width:100%}
+    .flow span{border:2px solid var(--line);background:var(--paper);padding:9px 12px;font-weight:700;font-size:clamp(12px,1.4vw,17px)}
+    .flow b{font-size:20px;color:#9a7b00}
+
+    .gridmap{
+      display:grid;grid-template-columns:repeat(7,42px);grid-template-rows:repeat(6,42px);
+      gap:2px;width:max-content;max-width:100%;margin:18px auto;padding:6px;border:3px solid var(--line);background:#fff
+    }
+    .cell{border:1px solid #c7c1b4;background:#faf8f1;position:relative}
+    .marker{
+      width:28px;height:28px;border:2px solid var(--line);display:grid;place-items:center;
+      font-family:"Press Start 2P",monospace;font-size:8px;position:absolute;left:5px;top:5px
+    }
+    .marker.a{background:var(--yellow)}.marker.b{background:#73bdf0}.marker.c{background:#ef747c}
+
+    .triptych{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;width:min(1050px,100%)}
+    .triptych > div{border:3px solid var(--line);padding:16px;background:var(--paper);box-shadow:var(--shadow-small)}
+    .triptych strong{
+      display:block;font-family:"Press Start 2P",monospace;font-size:clamp(10px,1.15vw,14px);
+      line-height:1.5;color:#8d7000;margin-bottom:9px
+    }
+
+    .subject-chair{
+      width:180px;height:145px;margin:18px auto;position:relative
+    }
+    .chair-back{position:absolute;left:30px;top:0;width:120px;height:80px;border:5px solid var(--line);background:var(--yellow-pale)}
+    .chair-seat{position:absolute;left:20px;top:74px;width:140px;height:28px;border:5px solid var(--line);background:var(--yellow)}
+    .chair-leg{position:absolute;top:99px;width:10px;height:46px;background:var(--line)}
+    .chair-leg.l{left:35px}.chair-leg.r{right:35px}
+    .chair-label{
+      position:absolute;left:50%;top:26px;transform:translateX(-50%);
+      font-family:"Press Start 2P",monospace;font-size:9px;line-height:1.4;text-align:center
+    }
+
+    .sentence{
+      width:min(1000px,100%);border:3px solid var(--line);background:#fff;padding:17px 20px;
+      box-shadow:var(--shadow-small);margin:12px 0
+    }
+    .sentence .source{
+      font-size:clamp(20px,2.4vw,30px);font-weight:700;line-height:1.45;margin-bottom:10px
+    }
+    .gloss{
+      display:grid;grid-template-columns:repeat(var(--cols,4),minmax(0,1fr));
+      gap:6px;margin-top:8px
+    }
+    .gloss span{border-top:2px solid #bbb4a7;padding-top:5px;font-size:clamp(11px,1.2vw,15px);line-height:1.35}
+    .natural{margin-top:11px!important;font-size:clamp(14px,1.45vw,18px)!important;font-weight:700}
+    .agreement{
+      display:inline-block;border:2px solid var(--line);background:var(--yellow-soft);
+      padding:4px 7px;font-weight:700
+    }
+    .subject-tag{
+      display:inline-block;border:2px solid var(--line);background:var(--blue-pale);
+      padding:4px 7px;font-weight:700
+    }
+    .controller-tag{
+      display:inline-block;border:2px solid var(--line);background:var(--green-pale);
+      padding:4px 7px;font-weight:700
+    }
+    .agreement-flow{
+      display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:10px;
+      width:min(960px,100%);margin:14px auto 4px;padding:10px 12px;
+      border:2px dashed #8d887d;background:#fffdf5
+    }
+    .agreement-flow .flow-label{
+      font-family:"Press Start 2P",monospace;font-size:8px;line-height:1.5;color:#5f5a50
+    }
+    .agreement-arrow{
+      font-family:"Press Start 2P",monospace;font-size:18px;line-height:1;color:var(--green)
+    }
+    .agreement-key{
+      display:flex;flex-wrap:wrap;gap:9px;align-items:center;justify-content:center;
+      width:min(960px,100%);margin:10px auto 0;font-size:12px;line-height:1.45
+    }
+    .agreement-key span{display:inline-flex;align-items:center;gap:6px}
+    .key-square{width:18px;height:18px;border:2px solid var(--line);display:inline-block}
+    .key-subject{background:var(--blue-pale)}
+    .key-controller{background:var(--green-pale)}
+    .key-verb{background:var(--yellow-soft)}
+
+    .matrix{border-collapse:collapse;width:min(1000px,100%);font-size:clamp(12px,1.3vw,16px)}
+    .matrix th,.matrix td{border:2px solid var(--line);padding:11px 10px;text-align:left;vertical-align:top}
+    .matrix th{background:var(--yellow);font-family:"Press Start 2P",monospace;font-size:clamp(8px,.95vw,11px);line-height:1.5}
+    .matrix tr:nth-child(even) td{background:var(--yellow-pale)}
+
+    .norm-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;width:min(1050px,100%)}
+    .norm{border:3px solid var(--line);background:#fff;box-shadow:var(--shadow-small);overflow:hidden}
+    .norm h4{margin:0;padding:13px 14px;background:var(--yellow);font-family:"Press Start 2P",monospace;font-size:clamp(10px,1.2vw,14px);line-height:1.5}
+    .norm-body{padding:15px}.norm-body p{font-size:clamp(15px,1.65vw,20px);margin:8px 0}
+
+    .concept-pieces{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;width:min(1050px,100%);margin-top:20px}
+    .concept{
+      border:3px solid var(--line);background:var(--yellow-pale);padding:11px 13px;
+      box-shadow:2px 2px 0 var(--line);font-weight:700;font-size:clamp(12px,1.35vw,16px)
+    }
+
+    /* ---------- Presentation controls ---------- */
+    .presentation-ui{
+      display:none;position:fixed;z-index:500;left:0;right:0;bottom:0;min-height:74px;
+      border-top:3px solid var(--line);background:var(--bg);padding:10px 16px;
+      align-items:center;justify-content:space-between;gap:12px
+    }
+    body.presentation .presentation-ui{display:flex}
+    .presentation-left,.presentation-right{display:flex;align-items:center;gap:8px}
+    .presentation-title{
+      font-family:"Press Start 2P",monospace;font-size:8px;line-height:1.4;
+      text-align:center;white-space:nowrap
+    }
+    .control-btn{
+      min-width:43px;min-height:40px;border:2px solid var(--line);background:var(--paper);
+      cursor:pointer;box-shadow:2px 2px 0 var(--line);font-weight:700;
+      transition:transform var(--speed),box-shadow var(--speed)
+    }
+    .control-btn:hover,.control-btn:focus-visible{transform:translate(1px,1px);box-shadow:1px 1px 0 var(--line);outline:none}
+    .present-count{font-weight:700;font-size:12px;white-space:nowrap}
+    .progress-track{position:fixed;left:0;bottom:74px;width:100%;height:4px;background:#d9d5ca;z-index:501}
+    .progress-fill{height:100%;width:0;background:var(--yellow);transition:width .12s linear}
+
+    @keyframes sceneIn{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
+    @media(max-width:860px){
+      .cycle-road{grid-template-columns:1fr}
+      .topbar{align-items:flex-start;flex-direction:column}.mini-nav{justify-content:flex-start}
+      summary.lesson-summary{grid-template-columns:auto 1fr}.lesson-status{grid-column:1/-1;width:max-content}
+      .triptych,.norm-grid,.live-columns{grid-template-columns:1fr}
+      .two-options{grid-template-columns:1fr}.or{padding:2px 0}
+      .gloss{grid-template-columns:1fr!important}
+    }
+    @media(max-width:760px){
+      .wrap{width:min(94vw,1080px);padding-top:15px}
+      .cycle-head{padding:24px 18px 20px}
+      body.presentation .deck.active-deck .scene.present-active{padding:50px 18px 105px}
+      .presentation-title,.progress-track{display:none}
+      .gridmap{grid-template-columns:repeat(7,34px);grid-template-rows:repeat(6,34px)}
+      .cell{min-width:34px;min-height:34px}.marker{width:24px;height:24px;left:4px;top:4px}
+    }
+    @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
+    @media print{.presentation-ui{display:none!important}}
+  </style>
+</head>
+<body>
+<main class="wrap">
+<div class="topbar">
+<a class="back-link" href="index.html">← PORTAL</a>
+<nav aria-label="Acessos rápidos" class="mini-nav">
+<a class="utility-link" href="avaliacoes.html">AVALIAÇÕES</a>
+<a class="utility-link" href="cronograma.html">CRONOGRAMA</a>
+<a class="utility-link" href="textos.html">TEXTOS</a>
+</nav>
+</div>
+<header class="cycle-head">
+<p class="eyebrow">PLAYLING · CICLO 01 · LEGO + GERATIVISMO</p>
+<h1>COMO ANALISAR CONSTRUÇÕES LINGUÍSTICAS DE UM MODO UNIVERSAL?</h1>
+<p class="cycle-subtitle">
+      Cinco aulas, uma investigação. Vamos começar com peças de LEGO e terminar tentando
+      <strong>montar uma explicação linguística</strong>.
+    </p>
+<div class="cycle-challenge">
+<small>DESAFIO DO CICLO</small>
+<strong>Como explicar cientificamente por que pessoas dizem “Chegou duas pessoas”?</strong>
+</div>
+<div aria-label="Estrutura do ciclo" class="cycle-road">
+<div class="road-step"><b>01</b>JOGO &amp;<br/>PROBLEMA</div>
+<div class="road-step"><b>02</b>MODELO &amp;<br/>HIPÓTESE</div>
+<div class="road-step"><b>03</b>ANÁLISE &amp;<br/>TESTE</div>
+<div class="road-step"><b>04</b>APLICAÇÃO &amp;<br/>CONFRONTO</div>
+<div class="road-step"><b>05</b>REVISÃO &amp;<br/>NOVO JOGO</div>
+</div>
+</header>
+<!--
+    ============================================================
+    COMO LIBERAR AS AULAS DO CICLO 01
+    ============================================================
+    NÃO edite os cartões abaixo.
+
+    Abra o arquivo site-config.js e altere APENAS estes estados:
+
+      "ciclo-01-aula-01": "current",
+      "ciclo-01-aula-02": "next",
+      "ciclo-01-aula-03": "locked",
+      "ciclo-01-aula-04": "locked",
+      "ciclo-01-aula-05": "locked"
+
+    Exemplo — quando chegar à Aula 02:
+
+      "ciclo-01-aula-01": "open",
+      "ciclo-01-aula-02": "current",
+      "ciclo-01-aula-03": "next",
+      "ciclo-01-aula-04": "locked",
+      "ciclo-01-aula-05": "locked"
+
+    Estados:
+      current = aula atual; abre e apresenta
+      open    = aula anterior; continua acessível
+      next    = próxima aula; título visível, conteúdo bloqueado
+      locked  = aula futura; título visível, conteúdo bloqueado
+    ============================================================
+  -->
+<section aria-label="Cinco aulas do Ciclo 01" class="accordion-list">
+<details class="lesson" data-lesson-id="ciclo-01-aula-01">
+<summary class="lesson-summary">
+<span class="lesson-number">01</span>
+<span class="lesson-summary-text">
+<span class="permanent-name">JOGO &amp; PROBLEMA</span>
+<h2>AS MESMAS PEÇAS, OUTRAS CONSTRUÇÕES</h2>
+</span>
+<span class="lesson-status"></span>
+<span class="summary-arrow">›</span>
+</summary>
+<div class="lesson-body">
+<p class="lesson-intro">
+          O desafio aparece, registramos as primeiras explicações da turma e começamos com LEGO:
+          mesmas peças, construções diferentes — mas nem qualquer construção.
+        </p>
+<div class="lesson-question">O que precisamos explicar quando dizemos que uma análise universal é possível?</div>
+<button class="present-launch" data-launch="1" type="button">▶ APRESENTAÇÃO AULA 01</button>
+<div class="text-portal-callout">
+<strong>Tem texto sobre este assunto.</strong> Acesse diretamente a pasta de textos no Google Drive.
+          <br/><a class="text-portal-link" href="https://drive.google.com/drive/folders/1tIUsTf-qjTyWiIr1S74jszs9MIUOoq1M?usp=sharing" rel="noopener noreferrer" target="_blank">ABRIR TEXTOS NO DRIVE →</a>
+</div>
+</div>
+<div class="locked-message">Esta aula ainda não está liberada.</div>
+</details>
+<details class="lesson" data-lesson-id="ciclo-01-aula-02">
+<summary class="lesson-summary">
+<span class="lesson-number">02</span>
+<span class="lesson-summary-text">
+<span class="permanent-name">MODELO &amp; HIPÓTESE</span>
+<h2>UM MAPA, MUITOS CAMINHOS</h2>
+</span>
+<span class="lesson-status"></span>
+<span class="summary-arrow">›</span>
+</summary>
+<div class="lesson-body">
+<p class="lesson-intro">
+          Peças viram caminhos. Um mapa simples nos ajuda a pensar uma hipótese:
+          línguas podem compartilhar uma arquitetura e, ainda assim, fazer escolhas diferentes.
+        </p>
+<div class="lesson-question">Quanto precisa estar pronto — e quanto precisa ser descoberto?</div>
+<button class="present-launch" data-launch="2" type="button">▶ APRESENTAÇÃO AULA 02</button>
+<div class="text-portal-callout">
+<strong>Tem texto sobre este assunto.</strong> Acesse diretamente a pasta de textos no Google Drive.
+          <br/><a class="text-portal-link" href="https://drive.google.com/drive/folders/1tIUsTf-qjTyWiIr1S74jszs9MIUOoq1M?usp=sharing" rel="noopener noreferrer" target="_blank">ABRIR TEXTOS NO DRIVE →</a>
+</div>
+</div>
+<div class="locked-message">A próxima aula já está no mapa, mas ainda não pode ser aberta.</div>
+</details>
+<details class="lesson" data-lesson-id="ciclo-01-aula-03">
+<summary class="lesson-summary">
+<span class="lesson-number">03</span>
+<span class="lesson-summary-text">
+<span class="permanent-name">ANÁLISE &amp; TESTE</span>
+<h2>QUEM SENTA NA CADEIRA DO SUJEITO?</h2>
+</span>
+<span class="lesson-status"></span>
+<span class="summary-arrow">›</span>
+</summary>
+<div class="lesson-body">
+<p class="lesson-intro">
+          Em vez de decorar “quem pratica a ação”, tratamos sujeito como posição estrutural
+          e testamos como diferentes línguas distribuem posição e concordância.
+        </p>
+<div class="lesson-question">Sujeito precisa ter significado? Precisa aparecer? Precisa controlar concordância?</div>
+<button class="present-launch" data-launch="3" type="button">▶ APRESENTAÇÃO AULA 03</button>
+<div class="text-portal-callout">
+<strong>Tem texto sobre este assunto.</strong> Acesse diretamente a pasta de textos no Google Drive.
+          <br/><a class="text-portal-link" href="https://drive.google.com/drive/folders/1tIUsTf-qjTyWiIr1S74jszs9MIUOoq1M?usp=sharing" rel="noopener noreferrer" target="_blank">ABRIR TEXTOS NO DRIVE →</a>
+</div>
+</div>
+<div class="locked-message">Esta aula ainda está bloqueada.</div>
+</details>
+<details class="lesson" data-lesson-id="ciclo-01-aula-04">
+<summary class="lesson-summary">
+<span class="lesson-number">04</span>
+<span class="lesson-summary-text">
+<span class="permanent-name">APLICAÇÃO &amp; CONFRONTO</span>
+<h2>“CHEGOU DUAS PESSOAS”. AGORA EXPLICA.</h2>
+</span>
+<span class="lesson-status"></span>
+<span class="summary-arrow">›</span>
+</summary>
+<div class="lesson-body">
+<p class="lesson-intro">
+          Voltamos ao desafio. Norma-padrão e norma de uso são comparadas como organizações
+          gramaticais que podem distribuir sujeito e concordância de modos diferentes.
+        </p>
+<div class="lesson-question">Podemos substituir “erro” por uma hipótese estrutural que possa ser discutida e testada?</div>
+<button class="present-launch" data-launch="4" type="button">▶ APRESENTAÇÃO AULA 04</button>
+<div class="text-portal-callout">
+<strong>Tem texto sobre este assunto.</strong> Acesse diretamente a pasta de textos no Google Drive.
+          <br/><a class="text-portal-link" href="https://drive.google.com/drive/folders/1tIUsTf-qjTyWiIr1S74jszs9MIUOoq1M?usp=sharing" rel="noopener noreferrer" target="_blank">ABRIR TEXTOS NO DRIVE →</a>
+</div>
+</div>
+<div class="locked-message">Esta aula ainda está bloqueada.</div>
+</details>
+<details class="lesson" data-lesson-id="ciclo-01-aula-05">
+<summary class="lesson-summary">
+<span class="lesson-number">05</span>
+<span class="lesson-summary-text">
+<span class="permanent-name">REVISÃO &amp; NOVO JOGO</span>
+<h2>MONTA A EXPLICAÇÃO</h2>
+</span>
+<span class="lesson-status"></span>
+<span class="summary-arrow">›</span>
+</summary>
+<div class="lesson-body">
+<p class="lesson-intro">
+          Texto, perguntas e reconstrução do percurso. No final, as peças conceituais voltam
+          para que a turma monte sua própria explicação para o desafio do ciclo.
+        </p>
+<div class="lesson-question">Quais peças são realmente necessárias para explicar “Chegou duas pessoas”?</div>
+<button class="present-launch" data-launch="5" type="button">▶ APRESENTAÇÃO AULA 05</button>
+<div class="text-portal-callout">
+<strong>Tem texto sobre este assunto.</strong> Acesse diretamente a pasta de textos no Google Drive.
+          <br/><a class="text-portal-link" href="https://drive.google.com/drive/folders/1tIUsTf-qjTyWiIr1S74jszs9MIUOoq1M?usp=sharing" rel="noopener noreferrer" target="_blank">ABRIR TEXTOS NO DRIVE →</a>
+</div>
+</div>
+<div class="locked-message">Esta aula ainda está bloqueada.</div>
+</details>
+</section>
+<div class="unlock-help">
+<strong>PARA LIBERAR AS AULAS:</strong> use somente o arquivo <code>site-config.js</code>.
+    O código da página e das cinco apresentações já está completo.
+  </div>
+<nav aria-label="Navegação entre partes do curso" class="course-sequence-nav" data-course-nav="" data-current="ciclo-01"></nav>
+</main>
+<!-- ============================================================
+     APRESENTAÇÕES
+     ============================================================ -->
+<div aria-hidden="true" class="presentations">
+<!-- ================= AULA 01 ================= -->
+<article class="deck" data-deck="1" data-deck-title="Aula 01 · As mesmas peças, outras construções">
+<section class="scene center">
+<div class="scene-inner">
+<span class="scene-label">CENA 01</span>
+<p class="small">DESAFIO DO CICLO</p>
+<p class="huge black">“CHEGOU DUAS PESSOAS”</p>
+<p class="sub-question">Como explicar cientificamente por que pessoas dizem isso?</p>
+</div>
+</section>
+<section class="scene">
+<div class="scene-inner">
+<span class="scene-label">CENA 02</span>
+<h3>ANTES DA TEORIA: COMO VOCÊS EXPLICARIAM A FRASE?</h3>
+<div class="live-columns">
+<div class="live-column">
+<h4>EXPLICAÇÕES DA TURMA</h4>
+<div class="editable" contenteditable="true" data-sync="poll-inicial"></div>
+</div>
+<div class="live-column">
+<h4>QUE TIPO DE EXPLICAÇÃO É ESSA?</h4>
+<div class="editable" contenteditable="true"></div>
+</div>
+</div>
+<p class="live-hint">Não corrigir agora. Vamos guardar essas respostas.</p>
+</div>
+</section>
+<section class="scene center">
+<div class="scene-inner">
+<span class="scene-label">CENA 03</span>
+<p class="huge">COM VOCÊS, UM OUTRO OLHAR...</p>
+<p class="sub-question">LEGO.</p>
+</div>
+</section>
+<section class="scene">
+<div class="scene-inner">
+<span class="scene-label">CENA 04</span>
+<h3>MESMAS PEÇAS PARA TODO MUNDO</h3>
+<div class="activity-box">
+<h4>DESAFIO LEGO</h4>
+<ul>
+<li>Formem grupos.</li>
+<li>Cada grupo recebe exatamente o mesmo conjunto de peças.</li>
+<li>Construam uma pessoa ou criatura que consiga ficar em pé.</li>
+<li>Usem todas as peças.</li>
+</ul>
+</div>
+<div aria-hidden="true" class="lego-pieces">
+<span class="brick">1</span><span class="brick">2</span><span class="brick">3</span>
+<span class="brick">4</span><span class="brick">5</span><span class="brick">6</span>
+</div>
+</div>
+</section>
+<section class="scene center">
+<div class="scene-inner">
+<span class="scene-label">CENA 05</span>
+<h3>QUAL FICOU MAIS BONITO?</h3>
+<p class="sub-question">O que essa pergunta tem a ver com a busca pelo 'universal'?</p>
+</div>
+</section>
+<section class="scene">
+<div class="scene-inner">
+<span class="scene-label">CENA 06</span>
+<h3>E QUAL FOI O MAIS COMPLEXO?</h3>
+<div class="question-box">
+<h4>ANTES DE RESPONDER...</h4>
+<p>Como medir a complexidade?</p>
+<div class="flow">
+<span>nº de peças?</span><b>→</b><span>nº de conexões?</span><b>→</b>
+<span>altura?</span><b>→</b><span>simetria?</span>
+</div>
+</div>
+<p class="lead">Até uma palavra aparentemente “objetiva” precisa de um critério.</p>
+</div>
+</section>
+<section class="scene center">
+<div class="scene-inner">
+<span class="scene-label">CENA 07</span>
+<p class="huge">MESMAS PEÇAS ≠ MESMA CONSTRUÇÃO</p>
+</div>
+</section>
+<section class="scene center">
+<div class="scene-inner">
+<span class="scene-label">CENA 08</span>
+<p class="huge">MAS TAMBÉM NÃO VALE QUALQUER CONSTRUÇÃO.</p>
+<p class="sub-question">As próprias peças e suas conexões criaram possibilidades e restrições.</p>
+</div>
+</section>
+<section class="scene">
+<div class="scene-inner">
+<span class="scene-label">CENA 09</span>
+<h3>E SE AS LÍNGUAS TAMBÉM FUNCIONASSEM ASSIM?</h3>
+<div class="two-options">
+<div class="option">ALGO EM COMUM</div><div class="or">+</div><div class="option">ARRANJOS DIFERENTES</div>
+</div>
+<p class="small">Hipótese para investigar — ainda não uma resposta pronta.</p>
+</div>
+</section>
+<section class="scene">
+<div class="scene-inner">
+<span class="scene-label">CENA 10</span>
+<h3>O QUE ESSA HIPÓTESE NOS DÁ — E O QUE ELA ARRISCA?</h3>
+<div class="live-columns">
+<div class="live-column"><h4>PODE AJUDAR A EXPLICAR...</h4><div class="editable" contenteditable="true"></div></div>
+<div class="live-column"><h4>MAS PRECISAMOS TESTAR...</h4><div class="editable" contenteditable="true"></div></div>
+</div>
+</div>
+</section>
+<section class="scene">
+<div class="scene-inner">
+<span class="scene-label">CENA 11</span>
+<h3>PERGUNTAS PARA PENSAR A PARTIR DESSA AULA</h3>
+<ul>
+<li>Todas as línguas têm algo em comum?</li>
+<li>O que pode variar?</li>
+<li>Qualquer organização é possível?</li>
+<li>O falante precisa aprender tudo?</li>
+</ul>
+</div>
+</section>
+</article>
+<!-- ================= AULA 02 ================= -->
+<article class="deck" data-deck="2" data-deck-title="Aula 02 · Um mapa, muitos caminhos">
+<section class="scene">
+<div class="scene-inner">
+<span class="scene-label">CENA 01</span>
+<h3>HOJE: PEÇAS, CAMINHOS E UMA HIPÓTESE</h3>
+<ul>
+<li>começar com um mapa;</li>
+<li>observar pequenas escolhas;</li>
+<li>transformá-las em um modelo;</li>
+<li>perguntar o que uma criança precisa descobrir.</li>
+</ul>
+</div>
+</section>
+<section class="scene">
+<div class="scene-inner">
+<span class="scene-label">CENA 02</span>
+<h3>TRÊS PERSONAGENS. O MESMO PONTO DE PARTIDA.</h3>
+<div class="activity-box">
+<h4>ATIVIDADE</h4>
+<p>A, B e C começam no mesmo lugar. Cada um recebe uma sequência curta de instruções: avançar, virar, seguir.</p>
+<p class="small">As sequências serão reveladas e comparadas depois.</p>
+</div>
+</div>
+</section>
+<section class="scene center">
+<div class="scene-inner">
+<span class="scene-label">CENA 03</span>
+<h3>OLHANDO SÓ PARA O FINAL...</h3>
+<div aria-label="Grade ilustrativa" class="gridmap">
+<span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span>
+<span class="cell"></span><span class="cell"><i class="marker b">B</i></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span>
+<span class="cell"></span><span class="cell"></span><span class="cell"><i class="marker a">A</i></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span>
+<span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span>
+<span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"><i class="marker c">C</i></span>
+<span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span>
+</div>
+<p class="sub-question">B parece muito mais “próximo” de A do que C.</p>
+</div>
+</section>
+<section class="scene">
+<div class="scene-inner">
+<span class="scene-label">CENA 04</span>
+<h3>AGORA OLHE PARA AS INSTRUÇÕES</h3>
+<div class="triptych">
+<div><strong>A</strong><p>sequência-base</p></div>
+<div><strong>B</strong><p>várias diferenças, mas chegada próxima</p></div>
+<div><strong>C</strong><p>poucas diferenças em pontos decisivos, chegada distante</p></div>
+</div>
+<p class="lead">Pequenas escolhas podem ter grandes consequências.</p>
+</div>
+</section>
+<section class="scene">
+<div class="scene-inner">
+<span class="scene-label">CENA 05</span>
+<h3>E SE A GENTE USAR O MAPA COMO MODELO?</h3>
+<div class="triptych">
+<div><strong>A</strong><p>PORTUGUÊS</p></div>
+<div><strong>B</strong><p>ESPANHOL</p></div>
+<div><strong>C</strong><p>JAPONÊS</p></div>
+</div>
+<div class="warning-box" style="margin-top:18px">
+<h4>CUIDADO COM A ANALOGIA</h4>
+<p>O mapa não mede a “distância real” entre línguas. Ele serve para pensar escolhas estruturais e suas consequências.</p>
+</div>
+</div>
+</section>
+<section class="scene center">
+<div class="scene-inner">
+<span class="scene-label">CENA 06</span>
+<p class="small">NO MODELO CLÁSSICO DE PRINCÍPIOS E PARÂMETROS</p>
+<p class="huge">PRINCÍPIOS</p>
+<p class="sub-question">Parte da arquitetura geral que restringiria o que uma língua humana pode ser.</p>
+</div>
+</section>
+<section class="scene center">
+<div class="scene-inner">
+<span class="scene-label">CENA 07</span>
+<p class="small">NO MODELO CLÁSSICO DE PRINCÍPIOS E PARÂMETROS</p>
+<p class="huge">PARÂMETROS</p>
+<p class="sub-question">Pontos em que diferentes línguas poderiam selecionar opções diferentes.</p>
+</div>
+</section>
+<section class="scene">
+<div class="scene-inner">
+<span class="scene-label">CENA 08</span>
+<h3>A HIPÓTESE GERATIVISTA</h3>
+<div class="model-box">
+<h4>UM “MAPA” ANTES DO CAMINHO?</h4>
+<p class="lead">A criança não começaria do zero.</p>
+<p>Ela disporia de uma arquitetura linguística que restringe o que precisa descobrir a partir da língua ao seu redor.</p>
+</div>
+</div>
+</section>
+<section class="scene center">
+<div class="scene-inner">
+<span class="scene-label">CENA 09</span>
+<div class="two-options">
+<div class="option">NASCER SABENDO PORTUGUÊS?<br/><br/>NÃO.</div>
+<div class="or">×</div>
+<div class="option">NASCER SEM NADA LINGUÍSTICO?<br/><br/>SEGUNDO A HIPÓTESE, TAMBÉM NÃO.</div>
+</div>
+</div>
+</section>
+<section class="scene">
+<div class="scene-inner">
+<span class="scene-label">CENA 10</span>
+<h3>O QUE AINDA PRECISAMOS PERGUNTAR?</h3>
+<div class="live-columns">
+<div class="live-column"><h4>O QUE JÁ TEMOS?</h4><div class="editable" contenteditable="true"></div></div>
+<div class="live-column"><h4>O QUE AINDA NÃO SABEMOS?</h4><div class="editable" contenteditable="true"></div></div>
+</div>
+</div>
+</section>
+<section class="scene center">
+<div class="scene-inner">
+<span class="scene-label">CENA 11</span>
+<h3>ONDE PODEMOS TESTAR DIFERENÇAS DE ORGANIZAÇÃO?</h3>
+<div aria-hidden="true" class="subject-chair">
+<div class="chair-back"></div><div class="chair-seat"></div>
+<div class="chair-leg l"></div><div class="chair-leg r"></div>
+<div class="chair-label">SUJEITO</div>
+</div>
+</div>
+</section>
+</article>
+<!-- ================= AULA 03 ================= -->
+<article class="deck" data-deck="3" data-deck-title="Aula 03 · Quem senta na cadeira do sujeito?">
+<section class="scene center">
+<div class="scene-inner">
+<span class="scene-label">CENA 01</span>
+<h3>QUEM SENTA NA CADEIRA DO SUJEITO?</h3>
+<div aria-hidden="true" class="subject-chair">
+<div class="chair-back"></div><div class="chair-seat"></div>
+<div class="chair-leg l"></div><div class="chair-leg r"></div>
+<div class="chair-label">SUJEITO</div>
+</div>
+</div>
+</section>
+<section class="scene">
+<div class="scene-inner">
+<span class="scene-label">CENA 02</span>
+<h3>TRÊS DEFINIÇÕES QUE PARECEM SIMPLES</h3>
+<div class="triptych">
+<div><strong>1</strong><p>“quem pratica a ação”</p></div>
+<div><strong>2</strong><p>“aquilo de que a frase fala”</p></div>
+<div><strong>3</strong><p>“aquilo que concorda com o verbo”</p></div>
+</div>
+<p class="sub-question">Será que alguma delas funciona em todos os casos?</p>
+</div>
+</section>
+<section class="scene">
+<div class="scene-inner">
+<span class="scene-label">CENA 03</span>
+<h3>PRIMEIRO: QUEM CONTROLA A CONCORDÂNCIA?</h3>
+<div class="sentence">
+<div class="source"><span class="controller-tag">Os meninos</span> <span class="agreement">amam</span> Maria.</div>
+<div class="agreement-flow"><span class="flow-label">CONTROLA A CONCORDÂNCIA</span><span class="controller-tag">OS MENINOS</span><span class="agreement-arrow">→</span><span class="agreement">AMAM</span></div>
+</div>
+<div class="sentence">
+<div class="source"><span class="controller-tag">Paulo</span> <span class="agreement">ama</span> as meninas.</div>
+<div class="agreement-flow"><span class="flow-label">CONTROLA A CONCORDÂNCIA</span><span class="controller-tag">PAULO</span><span class="agreement-arrow">→</span><span class="agreement">AMA</span></div>
+</div>
+<p class="sub-question">Mudar o objeto muda a forma do verbo?</p>
+<div class="agreement-key"><span><i class="key-square key-controller"></i> controlador</span><span><i class="key-square key-verb"></i> forma verbal controlada</span></div>
+</div>
+</section>
+<section class="scene">
+<div class="scene-inner">
+<span class="scene-label">CENA 04</span>
+<h3>UM MODELO DE TRABALHO PARA ESTA AULA</h3>
+<div class="model-box">
+<h4>SUJEITO</h4>
+<p class="lead">Vamos tratá-lo primeiro como uma <strong>posição na estrutura</strong>.</p>
+<p>Depois observamos quais propriedades cada língua associa a essa posição.</p>
+</div>
+<ul>
+<li>precisa ser pronunciado?</li>
+<li>precisa ter significado?</li>
+<li>controla concordância?</li>
+</ul>
+</div>
+</section>
+<section class="scene">
+<div class="scene-inner">
+<span class="scene-label">CENA 05</span>
+<h3>IT RAINS.</h3>
+<div class="sentence">
+<div class="source"><span class="subject-tag">It</span> <span class="agreement">rains</span>.</div>
+<div class="gloss" style="--cols:2">
+<span><strong>it</strong><br/>sujeito expletivo</span>
+<span><strong>rains</strong><br/>“chove” · verbo no singular</span>
+</div>
+<div class="agreement-flow"><span class="flow-label">CONTROLA A CONCORDÂNCIA</span><span class="controller-tag">IT</span><span class="agreement-arrow">→</span><span class="agreement">RAINS</span></div>
+<p class="natural">→ Em português: <strong>Chove.</strong></p>
+</div>
+<p class="sub-question">“It” pratica alguma ação? Tem um referente?</p>
+</div>
+</section>
+<section class="scene">
+<div class="scene-inner">
+<span class="scene-label">CENA 06</span>
+<h3>IL PLEUT.</h3>
+<div class="sentence">
+<div class="source"><span class="subject-tag">Il</span> <span class="agreement">pleut</span>.</div>
+<div class="gloss" style="--cols:2">
+<span><strong>il</strong><br/>sujeito expletivo</span>
+<span><strong>pleut</strong><br/>“chove” · verbo no singular</span>
+</div>
+<div class="agreement-flow"><span class="flow-label">CONTROLA A CONCORDÂNCIA</span><span class="controller-tag">IL</span><span class="agreement-arrow">→</span><span class="agreement">PLEUT</span></div>
+<p class="natural">→ Em português: <strong>Chove.</strong></p>
+</div>
+<p class="small">Não é preciso saber francês: observe a posição ocupada e a seta que mostra quem controla a forma do verbo.</p>
+</div>
+</section>
+<section class="scene">
+<div class="scene-inner">
+<span class="scene-label">CENA 07</span>
+<h3>THERE ARE TWO PEOPLE HERE.</h3>
+<div class="sentence">
+<div class="source"><span class="subject-tag">There</span> <span class="agreement">are</span> <span class="controller-tag">two people</span> here.</div>
+<div class="gloss" style="--cols:4">
+<span><strong>there</strong><br/>there / sujeito expletivo</span>
+<span><strong>are</strong><br/>são</span>
+<span><strong>two people</strong><br/>duas pessoas</span>
+<span><strong>here</strong><br/>aqui</span>
+</div>
+<div class="agreement-flow"><span class="flow-label">CONTROLA A CONCORDÂNCIA</span><span class="controller-tag">TWO PEOPLE</span><span class="agreement-arrow">→</span><span class="agreement">ARE</span></div>
+<p class="natural">Gloss aproximado: <strong>“there são duas pessoas aqui”</strong><br/>→ Português natural: <strong>Há duas pessoas aqui.</strong></p>
+</div>
+<div class="agreement-key"><span><i class="key-square key-subject"></i> posição de sujeito</span><span><i class="key-square key-controller"></i> controlador da concordância</span><span><i class="key-square key-verb"></i> forma verbal</span></div>
+<p class="lead"><span class="subject-tag">THERE</span> ocupa a posição de sujeito, mas <span class="controller-tag">TWO PEOPLE</span> controla a concordância: <span class="controller-tag">TWO PEOPLE</span> <span class="agreement-arrow">→</span> <span class="agreement">ARE</span>.</p>
+</div>
+</section>
+<section class="scene">
+<div class="scene-inner">
+<span class="scene-label">CENA 08</span>
+<h3>IL Y A DEUX PERSONNES ICI.</h3>
+<div class="sentence">
+<div class="source"><span class="subject-tag">Il</span> <span class="agreement">y a</span> deux personnes ici.</div>
+<div class="gloss" style="--cols:4">
+<span><strong>il</strong><br/>sujeito expletivo</span>
+<span><strong>y a</strong><br/>“há” · singular</span>
+<span><strong>deux personnes</strong><br/>duas pessoas</span>
+<span><strong>ici</strong><br/>aqui</span>
+</div>
+<div class="agreement-flow"><span class="flow-label">CONTROLA A CONCORDÂNCIA</span><span class="controller-tag">IL</span><span class="agreement-arrow">→</span><span class="agreement">Y A</span></div>
+<p class="natural">→ Em português: <strong>Há duas pessoas aqui.</strong></p>
+</div>
+<p class="lead">Aqui, <span class="subject-tag">IL</span> ocupa a posição e também controla a forma singular: <span class="controller-tag">IL</span> <span class="agreement-arrow">→</span> <span class="agreement">Y A</span>.</p>
+</div>
+</section>
+<section class="scene">
+<div class="scene-inner">
+<span class="scene-label">CENA 09</span>
+<h3>AGORA COM “CHEGAR”</h3>
+<div class="sentence">
+<div class="source"><span class="subject-tag">There</span> <span class="agreement">have arrived</span> <span class="controller-tag">two people</span>.</div>
+<div class="gloss" style="--cols:3">
+<span><strong>there</strong><br/>sujeito expletivo</span>
+<span><strong>have arrived</strong><br/>chegaram · plural</span>
+<span><strong>two people</strong><br/>duas pessoas</span>
+</div>
+<div class="agreement-flow"><span class="flow-label">CONTROLA A CONCORDÂNCIA</span><span class="controller-tag">TWO PEOPLE</span><span class="agreement-arrow">→</span><span class="agreement">HAVE ARRIVED</span></div>
+<p class="natural">→ Português natural: <strong>Chegaram duas pessoas.</strong></p>
+</div>
+<div class="sentence">
+<div class="source"><span class="subject-tag">Il</span> <span class="agreement">est arrivé</span> deux personnes.</div>
+<div class="gloss" style="--cols:3">
+<span><strong>il</strong><br/>sujeito expletivo</span>
+<span><strong>est arrivé</strong><br/>chegou · singular</span>
+<span><strong>deux personnes</strong><br/>duas pessoas</span>
+</div>
+<div class="agreement-flow"><span class="flow-label">CONTROLA A CONCORDÂNCIA</span><span class="controller-tag">IL</span><span class="agreement-arrow">→</span><span class="agreement">EST ARRIVÉ</span></div>
+<p class="natural">→ Para enxergar o contraste: <strong>“chegou duas pessoas”</strong>.</p>
+</div>
+<p class="small">O inglês acima é uma ordem marcada; aqui interessa sobretudo a seta: <strong>quem controla a forma do verbo?</strong></p>
+</div>
+</section>
+<section class="scene">
+<div class="scene-inner">
+<span class="scene-label">CENA 10</span>
+<h3>DUAS PROPRIEDADES QUE NÃO PRECISAM ANDAR JUNTAS</h3>
+<table class="matrix">
+<thead><tr><th>TIPO</th><th>POSIÇÃO DE SUJEITO</th><th>QUEM CONTROLA A CONCORDÂNCIA?</th></tr></thead>
+<tbody>
+<tr><td>tipo IT / IL</td><td><span class="subject-tag">expletivo</span></td><td><span class="controller-tag">EXPLETIVO</span> <span class="agreement-arrow">→</span> <span class="agreement">VERBO</span> (singular)</td></tr>
+<tr><td>tipo THERE</td><td><span class="subject-tag">expletivo</span></td><td><span class="controller-tag">EXPRESSÃO NOMINAL PÓS-VERBAL</span> <span class="agreement-arrow">→</span> <span class="agreement">VERBO</span></td></tr>
+</tbody>
+</table>
+<p class="small">Modelo simplificado para o problema que vamos testar na próxima aula.</p>
+</div>
+</section>
+<section class="scene">
+<div class="scene-inner">
+<span class="scene-label">CENA 11</span>
+<h3>AGORA AS PERGUNTAS FICAM MELHORES</h3>
+<ul>
+<li>Sujeito precisa ter significado?</li>
+<li>Precisa aparecer?</li>
+<li>Precisa controlar concordância?</li>
+<li>Todas as línguas distribuem essas propriedades do mesmo jeito?</li>
+</ul>
+</div>
+</section>
+<section class="scene center">
+<div class="scene-inner">
+<span class="scene-label">CENA 12</span>
+<p class="huge">E O PORTUGUÊS?</p>
+<p class="sub-question">A cadeira do sujeito pode nos ajudar a voltar para “Chegou duas pessoas”.</p>
+</div>
+</section>
+</article>
+<!-- ================= AULA 04 ================= -->
+<article class="deck" data-deck="4" data-deck-title="Aula 04 · Chegou duas pessoas. Agora explica.">
+<section class="scene center">
+<div class="scene-inner">
+<span class="scene-label">CENA 01</span>
+<p class="small">DE VOLTA AO DESAFIO</p>
+<p class="huge black">“CHEGOU DUAS PESSOAS”</p>
+<p class="sub-question">Agora temos mais peças para construir uma explicação.</p>
+</div>
+</section>
+<section class="scene">
+<div class="scene-inner">
+<span class="scene-label">CENA 02</span>
+<h3>NA NORMA-PADRÃO</h3>
+<div class="norm">
+<h4>TRÊS CONSTRUÇÕES</h4>
+<div class="norm-body">
+<p><strong>Chove.</strong></p>
+<p><strong>Havia problemas aqui.</strong></p>
+<p><strong>Chegaram duas pessoas.</strong></p>
+</div>
+</div>
+<p class="sub-question">Se usamos o modelo da aula anterior, como distribuiríamos os dois tipos?</p>
+</div>
+</section>
+<section class="scene">
+<div class="scene-inner">
+<span class="scene-label">CENA 03</span>
+<h3>UM MODELO PARA TESTAR</h3>
+<table class="matrix">
+<thead><tr><th>NORMA-PADRÃO</th><th>MODELO</th><th>CONCORDÂNCIA</th></tr></thead>
+<tbody>
+<tr><td>Chove.</td><td>expletivo nulo tipo IT</td><td><span class="controller-tag">EXPLETIVO Ø</span> <span class="agreement-arrow">→</span> <span class="agreement">CHOVE</span> (singular)</td></tr>
+<tr><td>Havia problemas.</td><td>expletivo nulo tipo IT</td><td><span class="controller-tag">EXPLETIVO Ø</span> <span class="agreement-arrow">→</span> <span class="agreement">HAVIA</span> (singular)</td></tr>
+<tr><td>Chegaram duas pessoas.</td><td>expletivo nulo tipo THERE</td><td><span class="controller-tag">DUAS PESSOAS</span> <span class="agreement-arrow">→</span> <span class="agreement">CHEGARAM</span> (plural)</td></tr>
+</tbody>
+</table>
+<p class="small">Isto é uma hipótese de análise usada para organizar os dados do ciclo.</p>
+</div>
+</section>
+<section class="scene">
+<div class="scene-inner">
+<span class="scene-label">CENA 04</span>
+<h3>AGORA: NORMA DE USO</h3>
+<div class="norm">
+<h4>TRÊS CONSTRUÇÕES</h4>
+<div class="norm-body">
+<p><strong>Chove.</strong></p>
+<p><strong>Houveram problemas aqui.</strong></p>
+<p><strong>Chegou duas pessoas.</strong></p>
+</div>
+</div>
+<p class="small">Aqui vamos falar em <strong>norma de uso</strong>, não “não-padrão”.</p>
+</div>
+</section>
+<section class="scene">
+<div class="scene-inner">
+<span class="scene-label">CENA 05</span>
+<h3>E SE A DISTRIBUIÇÃO FOR OUTRA?</h3>
+<table class="matrix">
+<thead><tr><th>NORMA DE USO</th><th>MODELO</th><th>CONCORDÂNCIA</th></tr></thead>
+<tbody>
+<tr><td>Chove.</td><td>expletivo nulo tipo IT</td><td><span class="controller-tag">EXPLETIVO Ø</span> <span class="agreement-arrow">→</span> <span class="agreement">CHOVE</span> (singular)</td></tr>
+<tr><td>Houveram problemas.</td><td>expletivo nulo tipo THERE</td><td><span class="controller-tag">PROBLEMAS</span> <span class="agreement-arrow">→</span> <span class="agreement">HOUVERAM</span> (plural)</td></tr>
+<tr><td>Chegou duas pessoas.</td><td>expletivo nulo tipo IT</td><td><span class="controller-tag">EXPLETIVO Ø</span> <span class="agreement-arrow">→</span> <span class="agreement">CHEGOU</span> (singular)</td></tr>
+</tbody>
+</table>
+<p class="sub-question">Não desaparecem as peças. Muda a forma como elas se distribuem.</p>
+</div>
+</section>
+<section class="scene">
+<div class="scene-inner">
+<span class="scene-label">CENA 06</span>
+<h3>LEMBRA DO INGLÊS E DO FRANCÊS?</h3>
+<div class="norm-grid">
+<div class="norm">
+<h4>INGLÊS</h4>
+<div class="norm-body">
+<p><span class="subject-tag">There</span> <span class="agreement">are</span> <span class="controller-tag">two people</span>.</p>
+<p class="small"><strong>there | são | duas pessoas</strong> → Há duas pessoas.</p>
+<div class="agreement-flow"><span class="controller-tag">TWO PEOPLE</span><span class="agreement-arrow">→</span><span class="agreement">ARE</span></div>
+<p><span class="subject-tag">There</span> <span class="agreement">have arrived</span> <span class="controller-tag">two people</span>.</p>
+<p class="small"><strong>there | chegaram | duas pessoas</strong> → Chegaram duas pessoas.</p>
+<div class="agreement-flow"><span class="controller-tag">TWO PEOPLE</span><span class="agreement-arrow">→</span><span class="agreement">HAVE ARRIVED</span></div>
+</div>
+</div>
+<div class="norm">
+<h4>FRANCÊS</h4>
+<div class="norm-body">
+<p><span class="subject-tag">Il</span> <span class="agreement">y a</span> deux personnes.</p>
+<p class="small"><strong>il (expletivo) | “há” no singular | duas pessoas</strong> → Há duas pessoas.</p>
+<div class="agreement-flow"><span class="controller-tag">IL</span><span class="agreement-arrow">→</span><span class="agreement">Y A</span></div>
+<p><span class="subject-tag">Il</span> <span class="agreement">est arrivé</span> deux personnes.</p>
+<p class="small"><strong>il (expletivo) | “chegou” no singular | duas pessoas</strong> → compare: “Chegou duas pessoas”.</p>
+<div class="agreement-flow"><span class="controller-tag">IL</span><span class="agreement-arrow">→</span><span class="agreement">EST ARRIVÉ</span></div>
+</div>
+</div>
+</div>
+<div class="agreement-key"><span><i class="key-square key-subject"></i> posição de sujeito</span><span><i class="key-square key-controller"></i> controlador</span><span><i class="key-square key-verb"></i> forma verbal</span></div>
+<p class="small">Não é preciso conhecer inglês ou francês: siga as setas. Elas mostram <strong>quem controla a forma do verbo</strong>.</p>
+</div>
+</section>
+<section class="scene">
+<div class="scene-inner">
+<span class="scene-label">CENA 07</span>
+<h3>UMA EXPLICAÇÃO POSSÍVEL PARA O DESAFIO</h3>
+<div class="model-box">
+<h4>HIPÓTESE</h4>
+<p class="lead">Em “Chegou duas pessoas”, a norma de uso pode estar organizando essa estrutura com um expletivo nulo do tipo que mantém o verbo no singular.</p>
+<p>Assim, “duas pessoas” não precisa controlar a concordância verbal nessa análise.</p>
+</div>
+</div>
+</section>
+<section class="scene center">
+<div class="scene-inner">
+<span class="scene-label">CENA 08</span>
+<h3>O QUE MUDOU NA NOSSA EXPLICAÇÃO?</h3>
+<div class="live-columns">
+<div class="live-column"><h4>NO COMEÇO DO CICLO</h4><div class="editable" contenteditable="true" data-sync="poll-inicial"></div></div>
+<div class="live-column"><h4>AGORA</h4><div class="editable" contenteditable="true"></div></div>
+</div>
+</div>
+</section>
+<section class="scene center">
+<div class="scene-inner">
+<span class="scene-label">CENA 09</span>
+<h3>VOLTA PRO LEGO</h3>
+<div aria-hidden="true" class="lego-pieces">
+<span class="brick">SUJEITO</span><span class="brick">EXPLETIVO</span>
+<span class="brick">VERBO</span><span class="brick">CONCORDÂNCIA</span>
+</div>
+<p class="sub-question">Mesmas peças gerais. Arranjos possíveis diferentes.</p>
+</div>
+</section>
+<section class="scene center">
+<div class="scene-inner">
+<span class="scene-label">CENA 10</span>
+<h3>VOLTA PRO MAPA</h3>
+<p class="lead">Uma diferença pequena na organização pode reaparecer em várias construções.</p>
+<div class="flow">
+<span>posição</span><b>→</b><span>tipo de expletivo</span><b>→</b><span>concordância</span><b>→</b><span>forma visível</span>
+</div>
+</div>
+</section>
+<section class="scene">
+<div class="scene-inner">
+<span class="scene-label">CENA 11</span>
+<h3>NORMA-PADRÃO × NORMA DE USO</h3>
+<div class="compare-box">
+<h4>O QUE QUEREMOS COMPARAR?</h4>
+<p>Não “uma gramática” contra “falta de gramática”.</p>
+<p class="lead">Duas organizações que podem ser descritas e comparadas.</p>
+</div>
+</div>
+</section>
+<section class="scene">
+<div class="scene-inner">
+<span class="scene-label">CENA 12</span>
+<h3>ENTÃO... É A MESMA LÍNGUA?</h3>
+<div class="live-columns">
+<div class="live-column"><h4>POSSIBILIDADES</h4><div class="editable" contenteditable="true"></div></div>
+<div class="live-column"><h4>O QUE PRECISARÍAMOS SABER?</h4><div class="editable" contenteditable="true"></div></div>
+</div>
+<p class="small">Mesma língua? Duas normas? Duas variedades? Duas gramáticas? A pergunta fica aberta.</p>
+</div>
+</section>
+<section class="scene center">
+<div class="scene-inner">
+<span class="scene-label">CENA 13</span>
+<p class="huge">POSSÍVEL ≠ PROVÁVEL</p>
+<p class="sub-question">Já temos uma hipótese para a possibilidade gramatical. Mas por que uma forma aparece mais com algumas pessoas, em alguns lugares ou situações?</p>
+</div>
+</section>
+</article>
+<!-- ================= AULA 05 ================= -->
+<article class="deck" data-deck="5" data-deck-title="Aula 05 · Monta a explicação">
+<section class="scene">
+<div class="scene-inner">
+<span class="scene-label">CENA 01</span>
+<h3>HOJE: TEXTO, PERGUNTAS, RECONSTRUÇÃO E JOGO</h3>
+<ul>
+<li>tirar dúvidas do texto;</li>
+<li>revisitar as quatro aulas;</li>
+<li>separar o que o modelo explica do que ele deixa aberto;</li>
+<li>montar a explicação final.</li>
+</ul>
+</div>
+</section>
+<section class="scene">
+<div class="scene-inner">
+<span class="scene-label">CENA 02</span>
+<h3>O TEXTO TROUXE QUAIS PERGUNTAS?</h3>
+<div class="live-columns">
+<div class="live-column"><h4>DÚVIDAS</h4><div class="editable" contenteditable="true"></div></div>
+<div class="live-column"><h4>CONEXÕES COM AS AULAS</h4><div class="editable" contenteditable="true"></div></div>
+</div>
+</div>
+</section>
+<section class="scene center">
+<div class="scene-inner">
+<span class="scene-label">CENA 03</span>
+<h3>QUATRO AULAS. QUATRO OBJETOS.</h3>
+<div class="concept-pieces">
+<span class="concept">🧱 LEGO</span>
+<span class="concept">🗺 MAPA</span>
+<span class="concept">🪑 CADEIRA</span>
+<span class="concept">“CHEGOU DUAS PESSOAS”</span>
+</div>
+<p class="sub-question">O que cada um acrescentou à investigação?</p>
+</div>
+</section>
+<section class="scene">
+<div class="scene-inner">
+<span class="scene-label">CENA 04</span>
+<h3>LEGO: O QUE FICOU?</h3>
+<div class="question-box"><p class="lead">Possibilidades, restrições e arranjos.</p></div>
+<p class="sub-question">Que anotação sua da Aula 01 explica melhor isso?</p>
+</div>
+</section>
+<section class="scene">
+<div class="scene-inner">
+<span class="scene-label">CENA 05</span>
+<h3>MAPA: O QUE FICOU?</h3>
+<div class="question-box"><p class="lead">Arquitetura compartilhada + escolhas estruturais.</p></div>
+<p class="sub-question">Que anotação sua da Aula 02 explica melhor isso?</p>
+</div>
+</section>
+<section class="scene">
+<div class="scene-inner">
+<span class="scene-label">CENA 06</span>
+<h3>CADEIRA: O QUE FICOU?</h3>
+<div class="question-box"><p class="lead">Posição de sujeito e propriedades que podem se distribuir de modos diferentes.</p></div>
+<p class="sub-question">Que dado da Aula 03 foi mais importante?</p>
+</div>
+</section>
+<section class="scene">
+<div class="scene-inner">
+<span class="scene-label">CENA 07</span>
+<h3>“CHEGOU DUAS PESSOAS”: O QUE FICOU?</h3>
+<div class="question-box"><p class="lead">Uma forma de uso pode receber uma hipótese gramatical — não apenas um julgamento.</p></div>
+<p class="sub-question">Que passos foram necessários para chegar a essa hipótese?</p>
+</div>
+</section>
+<section class="scene center">
+<div class="scene-inner">
+<span class="scene-label">CENA 08</span>
+<p class="small">O GERATIVISMO NOS AJUDOU A PERGUNTAR:</p>
+<p class="huge">O QUE TORNA ISSO POSSÍVEL?</p>
+</div>
+</section>
+<section class="scene center">
+<div class="scene-inner">
+<span class="scene-label">CENA 09</span>
+<p class="small">MAS AINDA FICA UMA PERGUNTA:</p>
+<p class="huge">O QUE TORNA ISSO PROVÁVEL?</p>
+<p class="sub-question">Guarde essa. Ela vai voltar no próximo ciclo.</p>
+</div>
+</section>
+<section class="scene">
+<div class="scene-inner">
+<span class="scene-label">CENA 10</span>
+<h3>JOGO FINAL: ESCOLHAM AS PEÇAS</h3>
+<div class="concept-pieces">
+<span class="concept">estrutura</span><span class="concept">restrições</span>
+<span class="concept">princípios</span><span class="concept">parâmetros</span>
+<span class="concept">posição de sujeito</span><span class="concept">expletivo</span>
+<span class="concept">concordância</span><span class="concept">diferenças entre línguas</span>
+<span class="concept">norma-padrão</span><span class="concept">norma de uso</span>
+</div>
+<p class="sub-question">Nem todas precisam entrar. Vocês têm que justificar as escolhidas.</p>
+</div>
+</section>
+<section class="scene center">
+<div class="scene-inner">
+<span class="scene-label">CENA 11</span>
+<p class="huge">MONTA A EXPLICAÇÃO.</p>
+<p class="sub-question">“Chegou duas pessoas.”<br/><br/>Usem as peças. Organizem o caminho. Defendam a construção.</p>
+</div>
+</section>
+</article>
+</div>
+<div aria-label="Controles da apresentação" class="presentation-ui">
+<div class="presentation-left">
+<button class="control-btn" id="exitPresentation" title="Sair (Esc)" type="button">✕</button>
+<button class="control-btn" id="fullscreenBtn" title="Tela cheia" type="button">⛶</button>
+</div>
+<div class="presentation-title" id="presentationTitle">CICLO 01</div>
+<div class="presentation-right">
+<button class="control-btn" id="prevScene" title="Anterior" type="button">←</button>
+<span class="present-count" id="presentCount">1 / 1</span>
+<button class="control-btn" id="nextScene" title="Próxima" type="button">→</button>
+</div>
+<div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+</div>
+<script src="site-config.js"></script>
+<script src="site-nav.js"></script>
+<script>
+(() => {
+  const fallbackStates = {
+    "ciclo-01-aula-01":"current",
+    "ciclo-01-aula-02":"next",
+    "ciclo-01-aula-03":"locked",
+    "ciclo-01-aula-04":"locked",
+    "ciclo-01-aula-05":"locked"
+  };
+
+  const getState = id => window.PlayLing ? PlayLing.state(id) : (fallbackStates[id] || "locked");
+  const isAvailable = state => state === "current" || state === "open";
+
+  document.querySelectorAll("details.lesson").forEach(details => {
+    const id = details.dataset.lessonId;
+    const state = getState(id);
+    details.dataset.state = state;
+
+    if(state === "current") details.open = true;
+
+    const summary = details.querySelector("summary");
+    summary.addEventListener("click", ev => {
+      if(!isAvailable(state)){
+        ev.preventDefault();
+        details.open = false;
+      }
+    });
+
+    const launch = details.querySelector(".present-launch");
+    if(launch && !isAvailable(state)){
+      launch.disabled = true;
+      launch.textContent = state === "next" ? "→ APRESENTAÇÃO A SEGUIR" : "🔒 APRESENTAÇÃO BLOQUEADA";
+    }
+  });
+
+  /* -------- synchronized editable fields -------- */
+  document.querySelectorAll("[data-sync]").forEach(el => {
+    el.addEventListener("input", () => {
+      const key = el.dataset.sync;
+      document.querySelectorAll(`[data-sync="${key}"]`).forEach(other => {
+        if(other !== el) other.innerHTML = el.innerHTML;
+      });
+    });
+  });
+
+  /* -------- automatically reduce long slide titles -------- */
+  document.querySelectorAll(".scene h3").forEach(title => {
+    const words = title.textContent.trim().split(/\s+/).filter(Boolean).length;
+    if(words > 9) title.classList.add("very-long-title");
+    else if(words > 5) title.classList.add("long-title");
+  });
+
+  /* -------- presentation engine -------- */
+  let activeDeck = null;
+  let scenes = [];
+  let sceneIndex = 0;
+
+  const titleEl = document.getElementById("presentationTitle");
+  const countEl = document.getElementById("presentCount");
+  const fillEl = document.getElementById("progressFill");
+
+  function renderScene(){
+    scenes.forEach((scene, i) => scene.classList.toggle("present-active", i === sceneIndex));
+    countEl.textContent = `${sceneIndex + 1} / ${scenes.length}`;
+    fillEl.style.width = `${((sceneIndex + 1) / scenes.length) * 100}%`;
+  }
+
+  function startPresentation(deckNumber){
+    const deck = document.querySelector(`.deck[data-deck="${deckNumber}"]`);
+    if(!deck) return;
+    document.querySelectorAll(".deck").forEach(d => d.classList.remove("active-deck"));
+    activeDeck = deck;
+    activeDeck.classList.add("active-deck");
+    scenes = [...activeDeck.querySelectorAll(".scene")];
+    sceneIndex = 0;
+    titleEl.textContent = activeDeck.dataset.deckTitle || `AULA ${deckNumber}`;
+    document.body.classList.add("presentation");
+    document.querySelector(".presentations").setAttribute("aria-hidden","false");
+    renderScene();
+  }
+
+  function exitPresentation(){
+    document.body.classList.remove("presentation");
+    document.querySelector(".presentations").setAttribute("aria-hidden","true");
+    if(activeDeck) activeDeck.classList.remove("active-deck");
+    scenes.forEach(s => s.classList.remove("present-active"));
+    activeDeck = null; scenes = []; sceneIndex = 0;
+  }
+
+  function next(){
+    if(!scenes.length) return;
+    sceneIndex = Math.min(sceneIndex + 1, scenes.length - 1);
+    renderScene();
+  }
+  function prev(){
+    if(!scenes.length) return;
+    sceneIndex = Math.max(sceneIndex - 1, 0);
+    renderScene();
+  }
+
+  document.querySelectorAll(".present-launch:not(:disabled)").forEach(btn => {
+    btn.addEventListener("click", () => startPresentation(btn.dataset.launch));
+  });
+  document.getElementById("nextScene").addEventListener("click", next);
+  document.getElementById("prevScene").addEventListener("click", prev);
+  document.getElementById("exitPresentation").addEventListener("click", exitPresentation);
+
+  document.getElementById("fullscreenBtn").addEventListener("click", async () => {
+    try{
+      if(!document.fullscreenElement && document.documentElement.requestFullscreen){
+        await document.documentElement.requestFullscreen();
+      }else if(document.exitFullscreen){
+        await document.exitFullscreen();
+      }
+    }catch(e){}
+  });
+
+  document.addEventListener("keydown", ev => {
+    if(!document.body.classList.contains("presentation")) return;
+    if(ev.target && (ev.target.isContentEditable || /INPUT|TEXTAREA|SELECT/.test(ev.target.tagName))) return;
+    if(ev.key === "ArrowRight" || ev.key === "PageDown" || ev.key === " "){ ev.preventDefault(); next(); }
+    else if(ev.key === "ArrowLeft" || ev.key === "PageUp"){ ev.preventDefault(); prev(); }
+    else if(ev.key === "Home"){ ev.preventDefault(); sceneIndex = 0; renderScene(); }
+    else if(ev.key === "End"){ ev.preventDefault(); sceneIndex = scenes.length - 1; renderScene(); }
+    else if(ev.key === "Escape"){ exitPresentation(); }
+  });
+})();
+</script>
+</body>
+</html>

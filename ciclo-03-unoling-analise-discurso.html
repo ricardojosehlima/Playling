@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<meta content="#d83b46" name="theme-color"/>
+<title>Ciclo 03 — UnoLing + Análise do Discurso | PlayLing</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="site-common.css" rel="stylesheet"/>
+<style>
+    :root{
+      --bg:#f3f0e8;
+      --paper:#fffdf5;
+      --ink:#171717;
+      --line:#171717;
+      --yellow:#d83b46;
+      --yellow-soft:#f8cdd1;
+      --yellow-pale:#fdf0f1;
+      --blue:#3154d8;
+      --blue-pale:#eef2ff;
+      --green:#25865a;
+      --green-pale:#e6f4ed;
+      --red:#d83b46;
+      --red-pale:#fbe8ea;
+      --purple:#7057b8;
+      --purple-pale:#eee9ff;
+      --muted:#77736a;
+      --disabled:#dedbd2;
+      --shadow:6px 6px 0 var(--line);
+      --shadow-small:3px 3px 0 var(--line);
+      --speed:.14s;
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;background:var(--bg);color:var(--ink);font-family:"Space Mono",monospace}
+    a{color:inherit}
+    button,a{font:inherit}
+    button{color:inherit}
+    .wrap{width:min(1080px,92vw);margin:0 auto;padding:24px 0 76px}
+
+    /* ---------- Landing ---------- */
+    .topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}
+    .back-link,.utility-link{
+      display:inline-flex;align-items:center;justify-content:center;min-height:42px;
+      border:2px solid var(--line);background:var(--paper);padding:9px 12px;
+      text-decoration:none;font-weight:700;box-shadow:var(--shadow-small);
+      transition:transform var(--speed),box-shadow var(--speed),background var(--speed)
+    }
+    .back-link:hover,.back-link:focus-visible,.utility-link:hover,.utility-link:focus-visible{
+      transform:translate(2px,2px);box-shadow:1px 1px 0 var(--line);background:#fff;outline:none
+    }
+    .mini-nav{display:flex;gap:9px;flex-wrap:wrap;justify-content:flex-end}
+
+    .cycle-head{
+      position:relative;overflow:hidden;border:3px solid var(--line);background:var(--paper);
+      box-shadow:var(--shadow);padding:28px 28px 25px
+    }
+    .cycle-head::before{content:"";position:absolute;left:0;top:0;width:100%;height:10px;background:var(--yellow)}
+    .eyebrow{
+      font-family:"Press Start 2P",monospace;font-size:10px;line-height:1.7;
+      color:#a32631;margin:5px 0 14px
+    }
+    .cycle-head h1{
+      font-family:"Press Start 2P",monospace;font-size:clamp(23px,4.2vw,44px);
+      line-height:1.35;margin:0;color:#ad2834;text-shadow:2px 2px 0 #f9dadd
+    }
+    .cycle-subtitle{margin:15px 0 0;font-size:clamp(15px,2vw,19px);line-height:1.65;font-weight:700}
+    .cycle-challenge{
+      margin-top:21px;border:3px solid var(--line);background:var(--yellow-pale);
+      padding:17px 19px;box-shadow:var(--shadow-small)
+    }
+    .cycle-challenge small{
+      display:block;font-family:"Press Start 2P",monospace;color:#9b2530;
+      font-size:9px;line-height:1.5;margin-bottom:8px
+    }
+    .cycle-challenge strong{font-size:clamp(18px,2.5vw,28px);line-height:1.45}
+
+    .cycle-road{
+      margin:25px 0 0;display:grid;grid-template-columns:repeat(5,1fr);gap:7px
+    }
+    .road-step{
+      border:2px solid var(--line);background:var(--paper);padding:10px 8px;
+      text-align:center;font-size:11px;line-height:1.45;font-weight:700;min-width:0
+    }
+    .road-step b{
+      display:block;font-family:"Press Start 2P",monospace;color:#a32631;
+      font-size:8px;line-height:1.5;margin-bottom:5px
+    }
+
+    .accordion-list{display:grid;gap:16px;margin-top:28px}
+    details.lesson{
+      border:3px solid var(--line);background:var(--paper);box-shadow:var(--shadow-small);
+      position:relative;overflow:hidden
+    }
+    details.lesson::before{content:"";position:absolute;left:0;top:0;width:100%;height:8px;background:var(--yellow)}
+    details.lesson[open]{box-shadow:var(--shadow)}
+    details.lesson[data-state="locked"],details.lesson[data-state="next"]{background:#e9e7df;color:#747168}
+    details.lesson[data-state="locked"]::before,details.lesson[data-state="next"]::before{background:#aaa69b}
+
+    summary.lesson-summary{
+      list-style:none;cursor:pointer;padding:23px 22px 19px;display:grid;
+      grid-template-columns:auto 1fr auto auto;gap:15px;align-items:center
+    }
+    summary.lesson-summary::-webkit-details-marker{display:none}
+    summary.lesson-summary:focus-visible{outline:4px solid rgba(240,201,76,.45);outline-offset:-5px}
+    .lesson-number{
+      width:52px;height:52px;border:3px solid var(--line);display:grid;place-items:center;
+      background:var(--yellow);font-family:"Press Start 2P",monospace;font-size:12px;box-shadow:2px 2px 0 var(--line)
+    }
+    .lesson-summary-text{min-width:0}
+    .permanent-name{
+      font-family:"Press Start 2P",monospace;font-size:8px;line-height:1.55;color:#a32631;margin-bottom:7px
+    }
+    .lesson-summary h2{
+      font-family:"Press Start 2P",monospace;font-size:clamp(13px,2vw,18px);
+      line-height:1.55;margin:0;color:#8b7000
+    }
+    .lesson-status{
+      border:2px solid var(--line);padding:6px 8px;background:var(--yellow-soft);
+      font-weight:700;font-size:10px;white-space:nowrap
+    }
+    details.lesson[data-state="open"] .lesson-status::before{content:"✓ LIBERADO"}
+    details.lesson[data-state="current"] .lesson-status::before{content:"▶ AGORA"}
+    details.lesson[data-state="next"] .lesson-status::before{content:"→ A SEGUIR"}
+    details.lesson[data-state="locked"] .lesson-status::before{content:"🔒 BLOQUEADO"}
+    details.lesson[data-state="next"] .lesson-status,
+    details.lesson[data-state="locked"] .lesson-status{background:#d6d3ca}
+    .summary-arrow{
+      font-family:"Press Start 2P",monospace;font-size:12px;margin-left:2px
+    }
+    details[open] .summary-arrow{transform:rotate(90deg)}
+
+    .lesson-body{border-top:2px dashed #9e988b;padding:20px 22px 22px}
+    .lesson-intro{font-size:14px;line-height:1.65;margin:0 0 14px}
+    .lesson-question{
+      border-left:7px solid var(--yellow);background:var(--yellow-pale);
+      padding:13px 14px;font-weight:700;margin:15px 0;font-size:15px;line-height:1.6
+    }
+    .present-launch{
+      width:100%;border:3px solid var(--line);background:var(--yellow);color:var(--ink);
+      padding:15px 16px;cursor:pointer;box-shadow:3px 3px 0 var(--line);
+      font-family:"Press Start 2P",monospace;font-size:10px;line-height:1.5;
+      transition:transform var(--speed),box-shadow var(--speed),filter var(--speed)
+    }
+    .present-launch:hover,.present-launch:focus-visible{
+      transform:translate(2px,2px);box-shadow:1px 1px 0 var(--line);filter:brightness(1.03);outline:none
+    }
+    .text-portal-callout strong{color:#a32631}
+    .locked-message{
+      display:none;border-top:2px dashed #aaa69b;padding:15px 22px 19px;font-size:13px;font-weight:700
+    }
+    details.lesson[data-state="next"] .locked-message,
+    details.lesson[data-state="locked"] .locked-message{display:block}
+    details.lesson[data-state="next"] .lesson-body,
+    details.lesson[data-state="locked"] .lesson-body{display:none}
+
+    .unlock-help{
+      margin-top:20px;border:3px solid var(--line);background:var(--paper);
+      padding:17px 20px;box-shadow:var(--shadow-small);font-size:13px;line-height:1.65
+    }
+    .unlock-help strong{color:#a32631}
+
+    /* ============================================================
+       PRESENTATIONS
+       ============================================================ */
+    .presentations,.deck,.scene{display:none}
+    body.presentation{overflow:hidden;background:var(--bg)}
+    body.presentation .wrap{display:none}
+    body.presentation .presentations{display:block}
+    body.presentation .deck.active-deck{display:block}
+    body.presentation .deck.active-deck .scene.present-active{
+      display:flex;position:fixed;inset:0;z-index:100;background:var(--paper);
+      padding:60px clamp(24px,5vw,72px) 108px;flex-direction:column;
+      justify-content:center;align-items:flex-start;overflow:auto;animation:sceneIn .18s ease-out
+    }
+    body.presentation .deck.active-deck .scene.center{align-items:center;text-align:center}
+    body.presentation .deck.active-deck .scene::before{
+      content:"";position:fixed;left:0;top:0;width:100%;height:11px;background:var(--yellow);z-index:101
+    }
+    .scene-inner{width:min(1100px,100%);margin:0 auto}
+    .scene.center .scene-inner{display:flex;flex-direction:column;align-items:center}
+    .scene-label{
+      display:inline-block;font-family:"Press Start 2P",monospace;font-size:9px;line-height:1.4;
+      color:#a32631;border:2px solid #a32631;padding:6px 8px;margin-bottom:17px
+    }
+    .scene h3{
+      font-family:"Press Start 2P",monospace;font-size:clamp(21px,2.8vw,37px);
+      line-height:1.35;color:#ad2834;margin:0 0 19px;max-width:1050px
+    }
+    .scene h3.long-title{font-size:clamp(18px,2.2vw,31px);line-height:1.38}
+    .scene h3.very-long-title{font-size:clamp(16px,1.85vw,27px);line-height:1.4}
+    @media (min-width:800px) and (max-height:760px){
+      .scene h3{font-size:clamp(18px,2.25vw,31px);margin-bottom:13px}
+      .scene h3.long-title{font-size:clamp(16px,1.85vw,26px)}
+      .scene h3.very-long-title{font-size:clamp(15px,1.65vw,23px)}
+    }
+    .scene p,.scene li{font-size:clamp(16px,1.8vw,23px);line-height:1.55}
+    .scene p{margin:8px 0}.scene ul{margin:9px 0;padding-left:27px}.scene li{margin:7px 0}
+    .small{font-size:clamp(12px,1.3vw,16px)!important;line-height:1.55!important}
+    .lead{font-size:clamp(20px,2.45vw,30px)!important;font-weight:700;line-height:1.5!important}
+    .huge{
+      font-family:"Press Start 2P",monospace;font-size:clamp(29px,5.6vw,70px);
+      line-height:1.35;color:#ad2834;text-align:center;margin:0
+    }
+    .huge.black{color:var(--ink)}
+    .sub-question{max-width:900px;text-align:center;font-size:clamp(18px,2.2vw,27px)!important;margin-top:23px!important}
+
+    .box,.activity-box,.question-box,.model-box,.data-box,.warning-box,.compare-box{
+      width:min(1000px,100%);border:3px solid var(--line);padding:21px 24px;box-shadow:var(--shadow-small)
+    }
+    .activity-box{background:var(--yellow-pale)}
+    .question-box{background:#fff}
+    .model-box{background:var(--purple-pale)}
+    .data-box{background:var(--blue-pale)}
+    .warning-box{background:var(--red-pale)}
+    .compare-box{background:var(--green-pale)}
+    .box h4,.activity-box h4,.question-box h4,.model-box h4,.data-box h4,.warning-box h4,.compare-box h4{
+      font-family:"Press Start 2P",monospace;font-size:clamp(11px,1.4vw,16px);
+      line-height:1.55;margin:0 0 13px;color:#9b2530
+    }
+
+    .live-columns{display:grid;grid-template-columns:1fr 1fr;gap:18px;width:min(1050px,100%)}
+    .live-column{border:3px solid var(--line);background:var(--paper);box-shadow:var(--shadow-small);min-height:290px;overflow:hidden}
+    .live-column h4{
+      margin:0;background:var(--yellow);color:var(--ink);padding:13px 14px;
+      font-family:"Press Start 2P",monospace;font-size:clamp(10px,1.2vw,14px);line-height:1.5
+    }
+    .editable{min-height:230px;padding:17px;font-size:clamp(14px,1.5vw,19px);line-height:1.55;outline:none;white-space:pre-wrap}
+    .editable:empty::before{content:"Clique aqui e registre as respostas da turma...";color:#969084}
+    .editable:focus{background:var(--yellow-pale)}
+    .live-hint{font-size:12px!important;color:var(--muted);margin-top:10px!important}
+
+    .lego-pieces{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin:22px 0}
+    .brick{
+      min-width:88px;min-height:52px;border:3px solid var(--line);display:grid;place-items:center;
+      font-weight:700;box-shadow:3px 3px 0 var(--line);padding:8px 11px
+    }
+    .brick:nth-child(4n+1){background:var(--yellow)}
+    .brick:nth-child(4n+2){background:#73bdf0}
+    .brick:nth-child(4n+3){background:#ef747c}
+    .brick:nth-child(4n){background:#77c58e}
+
+    .two-options{display:grid;grid-template-columns:1fr auto 1fr;align-items:stretch;gap:18px;width:min(1000px,100%);margin-top:17px}
+    .option{
+      border:4px solid var(--line);background:var(--yellow-pale);min-height:180px;
+      display:flex;align-items:center;justify-content:center;text-align:center;padding:23px;
+      font-family:"Press Start 2P",monospace;font-size:clamp(14px,1.8vw,21px);line-height:1.55;
+      box-shadow:var(--shadow-small)
+    }
+    .or{display:flex;align-items:center;justify-content:center;font-family:"Press Start 2P",monospace;color:#a32631;font-size:15px}
+
+    .flow{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:9px;margin:23px 0 0;width:100%}
+    .flow span{border:2px solid var(--line);background:var(--paper);padding:9px 12px;font-weight:700;font-size:clamp(12px,1.4vw,17px)}
+    .flow b{font-size:20px;color:#a32631}
+
+    .gridmap{
+      display:grid;grid-template-columns:repeat(7,42px);grid-template-rows:repeat(6,42px);
+      gap:2px;width:max-content;max-width:100%;margin:18px auto;padding:6px;border:3px solid var(--line);background:#fff
+    }
+    .cell{border:1px solid #c7c1b4;background:#faf8f1;position:relative}
+    .marker{
+      width:28px;height:28px;border:2px solid var(--line);display:grid;place-items:center;
+      font-family:"Press Start 2P",monospace;font-size:8px;position:absolute;left:5px;top:5px
+    }
+    .marker.a{background:var(--yellow)}.marker.b{background:#73bdf0}.marker.c{background:#ef747c}
+
+    .triptych{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;width:min(1050px,100%)}
+    .triptych > div{border:3px solid var(--line);padding:16px;background:var(--paper);box-shadow:var(--shadow-small)}
+    .triptych strong{
+      display:block;font-family:"Press Start 2P",monospace;font-size:clamp(10px,1.15vw,14px);
+      line-height:1.5;color:#9b2530;margin-bottom:9px
+    }
+
+    .subject-chair{
+      width:180px;height:145px;margin:18px auto;position:relative
+    }
+    .chair-back{position:absolute;left:30px;top:0;width:120px;height:80px;border:5px solid var(--line);background:var(--yellow-pale)}
+    .chair-seat{position:absolute;left:20px;top:74px;width:140px;height:28px;border:5px solid var(--line);background:var(--yellow)}
+    .chair-leg{position:absolute;top:99px;width:10px;height:46px;background:var(--line)}
+    .chair-leg.l{left:35px}.chair-leg.r{right:35px}
+    .chair-label{
+      position:absolute;left:50%;top:26px;transform:translateX(-50%);
+      font-family:"Press Start 2P",monospace;font-size:9px;line-height:1.4;text-align:center
+    }
+
+    .sentence{
+      width:min(1000px,100%);border:3px solid var(--line);background:#fff;padding:17px 20px;
+      box-shadow:var(--shadow-small);margin:12px 0
+    }
+    .sentence .source{
+      font-size:clamp(20px,2.4vw,30px);font-weight:700;line-height:1.45;margin-bottom:10px
+    }
+    .gloss{
+      display:grid;grid-template-columns:repeat(var(--cols,4),minmax(0,1fr));
+      gap:6px;margin-top:8px
+    }
+    .gloss span{border-top:2px solid #bbb4a7;padding-top:5px;font-size:clamp(11px,1.2vw,15px);line-height:1.35}
+    .natural{margin-top:11px!important;font-size:clamp(14px,1.45vw,18px)!important;font-weight:700}
+    .agreement{
+      display:inline-block;border:2px solid var(--line);background:var(--yellow-soft);
+      padding:4px 7px;font-weight:700
+    }
+    .subject-tag{
+      display:inline-block;border:2px solid var(--line);background:var(--blue-pale);
+      padding:4px 7px;font-weight:700
+    }
+    .controller-tag{
+      display:inline-block;border:2px solid var(--line);background:var(--green-pale);
+      padding:4px 7px;font-weight:700
+    }
+    .agreement-flow{
+      display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:10px;
+      width:min(960px,100%);margin:14px auto 4px;padding:10px 12px;
+      border:2px dashed #8d887d;background:#fffdf5
+    }
+    .agreement-flow .flow-label{
+      font-family:"Press Start 2P",monospace;font-size:8px;line-height:1.5;color:#5f5a50
+    }
+    .agreement-arrow{
+      font-family:"Press Start 2P",monospace;font-size:18px;line-height:1;color:var(--green)
+    }
+    .agreement-key{
+      display:flex;flex-wrap:wrap;gap:9px;align-items:center;justify-content:center;
+      width:min(960px,100%);margin:10px auto 0;font-size:12px;line-height:1.45
+    }
+    .agreement-key span{display:inline-flex;align-items:center;gap:6px}
+    .key-square{width:18px;height:18px;border:2px solid var(--line);display:inline-block}
+    .key-subject{background:var(--blue-pale)}
+    .key-controller{background:var(--green-pale)}
+    .key-verb{background:var(--yellow-soft)}
+
+    .matrix{border-collapse:collapse;width:min(1000px,100%);font-size:clamp(12px,1.3vw,16px)}
+    .matrix th,.matrix td{border:2px solid var(--line);padding:11px 10px;text-align:left;vertical-align:top}
+    .matrix th{background:var(--yellow);font-family:"Press Start 2P",monospace;font-size:clamp(8px,.95vw,11px);line-height:1.5}
+    .matrix tr:nth-child(even) td{background:var(--yellow-pale)}
+
+    .norm-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;width:min(1050px,100%)}
+    .norm{border:3px solid var(--line);background:#fff;box-shadow:var(--shadow-small);overflow:hidden}
+    .norm h4{margin:0;padding:13px 14px;background:var(--yellow);font-family:"Press Start 2P",monospace;font-size:clamp(10px,1.2vw,14px);line-height:1.5}
+    .norm-body{padding:15px}.norm-body p{font-size:clamp(15px,1.65vw,20px);margin:8px 0}
+
+    .concept-pieces{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;width:min(1050px,100%);margin-top:20px}
+    .concept{
+      border:3px solid var(--line);background:var(--yellow-pale);padding:11px 13px;
+      box-shadow:2px 2px 0 var(--line);font-weight:700;font-size:clamp(12px,1.35vw,16px)
+    }
+
+    /* ---------- Presentation controls ---------- */
+    .presentation-ui{
+      display:none;position:fixed;z-index:500;left:0;right:0;bottom:0;min-height:74px;
+      border-top:3px solid var(--line);background:var(--bg);padding:10px 16px;
+      align-items:center;justify-content:space-between;gap:12px
+    }
+    body.presentation .presentation-ui{display:flex}
+    .presentation-left,.presentation-right{display:flex;align-items:center;gap:8px}
+    .presentation-title{
+      font-family:"Press Start 2P",monospace;font-size:8px;line-height:1.4;
+      text-align:center;white-space:nowrap
+    }
+    .control-btn{
+      min-width:43px;min-height:40px;border:2px solid var(--line);background:var(--paper);
+      cursor:pointer;box-shadow:2px 2px 0 var(--line);font-weight:700;
+      transition:transform var(--speed),box-shadow var(--speed)
+    }
+    .control-btn:hover,.control-btn:focus-visible{transform:translate(1px,1px);box-shadow:1px 1px 0 var(--line);outline:none}
+    .present-count{font-weight:700;font-size:12px;white-space:nowrap}
+    .progress-track{position:fixed;left:0;bottom:74px;width:100%;height:4px;background:#d9d5ca;z-index:501}
+    .progress-fill{height:100%;width:0;background:var(--yellow);transition:width .12s linear}
+
+    @keyframes sceneIn{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
+    @media(max-width:860px){
+      .cycle-road{grid-template-columns:1fr}
+      .topbar{align-items:flex-start;flex-direction:column}.mini-nav{justify-content:flex-start}
+      summary.lesson-summary{grid-template-columns:auto 1fr}.lesson-status{grid-column:1/-1;width:max-content}
+      .triptych,.norm-grid,.live-columns{grid-template-columns:1fr}
+      .two-options{grid-template-columns:1fr}.or{padding:2px 0}
+      .gloss{grid-template-columns:1fr!important}
+    }
+    @media(max-width:760px){
+      .wrap{width:min(94vw,1080px);padding-top:15px}
+      .cycle-head{padding:24px 18px 20px}
+      body.presentation .deck.active-deck .scene.present-active{padding:50px 18px 105px}
+      .presentation-title,.progress-track{display:none}
+      .gridmap{grid-template-columns:repeat(7,34px);grid-template-rows:repeat(6,34px)}
+      .cell{min-width:34px;min-height:34px}.marker{width:24px;height:24px;left:4px;top:4px}
+    }
+    @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
+    @media print{.presentation-ui{display:none!important}}
+  
+    /* ---------- UnoLing-specific components ---------- */
+    .uno-table{
+      display:grid;grid-template-columns:repeat(4,1fr);gap:12px;width:min(1050px,100%);margin-top:15px
+    }
+    .uno-card{
+      min-height:190px;border:4px solid var(--line);border-radius:18px;background:#fff;
+      box-shadow:var(--shadow-small);padding:16px;position:relative;overflow:hidden
+    }
+    .uno-card::before{
+      content:"";position:absolute;left:-28px;top:-28px;width:92px;height:92px;border-radius:50%;background:var(--red)
+    }
+    .uno-card.blue::before{background:var(--blue)}
+    .uno-card.green::before{background:var(--green)}
+    .uno-card.purple::before{background:var(--purple)}
+    .uno-card h4{
+      position:relative;font-family:"Press Start 2P",monospace;font-size:clamp(9px,1.05vw,13px);
+      line-height:1.55;margin:4px 0 11px;color:#a32631
+    }
+    .uno-card p{position:relative;font-size:clamp(13px,1.35vw,17px);line-height:1.48;margin:7px 0;font-weight:700}
+    .uno-symbol{
+      position:absolute;right:11px;bottom:7px;font-family:"Press Start 2P",monospace;
+      font-size:clamp(23px,3vw,38px);color:#d5d0c5
+    }
+
+    .rule-stack{display:grid;gap:11px;width:min(980px,100%);margin-top:14px}
+    .rule-level{
+      border:3px solid var(--line);background:#fff;padding:13px 16px;box-shadow:2px 2px 0 var(--line);font-weight:700
+    }
+    .rule-level strong{
+      display:block;font-family:"Press Start 2P",monospace;font-size:9px;line-height:1.5;color:#a32631;margin-bottom:7px
+    }
+    .rule-arrow{text-align:center;font-family:"Press Start 2P",monospace;color:#a32631;font-size:16px}
+
+    .vote-board{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;width:min(1000px,100%)}
+    .vote-item{border:3px solid var(--line);background:#fff;padding:15px;box-shadow:var(--shadow-small)}
+    .vote-item strong{display:block;font-family:"Press Start 2P",monospace;font-size:9px;line-height:1.5;color:#a32631;margin-bottom:9px}
+    .vote-space{min-height:72px;border:2px dashed #9a958a;padding:8px;outline:none;background:#fffdf8;font-weight:700}
+    .vote-space:empty::before{content:"regra / votos...";color:#aaa49a}
+
+    .verdict{
+      border:5px double var(--line);background:#151515;color:#fff;padding:24px 28px;width:min(900px,100%);box-shadow:var(--shadow)
+    }
+    .verdict strong{
+      display:block;font-family:"Press Start 2P",monospace;font-size:clamp(18px,2.8vw,32px);line-height:1.5;color:#ff9aa2;margin-bottom:12px
+    }
+
+    .formulation-list{display:grid;gap:11px;width:min(1000px,100%)}
+    .formulation{
+      border:3px solid var(--line);background:#fff;padding:14px 17px;box-shadow:2px 2px 0 var(--line);
+      font-size:clamp(15px,1.55vw,20px);font-weight:700
+    }
+    .formulation.f1{border-left:12px solid #79aef2}
+    .formulation.f2{border-left:12px solid #9d87df}
+    .formulation.f3{border-left:12px solid #ef9c54}
+    .formulation.f4{border-left:12px solid var(--red)}
+
+    .meaning-vote{
+      display:grid;grid-template-columns:repeat(3,1fr);gap:13px;width:min(1000px,100%);margin-top:16px
+    }
+    .meaning-choice{
+      border:3px solid var(--line);padding:17px;text-align:center;box-shadow:var(--shadow-small);
+      font-family:"Press Start 2P",monospace;font-size:clamp(11px,1.35vw,16px);line-height:1.55
+    }
+    .meaning-choice.yes{background:var(--green-pale)}
+    .meaning-choice.no{background:var(--red-pale)}
+    .meaning-choice.depends{background:var(--purple-pale)}
+
+    .criteria-cloud{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;width:min(1000px,100%);margin-top:16px}
+    .criterion{border:3px solid var(--line);background:#fff;padding:10px 13px;box-shadow:2px 2px 0 var(--line);font-weight:700}
+    .criterion:nth-child(4n+1){background:var(--red-pale)}
+    .criterion:nth-child(4n+2){background:var(--blue-pale)}
+    .criterion:nth-child(4n+3){background:var(--green-pale)}
+    .criterion:nth-child(4n){background:var(--purple-pale)}
+
+    .song-slot{
+      width:min(1000px,100%);border:4px solid var(--line);background:#151515;color:#fff;
+      padding:20px 22px;box-shadow:var(--shadow);margin-top:15px
+    }
+    .song-slot h4{
+      font-family:"Press Start 2P",monospace;color:#ff9aa2;font-size:clamp(11px,1.35vw,16px);line-height:1.55;margin:0 0 13px
+    }
+    .song-slot p{font-size:clamp(14px,1.5vw,19px);margin:8px 0}
+    .song-edit{border:2px dashed #8c8c8c;padding:9px;min-height:42px;outline:none;background:#232323}
+    .song-edit:empty::before{content:"[INSERIR TÍTULO / INTERPRETAÇÃO]";color:#8f8f8f}
+
+    .stage{
+      width:min(1000px,100%);border:4px solid var(--line);background:#191919;color:#fff;
+      padding:28px;box-shadow:var(--shadow);position:relative;overflow:hidden
+    }
+    .stage::before{
+      content:"";position:absolute;left:50%;top:-85px;transform:translateX(-50%);
+      width:320px;height:260px;border-radius:50%;background:rgba(255,239,153,.22);filter:blur(3px)
+    }
+    .stage-people{display:flex;justify-content:space-around;gap:20px;position:relative;z-index:2;margin-top:30px}
+    .role{
+      min-width:170px;border:3px solid #fff;background:#292929;padding:15px;text-align:center;font-weight:700
+    }
+    .role strong{display:block;font-family:"Press Start 2P",monospace;font-size:9px;line-height:1.5;color:#ff9aa2;margin-bottom:7px}
+
+    .analysis-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;width:min(1050px,100%)}
+    .analysis-card{
+      border:4px solid var(--line);border-radius:16px;background:#fff;padding:18px;box-shadow:var(--shadow-small);min-height:225px
+    }
+    .analysis-card h4{
+      font-family:"Press Start 2P",monospace;font-size:clamp(10px,1.25vw,15px);line-height:1.5;color:#a32631;margin:0 0 10px
+    }
+    .analysis-card .prompt{font-size:clamp(16px,1.75vw,22px);font-weight:700;line-height:1.45;margin:8px 0}
+    .analysis-card .term{border-top:2px dashed #9f998f;margin-top:13px;padding-top:9px;font-size:12px;color:#6f6a62;font-weight:700}
+    .analysis-card:nth-child(2){background:var(--blue-pale)}
+    .analysis-card:nth-child(3){background:var(--green-pale)}
+    .analysis-card:nth-child(4){background:var(--purple-pale)}
+    .analysis-card:nth-child(5){background:#fff3df}
+    .analysis-card:nth-child(6){background:var(--red-pale)}
+
+    .card-hand{display:flex;flex-wrap:wrap;gap:11px;justify-content:center;width:min(1050px,100%);margin-top:17px}
+    .mini-analysis-card{
+      width:155px;min-height:115px;border:4px solid var(--line);border-radius:15px;background:#fff;
+      box-shadow:3px 3px 0 var(--line);padding:12px;text-align:center;display:flex;flex-direction:column;justify-content:center
+    }
+    .mini-analysis-card strong{font-family:"Press Start 2P",monospace;font-size:9px;line-height:1.55;color:#a32631}
+    .mini-analysis-card span{font-size:11px;line-height:1.4;margin-top:6px;font-weight:700}
+
+    .special-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:13px;width:min(1050px,100%)}
+    .special{
+      min-height:190px;border:4px solid var(--line);border-radius:18px;background:#151515;color:#fff;
+      padding:16px;box-shadow:var(--shadow-small)
+    }
+    .special strong{display:block;font-family:"Press Start 2P",monospace;font-size:clamp(10px,1.2vw,14px);line-height:1.5;color:#ff9aa2;margin-bottom:10px}
+    .special p{font-size:clamp(13px,1.35vw,17px);line-height:1.45;font-weight:700}
+
+    .mcq{
+      width:min(900px,100%);border:3px solid var(--line);background:#fff;padding:18px 21px;box-shadow:var(--shadow-small)
+    }
+    .mcq p{margin:8px 0;font-size:clamp(15px,1.55vw,19px);font-weight:700}
+    .mcq .answer{border:2px solid var(--line);padding:10px 12px;margin:8px 0;background:#faf8f1}
+
+    .rewrite-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;width:min(1050px,100%)}
+    .rewrite{
+      border:3px solid var(--line);background:#fff;padding:16px;box-shadow:var(--shadow-small)
+    }
+    .rewrite strong{
+      display:block;font-family:"Press Start 2P",monospace;font-size:9px;line-height:1.5;color:#a32631;margin-bottom:9px
+    }
+    .rewrite p{font-size:clamp(14px,1.5vw,19px);font-weight:700;line-height:1.5}
+
+    @media(max-width:900px){
+      .uno-table,.analysis-cards{grid-template-columns:1fr 1fr}
+      .vote-board,.meaning-vote,.special-cards{grid-template-columns:1fr}
+      .rewrite-grid{grid-template-columns:1fr}
+    }
+    @media(max-width:620px){
+      .uno-table,.analysis-cards{grid-template-columns:1fr}
+      .stage-people{flex-direction:column}.role{min-width:0}
+    }
+</style>
+</head>
+<body>
+<main class="wrap">
+<div class="topbar">
+<a class="back-link" href="index.html">← PORTAL</a>
+<nav aria-label="Acessos rápidos" class="mini-nav">
+<a class="utility-link" href="avaliacoes.html">AVALIAÇÕES</a>
+<a class="utility-link" href="cronograma.html">CRONOGRAMA</a>
+<a class="utility-link" href="textos.html">TEXTOS</a>
+</nav>
+</div>
+<header class="cycle-head">
+<p class="eyebrow">PLAYLING · CICLO 03 · UNOLING + ANÁLISE DO DISCURSO</p>
+<h1>O QUE FAZ UMA REGRA OU INTERPRETAÇÃO VALER?</h1>
+<p class="cycle-subtitle">
+      Cinco aulas para passar de regras de UNO e disputas de sentido a posições, vozes,
+      silêncios e autoridades que fazem algumas interpretações <strong>contarem mais do que outras</strong>.
+    </p>
+<div class="cycle-challenge">
+<small>DESAFIO DO CICLO</small>
+<strong>Por que “A norma-padrão não admite crase antes de palavra masculina” soa como um fato — e não como alguém fazendo uma regra valer?</strong>
+</div>
+<div aria-label="Estrutura do ciclo" class="cycle-road">
+<div class="road-step"><b>01</b>JOGO &amp;<br/>PROBLEMA</div>
+<div class="road-step"><b>02</b>MODELO &amp;<br/>HIPÓTESE</div>
+<div class="road-step"><b>03</b>ANÁLISE &amp;<br/>TESTE</div>
+<div class="road-step"><b>04</b>APLICAÇÃO &amp;<br/>CONFRONTO</div>
+<div class="road-step"><b>05</b>REVISÃO &amp;<br/>NOVO JOGO</div>
+</div>
+</header>
+<!--
+    COMO LIBERAR AS AULAS DO CICLO 03
+    Edite apenas site-config.js:
+      "ciclo-03-aula-01": "current",
+      "ciclo-03-aula-02": "next",
+      "ciclo-03-aula-03": "locked",
+      "ciclo-03-aula-04": "locked",
+      "ciclo-03-aula-05": "locked"
+
+    Padrão: passada=open; atual=current; próxima=next; demais=locked.
+  -->
+<section aria-label="Cinco aulas do Ciclo 03" class="accordion-list">
+<details class="lesson" data-lesson-id="ciclo-03-aula-01">
+<summary class="lesson-summary">
+<span class="lesson-number">01</span>
+<span class="lesson-summary-text"><span class="permanent-name">JOGO &amp; PROBLEMA</span><h2>QUEM MANDA NO JOGO?</h2></span>
+<span class="lesson-status"></span><span class="summary-arrow">›</span>
+</summary>
+<div class="lesson-body">
+<p class="lesson-intro">Grupos jogam UNO com regras diferentes, inventam novas regras e votam nas melhores — até descobrirem que votar não era suficiente para fazê-las valer.</p>
+<div class="lesson-question">Quem decide uma regra — e quem decide quem pode decidir uma regra?</div>
+<button class="present-launch" data-launch="1" type="button">▶ APRESENTAÇÃO AULA 01</button>
+<div class="text-portal-callout"><strong>Tem texto sobre este assunto.</strong> Acesse diretamente a pasta de textos no Google Drive.<br/><a class="text-portal-link" href="https://drive.google.com/drive/folders/1tIUsTf-qjTyWiIr1S74jszs9MIUOoq1M?usp=sharing" rel="noopener noreferrer" target="_blank">ABRIR TEXTOS NO DRIVE →</a></div>
+</div>
+<div class="locked-message">Esta aula ainda não está liberada.</div>
+</details>
+<details class="lesson" data-lesson-id="ciclo-03-aula-02">
+<summary class="lesson-summary">
+<span class="lesson-number">02</span>
+<span class="lesson-summary-text"><span class="permanent-name">MODELO &amp; HIPÓTESE</span><h2>QUANDO UMA PALAVRA MUDA DE JOGO</h2></span>
+<span class="lesson-status"></span><span class="summary-arrow">›</span>
+</summary>
+<div class="lesson-body">
+<p class="lesson-intro">Queijo sem leite, hambúrguer de soja, músicas com leituras concorrentes: significar não é apenas consultar um dicionário, mas também disputar critérios e interpretações.</p>
+<div class="lesson-question">Se mais de um sentido é possível, por que nem toda interpretação consegue valer?</div>
+<button class="present-launch" data-launch="2" type="button">▶ APRESENTAÇÃO AULA 02</button>
+<div class="text-portal-callout"><strong>Tem texto sobre este assunto.</strong> Acesse diretamente a pasta de textos no Google Drive.<br/><a class="text-portal-link" href="https://drive.google.com/drive/folders/1tIUsTf-qjTyWiIr1S74jszs9MIUOoq1M?usp=sharing" rel="noopener noreferrer" target="_blank">ABRIR TEXTOS NO DRIVE →</a></div>
+</div>
+<div class="locked-message">A próxima aula já está no mapa, mas ainda não pode ser aberta.</div>
+</details>
+<details class="lesson" data-lesson-id="ciclo-03-aula-03">
+<summary class="lesson-summary">
+<span class="lesson-number">03</span>
+<span class="lesson-summary-text"><span class="permanent-name">ANÁLISE &amp; TESTE</span><h2>QUEM ESTÁ NO PALCO?</h2></span>
+<span class="lesson-status"></span><span class="summary-arrow">›</span>
+</summary>
+<div class="lesson-body">
+<p class="lesson-intro">A sala vira palco. Posições, vozes, foco, bastidores e autoridade viram cartas que os estudantes podem jogar sobre situações discursivas.</p>
+<div class="lesson-question">Ter voz é a mesma coisa que ter poder para fazer uma decisão ou interpretação contar?</div>
+<button class="present-launch" data-launch="3" type="button">▶ APRESENTAÇÃO AULA 03</button>
+<div class="text-portal-callout"><strong>Tem texto sobre este assunto.</strong> Acesse diretamente a pasta de textos no Google Drive.<br/><a class="text-portal-link" href="https://drive.google.com/drive/folders/1tIUsTf-qjTyWiIr1S74jszs9MIUOoq1M?usp=sharing" rel="noopener noreferrer" target="_blank">ABRIR TEXTOS NO DRIVE →</a></div>
+</div>
+<div class="locked-message">Esta aula ainda está bloqueada.</div>
+</details>
+<details class="lesson" data-lesson-id="ciclo-03-aula-04">
+<summary class="lesson-summary">
+<span class="lesson-number">04</span>
+<span class="lesson-summary-text"><span class="permanent-name">APLICAÇÃO &amp; CONFRONTO</span><h2>“A NORMA-PADRÃO NÃO ADMITE...” QUEM DISSE?</h2></span>
+<span class="lesson-status"></span><span class="summary-arrow">›</span>
+</summary>
+<div class="lesson-body">
+<p class="lesson-intro">Voltamos ao desafio e jogamos as seis cartas sobre a frase: quem fala, de que posição, com quais vozes, apagamentos e consequências?</p>
+<div class="lesson-question">Como uma prescrição histórica e institucional pode ganhar a aparência de uma propriedade natural da língua?</div>
+<button class="present-launch" data-launch="4" type="button">▶ APRESENTAÇÃO AULA 04</button>
+<div class="text-portal-callout"><strong>Tem texto sobre este assunto.</strong> Acesse diretamente a pasta de textos no Google Drive.<br/><a class="text-portal-link" href="https://drive.google.com/drive/folders/1tIUsTf-qjTyWiIr1S74jszs9MIUOoq1M?usp=sharing" rel="noopener noreferrer" target="_blank">ABRIR TEXTOS NO DRIVE →</a></div>
+</div>
+<div class="locked-message">Esta aula ainda está bloqueada.</div>
+</details>
+<details class="lesson" data-lesson-id="ciclo-03-aula-05">
+<summary class="lesson-summary">
+<span class="lesson-number">05</span>
+<span class="lesson-summary-text"><span class="permanent-name">REVISÃO &amp; NOVO JOGO</span><h2>JOGUE SUA INTERPRETAÇÃO</h2></span>
+<span class="lesson-status"></span><span class="summary-arrow">›</span>
+</summary>
+<div class="lesson-body">
+<p class="lesson-intro">Texto, perguntas, reconstrução do ciclo e uma mão de cartas UnoLing para analisar novas frases, regras, avaliações e interpretações.</p>
+<div class="lesson-question">O que muda quando uma interpretação precisa mostrar a cena, a posição, as vozes e a autoridade que a sustentam?</div>
+<button class="present-launch" data-launch="5" type="button">▶ APRESENTAÇÃO AULA 05</button>
+<div class="text-portal-callout"><strong>Tem texto sobre este assunto.</strong> Acesse diretamente a pasta de textos no Google Drive.<br/><a class="text-portal-link" href="https://drive.google.com/drive/folders/1tIUsTf-qjTyWiIr1S74jszs9MIUOoq1M?usp=sharing" rel="noopener noreferrer" target="_blank">ABRIR TEXTOS NO DRIVE →</a></div>
+</div>
+<div class="locked-message">Esta aula ainda está bloqueada.</div>
+</details>
+</section>
+<div class="unlock-help"><strong>PARA LIBERAR AS AULAS:</strong> use somente <code>site-config.js</code>. As cinco apresentações já estão dentro desta página.</div>
+<nav aria-label="Navegação entre partes do curso" class="course-sequence-nav" data-course-nav="" data-current="ciclo-03"></nav>
+</main>
+<div aria-hidden="true" class="presentations">
+<!-- ==================== AULA 01 ==================== -->
+<article class="deck" data-deck="1" data-deck-title="Aula 01 · Quem manda no jogo?">
+<section class="scene center"><div class="scene-inner"><span class="scene-label">CENA 01</span><p class="huge black">UNO.</p><p class="sub-question">Mesmas cartas. Mesmas regras?</p></div></section>
+<section class="scene"><div class="scene-inner"><span class="scene-label">CENA 02</span><h3>JOGUEM — MAS CADA MESA RECEBE OUTRAS REGRAS</h3><div class="activity-box"><h4>ATIVIDADE</h4><p>Formem grupos. Cada grupo recebe um baralho e um pequeno conjunto secreto de regras extras. Joguem sem mostrar as regras às outras mesas.</p></div><div class="uno-table"><div class="uno-card"><h4>REGRA EXTRA</h4><p>7 → ninguém pode falar até outra pessoa jogar.</p><span class="uno-symbol">7</span></div><div class="uno-card blue"><h4>REGRA EXTRA</h4><p>0 → troque sua mão com quem está à esquerda.</p><span class="uno-symbol">0</span></div><div class="uno-card green"><h4>REGRA EXTRA</h4><p>9 → todo mundo tenta tocar o descarte.</p><span class="uno-symbol">9</span></div><div class="uno-card purple"><h4>OUTRA</h4><p>[INSERIR REGRA EXTRA]</p><span class="uno-symbol">?</span></div></div></div></section>
+<section class="scene"><div class="scene-inner"><span class="scene-label">CENA 03</span><h3>AGORA INVENTEM UMA REGRA</h3><div class="live-columns"><div class="live-column"><h4>NOVA REGRA</h4><div class="editable" contenteditable="true"></div></div><div class="live-column"><h4>O QUE ELA MUDA NO JOGO?</h4><div class="editable" contenteditable="true"></div></div></div><p class="live-hint">Cada grupo apresenta sua regra no final da rodada.</p></div></section>
+<section class="scene"><div class="scene-inner"><span class="scene-label">CENA 04</span><h3>ESCOLHAM AS MELHORES PARA O TORNEIO</h3><div class="vote-board"><div class="vote-item"><strong>REGRA 1</strong><div class="vote-space" contenteditable="true"></div></div><div class="vote-item"><strong>REGRA 2</strong><div class="vote-space" contenteditable="true"></div></div><div class="vote-item"><strong>REGRA 3</strong><div class="vote-space" contenteditable="true"></div></div></div><p class="sub-question">Votação concluída. Então essas regras agora valem?</p></div></section>
+<section class="scene center"><div class="scene-inner"><span class="scene-label">CENA 05</span><div class="verdict"><strong>REGRAS NÃO HOMOLOGADAS.</strong><p>O torneio seguirá somente as regras reconhecidas pela organização.</p><p><strong style="font-family:Space Mono;color:#fff;font-size:inherit">TORNEIO CANCELADO ATÉ NOVA DEFINIÇÃO.</strong></p></div></div></section>
+<section class="scene center"><div class="scene-inner"><span class="scene-label">CENA 06</span><p class="huge">ENTÃO POR QUE A GENTE VOTOU?</p><p class="sub-question">A maioria tinha poder para criar uma regra — ou apenas imaginamos que tinha?</p></div></section>
+<section class="scene"><div class="scene-inner"><span class="scene-label">CENA 07</span><h3>HÁ REGRAS SOBRE AS REGRAS</h3><div class="rule-stack"><div class="rule-level"><strong>NÍVEL 1</strong>Regra do jogo: o que posso fazer com uma carta?</div><div class="rule-arrow">↓</div><div class="rule-level"><strong>NÍVEL 2</strong>Regra de mudança: como uma nova regra passa a valer?</div><div class="rule-arrow">↓</div><div class="rule-level"><strong>NÍVEL 3</strong>Autoridade: quem tem poder para reconhecer essa mudança?</div><div class="rule-arrow">↓</div><div class="rule-level"><strong>NÍVEL 4</strong>Instituição: em que espaço essa autoridade é reconhecida?</div></div></div></section>
+<section class="scene"><div class="scene-inner"><span class="scene-label">CENA 08</span><h3>O FAMOSO +4</h3><div class="two-options"><div class="option">CONTA OFICIAL:<br/><br/>“Não pode colocar +4 sobre +4.”</div><div class="or">×</div><div class="option">JOGADOR:<br/><br/>“Então vocês não sabem jogar UNO.”</div></div><p class="sub-question">Quem está “certo”: fabricante, jogadores, tradição local ou organizador do torneio?</p></div></section>
+<section class="scene"><div class="scene-inner"><span class="scene-label">CENA 09</span><h3>A MESMA PROIBIÇÃO PODE SOAR MUITO DIFERENTE</h3><div class="formulation-list"><div class="formulation f1">Aqui a gente não empilha +4.</div><div class="formulation f2">Não pode empilhar +4.</div><div class="formulation f3">É proibido empilhar +4.</div><div class="formulation f4">As regras do UNO não permitem empilhar +4.</div></div><p class="sub-question">Onde foi parar quem está dizendo isso?</p></div></section>
+<section class="scene center"><div class="scene-inner"><span class="scene-label">CENA 10</span><p class="small">GUARDE ESTA FRASE. VOLTAREMOS A ELA.</p><p class="huge black">“A NORMA-PADRÃO NÃO ADMITE CRASE ANTES DE PALAVRA MASCULINA.”</p></div></section>
+<section class="scene"><div class="scene-inner"><span class="scene-label">CENA 11</span><h3>PERGUNTAS PARA LEVAR</h3><ul><li>Quem faz uma regra valer?</li><li>Uma regra precisa mostrar seu autor?</li><li>Por que algumas regras parecem simplesmente “existir”?</li><li>Quem pode contestá-las?</li><li>Quem pode mudá-las?</li></ul></div></section>
+</article>
+<!-- ==================== AULA 02 ==================== -->
+<article class="deck" data-deck="2" data-deck-title="Aula 02 · Quando uma palavra muda de jogo">
+<section class="scene center"><div class="scene-inner"><span class="scene-label">CENA 01</span><p class="huge black">QUEM DECIDE O QUE UMA PALAVRA PODE QUERER DIZER?</p></div></section>
+<section class="scene"><div class="scene-inner"><span class="scene-label">CENA 02</span><h3>É OU NÃO É?</h3><div class="triptych"><div><strong>QUEIJO SEM LEITE</strong><p>É queijo?</p></div><div><strong>HAMBÚRGUER DE SOJA</strong><p>É hambúrguer?</p></div><div><strong>LEITE DE AVEIA</strong><p>É leite?</p></div></div><div class="meaning-vote"><div class="meaning-choice yes">É</div><div class="meaning-choice no">NÃO É</div><div class="meaning-choice depends">DEPENDE</div></div></div></section>
+<section class="scene"><div class="scene-inner"><span class="scene-label">CENA 03</span><h3>O QUE VOCÊ USOU PARA DECIDIR?</h3><div class="criteria-cloud"><span class="criterion">ingredientes</span><span class="criterion">forma</span><span class="criterion">função</span><span class="criterion">modo de uso</span><span class="criterion">origem histórica</span><span class="criterion">semelhança</span><span class="criterion">lei</span><span class="criterion">mercado</span><span class="criterion">uso cotidiano</span><span class="criterion">dicionário</span></div><p class="lead">Definir também é escolher quais critérios contam mais.</p></div></section>
+<section class="scene"><div class="scene-inner"><span class="scene-label">CENA 04</span><h3>E QUEM PODE PRIVILEGIAR UM CRITÉRIO?</h3><div class="live-columns"><div class="live-column"><h4>QUEM PODE DEFINIR?</h4><div class="editable" contenteditable="true"></div></div><div class="live-column"><h4>EM QUE SITUAÇÃO ESSA DEFINIÇÃO VALE?</h4><div class="editable" contenteditable="true"></div></div></div><p class="small">Dicionário? Lei? indústria? consumidores? tradição? ciência? escola?</p></div></section>
+<section class="scene center"><div class="scene-inner"><span class="scene-label">CENA 05</span><p class="huge">SIGNIFICADO TAMBÉM PODE SER DISPUTA.</p><p class="sub-question">E nem toda disputa acontece em torno de uma definição de dicionário.</p></div></section>
+<section class="scene"><div class="scene-inner"><span class="scene-label">CENA 06</span><h3>MÚSICA 1: DUAS LEITURAS</h3><div class="song-slot"><h4>TÍTULO</h4><div class="song-edit" contenteditable="true"></div><p><strong>LEITURA A:</strong></p><div class="song-edit" contenteditable="true"></div><p><strong>LEITURA B:</strong></p><div class="song-edit" contenteditable="true"></div></div><p class="sub-question">Que elementos da canção sustentam cada leitura?</p></div></section>
+<section class="scene"><div class="scene-inner"><span class="scene-label">CENA 07</span><h3>MÚSICA 2: UMA LEITURA QUE APARECE DEPOIS</h3><div class="song-slot"><h4>TÍTULO</h4><div class="song-edit" contenteditable="true"></div><p><strong>INTERPRETAÇÃO MAIS ANTIGA / RECORRENTE:</strong></p><div class="song-edit" contenteditable="true"></div><p><strong>INTERPRETAÇÃO POSTERIOR / ALTERNATIVA:</strong></p><div class="song-edit" contenteditable="true"></div></div><p class="sub-question">Uma interpretação pode ser legítima mesmo que não tenha sido prevista quando a música foi criada?</p></div></section>
+<section class="scene center"><div class="scene-inner"><span class="scene-label">CENA 08</span><h3>O AUTOR MANDA NO SENTIDO?</h3><div class="two-options"><div class="option">“SE O AUTOR DISSE, ACABOU.”</div><div class="or">?</div><div class="option">“DEPOIS DE PUBLICADA, VALE QUALQUER COISA.”</div></div><p class="sub-question">Talvez nenhuma das duas respostas seja suficiente.</p></div></section>
+<section class="scene"><div class="scene-inner"><span class="scene-label">CENA 09</span><h3>MÚLTIPLAS INTERPRETAÇÕES ≠ QUALQUER INTERPRETAÇÃO</h3><div class="model-box"><h4>UMA LEITURA PRECISA CONSEGUIR SE SUSTENTAR</h4><p>Palavras, contexto histórico, gênero, relações com outros textos, circulação de interpretações, convenções de leitura, informações sobre produção...</p></div><p class="lead">Uma interpretação pode ser imaginável e ainda assim não conseguir “contar”.</p></div></section>
+<section class="scene"><div class="scene-inner"><span class="scene-label">CENA 10</span><h3>“NO MEIO DO CAMINHO TINHA UMA PEDRA.”</h3><div class="context-grid"><div class="context-card"><h4>INTERPRETAÇÃO</h4><p>“A pedra pode funcionar como obstáculo.”</p><p>“É literalmente uma pedra.”</p></div><div class="context-card"><h4>AVALIAÇÃO</h4><p>“Achei o poema chato.”</p><p>“É um poema ruim.”</p></div></div><p class="sub-question">Interpretar e avaliar são o mesmo tipo de afirmação? O que cada uma precisa justificar?</p></div></section>
+<section class="scene"><div class="scene-inner"><span class="scene-label">CENA 11</span><h3>POR QUE UMA LEITURA CONSEGUE VALER?</h3><div class="live-columns"><div class="live-column"><h4>PRECISA DE...</h4><div class="editable" contenteditable="true"></div></div><div class="live-column"><h4>PODE SER RECUSADA POR...</h4><div class="editable" contenteditable="true"></div></div></div></div></section>
+<section class="scene center"><div class="scene-inner"><span class="scene-label">CENA 12</span><p class="huge">PARA ENTENDER ISSO, PRECISAMOS OLHAR PARA A CENA.</p><p class="sub-question">Quem fala? De onde? Com quais vozes? Quem pode encerrar a disputa?</p></div></section>
+</article>
+<!-- ==================== AULA 03 ==================== -->
+<article class="deck" data-deck="3" data-deck-title="Aula 03 · Quem está no palco?">
+<section class="scene center"><div class="scene-inner"><span class="scene-label">CENA 01</span><p class="huge black">“TEREMOS DUAS PROVAS NESTE SEMESTRE.”</p><p class="sub-question">Uma frase calma. Há alguma assimetria aqui?</p></div></section>
+<section class="scene"><div class="scene-inner"><span class="scene-label">CENA 02</span><h3>OS ESTUDANTES PODEM RESPONDER?</h3><div class="two-options"><div class="option">SIM:<br/><br/>“Não queremos duas provas.”</div><div class="or">≠</div><div class="option">MAS PODEM DECIDIR:<br/><br/>“Então não haverá provas”?</div></div><p class="lead">Ter voz não é necessariamente ter o mesmo poder para fazer a decisão contar.</p></div></section>
+<section class="scene center"><div class="scene-inner"><span class="scene-label">CENA 03</span><h3>DO JOGO PARA O PALCO</h3><div class="stage"><div class="stage-people"><div class="role"><strong>PROFESSOR</strong>“Teremos duas provas.”</div><div class="role"><strong>ESTUDANTES</strong>“Podemos discutir?”</div><div class="role"><strong>INSTITUIÇÃO</strong>[nem sempre aparece em cena]</div></div></div><p class="sub-question">A mesma fala muda de força conforme a posição de quem fala.</p></div></section>
+<section class="scene"><div class="scene-inner"><span class="scene-label">CENA 04</span><h3>VAMOS TRANSFORMAR A CENA EM CARTAS</h3><div class="analysis-cards"><div class="analysis-card"><h4>🎴 CENA</h4><p class="prompt">Onde isso acontece?</p><p class="term">Mapa teórico: condições de produção.</p></div><div class="analysis-card"><h4>🎴 PAPEL</h4><p class="prompt">Quem pode falar de qual posição?</p><p class="term">Mapa teórico: posição-sujeito.</p></div><div class="analysis-card"><h4>🎴 VOZ</h4><p class="prompt">Que outras vozes falam junto?</p><p class="term">Mapa teórico: memória discursiva / interdiscurso.</p></div><div class="analysis-card"><h4>🎴 FOCO</h4><p class="prompt">O que ganha o holofote?</p><p class="term">Metáfora de trabalho: o que aparece como central / natural.</p></div><div class="analysis-card"><h4>🎴 BASTIDORES</h4><p class="prompt">O que ficou fora da cena?</p><p class="term">Mapa teórico: silêncio, apagamentos, alternativas excluídas.</p></div><div class="analysis-card"><h4>🎴 DEUS EX MACHINA</h4><p class="prompt">Quem ou o que encerra a disputa?</p><p class="term">Metáfora de trabalho: autoridade / poder institucional.</p></div></div><p class="small">As cartas são perguntas de análise, não equivalências perfeitas entre metáfora e conceitos de todas as vertentes da Análise do Discurso.</p></div></section>
+<section class="scene"><div class="scene-inner"><span class="scene-label">CENA 05</span><h3>JOGUE: CENA</h3><div class="analysis-card"><h4>🎴 CENA</h4><p class="prompt">Onde “Teremos duas provas” está acontecendo?</p><p>Sala? universidade? disciplina obrigatória? primeiro dia? após negociação?</p></div><div class="live-column" style="width:100%;margin-top:16px"><h4>O QUE MUDA COM A CENA?</h4><div class="editable" contenteditable="true" style="min-height:110px"></div></div></div></section>
+<section class="scene"><div class="scene-inner"><span class="scene-label">CENA 06</span><h3>JOGUE: PAPEL</h3><div class="analysis-card"><h4>🎴 PAPEL</h4><p class="prompt">O que alguém pode fazer da posição “professor” que não pode fazer da posição “estudante”?</p></div><p class="lead">A questão não é apenas quem Ricardo é; é o que a posição institucional permite fazer.</p></div></section>
+<section class="scene"><div class="scene-inner"><span class="scene-label">CENA 07</span><h3>JOGUE: VOZ</h3><div class="analysis-card"><h4>🎴 VOZ</h4><p class="prompt">Quem fala junto quando alguém diz “Precisamos ter duas provas”?</p></div><div class="card-hand"><div class="mini-analysis-card"><strong>REGULAMENTO</strong><span>“é preciso avaliar”</span></div><div class="mini-analysis-card"><strong>TRADIÇÃO</strong><span>“sempre foi assim”</span></div><div class="mini-analysis-card"><strong>EXPERIÊNCIA</strong><span>“funcionou antes”</span></div><div class="mini-analysis-card"><strong>DEPARTAMENTO</strong><span>expectativas institucionais</span></div></div></div></section>
+<section class="scene"><div class="scene-inner"><span class="scene-label">CENA 08</span><h3>JOGUE: FOCO E BASTIDORES</h3><div class="two-options"><div class="option">FOCO<br/><br/>“duas provas são necessárias”</div><div class="or">↔</div><div class="option">BASTIDORES<br/><br/>quem decidiu? quais alternativas? por que duas? o que conta como avaliação?</div></div><p class="lead">O que não aparece explicitamente ainda pode ser importante para a cena.</p></div></section>
+<section class="scene"><div class="scene-inner"><span class="scene-label">CENA 09</span><h3>JOGUE: DEUS EX MACHINA</h3><div class="analysis-card"><h4>🎴 DEUS EX MACHINA</h4><p class="prompt">O que pode aparecer para encerrar a discussão?</p></div><div class="formulation-list"><div class="formulation f1">“O cronograma já está pronto.”</div><div class="formulation f2">“A universidade exige avaliação.”</div><div class="formulation f3">“Sempre funcionou assim.”</div><div class="formulation f4">“O professor tem experiência.”</div></div><p class="small">Não significa que essas razões sejam falsas. A pergunta é que função elas desempenham na disputa.</p></div></section>
+<section class="scene center"><div class="scene-inner"><span class="scene-label">CENA 10</span><p class="huge">DA NÃO É “ACHAR OUTRO SENTIDO”.</p><p class="sub-question">É investigar as condições, posições, vozes, apagamentos e relações de força que tornam certos sentidos possíveis e eficazes.</p></div></section>
+<section class="scene"><div class="scene-inner"><span class="scene-label">CENA 11</span><h3>TESTE 2: MÚLTIPLA ESCOLHA</h3><div class="mcq"><p><strong>QUAL É A INTERPRETAÇÃO CORRETA?</strong></p><div class="answer">A) ______</div><div class="answer">B) ______</div><div class="answer">C) ______</div><div class="answer">D) ______</div></div><p class="lead">A coerção pode começar antes da resposta: alguém já decidiu que o espaço legítimo de resposta vai de A a D.</p></div></section>
+<section class="scene"><div class="scene-inner"><span class="scene-label">CENA 12</span><h3>JOGUE AS CARTAS NA PROVA</h3><div class="card-hand"><div class="mini-analysis-card"><strong>CENA</strong><span>prova</span></div><div class="mini-analysis-card"><strong>PAPEL</strong><span>examinador / candidato</span></div><div class="mini-analysis-card"><strong>FOCO</strong><span>uma resposta correta</span></div><div class="mini-analysis-card"><strong>BASTIDORES</strong><span>respostas não listadas</span></div><div class="mini-analysis-card"><strong>DEUS EX</strong><span>gabarito</span></div></div><p class="sub-question">O que muda quando tratamos a prova como uma cena discursiva?</p></div></section>
+<section class="scene center"><div class="scene-inner"><span class="scene-label">CENA 13</span><p class="huge">AGORA TEMOS UMA MÃO DE CARTAS.</p><p class="sub-question">Hora de jogar sobre “A norma-padrão não admite...”</p></div></section>
+</article>
+<!-- ==================== AULA 04 ==================== -->
+<article class="deck" data-deck="4" data-deck-title="Aula 04 · “A norma-padrão não admite...” Quem disse?">
+<section class="scene center"><div class="scene-inner"><span class="scene-label">CENA 01</span><p class="small">DE VOLTA AO DESAFIO</p><p class="huge black">“A NORMA-PADRÃO NÃO ADMITE CRASE ANTES DE PALAVRA MASCULINA.”</p></div></section>
+<section class="scene"><div class="scene-inner"><span class="scene-label">CENA 02</span><h3>A REGRA PODE SER FORMULADA DE MUITOS JEITOS</h3><div class="formulation-list"><div class="formulation f1">Eu não uso crase antes de palavra masculina.</div><div class="formulation f1">Meu professor diz que não se usa crase antes de palavra masculina.</div><div class="formulation f2">Gramáticas normativas recomendam que não se use crase antes de palavra masculina.</div><div class="formulation f2">Não se usa crase antes de palavra masculina.</div><div class="formulation f3">É proibido usar crase antes de palavra masculina.</div><div class="formulation f4">A norma-padrão não admite crase antes de palavra masculina.</div></div><p class="sub-question">Qual soa mais como opinião? regra? fato?</p></div></section>
+<section class="scene"><div class="scene-inner"><span class="scene-label">CENA 03</span><h3>LEMBRA DO UNO?</h3><div class="two-options"><div class="option">“Aqui a gente não empilha +4.”</div><div class="or">→</div><div class="option">“As regras do UNO não permitem empilhar +4.”</div></div><p class="sub-question">Quanto mais a formulação apaga o enunciador local, mais a própria regra parece virar agente?</p></div></section>
+<section class="scene"><div class="scene-inner"><span class="scene-label">CENA 04</span><h3>TRÊS PERGUNTAS DIFERENTES</h3><div class="triptych"><div><strong>SINTAXE</strong><p>Qual é o sujeito gramatical?</p><p><strong>A norma-padrão.</strong></p></div><div><strong>SEMÂNTICA</strong><p>Uma “norma” literalmente admite ou recusa alguma coisa?</p></div><div><strong>DISCURSO</strong><p>Que posições e vozes fazem essa formulação funcionar como regra?</p></div></div><p class="small">“Sujeito discursivo” não significa descobrir uma pessoa secreta escondida atrás da frase.</p></div></section>
+<section class="scene"><div class="scene-inner"><span class="scene-label">CENA 05</span><h3>🎴 CENA</h3><div class="analysis-card"><h4>ONDE ESSA FRASE CIRCULA?</h4><p class="prompt">Aula? gramática? manual de estilo? concurso? correção de texto?</p></div><p class="lead">A mesma formulação ganha forças diferentes em cenas diferentes.</p></div></section>
+<section class="scene"><div class="scene-inner"><span class="scene-label">CENA 06</span><h3>🎴 PAPEL</h3><div class="card-hand"><div class="mini-analysis-card"><strong>PROFESSOR</strong><span>ensina / corrige</span></div><div class="mini-analysis-card"><strong>ALUNO</strong><span>responde / é avaliado</span></div><div class="mini-analysis-card"><strong>GRAMÁTICO</strong><span>formula / sistematiza</span></div><div class="mini-analysis-card"><strong>BANCA</strong><span>aceita / penaliza</span></div><div class="mini-analysis-card"><strong>EDITOR</strong><span>altera / normaliza</span></div></div><p class="sub-question">Essas posições têm o mesmo poder para fazer uma regra valer?</p></div></section>
+<section class="scene"><div class="scene-inner"><span class="scene-label">CENA 07</span><h3>🎴 VOZ</h3><div class="analysis-card"><h4>QUE VOZES PODEM ECOAR EM “A NORMA-PADRÃO NÃO ADMITE...”?</h4><p class="prompt">Gramáticas normativas · escola · provas · manuais · correção editorial · tradições anteriores.</p></div><p class="lead">A frase pode repetir vozes institucionais sem precisar nomeá-las uma por uma.</p></div></section>
+<section class="scene"><div class="scene-inner"><span class="scene-label">CENA 08</span><h3>🎴 FOCO</h3><div class="two-options"><div class="option">HOLOFOTE<br/><br/>A PROIBIÇÃO</div><div class="or">vs.</div><div class="option">PERGUNTAS FORA DO FOCO<br/><br/>quem estabeleceu? quando? por quê? poderia mudar?</div></div><p class="lead">A regra aparece como propriedade da própria norma.</p></div></section>
+<section class="scene"><div class="scene-inner"><span class="scene-label">CENA 09</span><h3>🎴 BASTIDORES</h3><div class="live-columns"><div class="live-column"><h4>O QUE A FRASE MOSTRA?</h4><div class="editable" contenteditable="true"></div></div><div class="live-column"><h4>O QUE ELA NÃO PRECISA MOSTRAR?</h4><div class="editable" contenteditable="true"></div></div></div><p class="small">História da prescrição? usos concorrentes? autores? instituições? possibilidade de mudança?</p></div></section>
+<section class="scene"><div class="scene-inner"><span class="scene-label">CENA 10</span><h3>🎴 DEUS EX MACHINA</h3><div class="analysis-card"><h4>POR QUE A REGRA PODE TER CONSEQUÊNCIAS?</h4><p class="prompt">Porque em algumas cenas alguém pode marcar errado, retirar ponto, corrigir um texto, exigir uma convenção, selecionar uma resposta.</p></div><p class="lead">Autoridade discursiva também pode produzir efeitos materiais.</p></div></section>
+<section class="scene"><div class="scene-inner"><span class="scene-label">CENA 11</span><h3>REESCREVA E OBSERVE O QUE MUDA</h3><div class="rewrite-grid"><div class="rewrite"><strong>VERSÃO 1</strong><p>A norma-padrão não admite crase antes de palavra masculina.</p></div><div class="rewrite"><strong>VERSÃO 2</strong><p>Gramáticas normativas prescrevem que não se use crase antes de palavra masculina.</p></div><div class="rewrite"><strong>VERSÃO 3</strong><p>Determinadas tradições normativas convencionaram não recomendar esse uso.</p></div><div class="rewrite"><strong>VERSÃO 4 · TURMA</strong><div class="editable" contenteditable="true" style="min-height:95px"></div></div></div><p class="sub-question">A regra mudou? E a distribuição de agência, história e autoridade?</p></div></section>
+<section class="scene center"><div class="scene-inner"><span class="scene-label">CENA 12</span><h3>ENTÃO POR QUE SOA COMO FATO?</h3><div class="model-box"><h4>UMA LEITURA POSSÍVEL</h4><p class="lead">Porque a formulação põe a própria norma como agente, reduz a presença de quem prescreve, recupera vozes institucionais já conhecidas e circula em cenas nas quais essa posição pode produzir consequências.</p></div></div></section>
+<section class="scene center"><div class="scene-inner"><span class="scene-label">CENA 13</span><p class="huge">A REGRA NÃO “VENCE” SÓ POR SER VERDADEIRA.</p><p class="sub-question">Precisamos investigar como ela é formulada, por quem pode ser sustentada, onde circula e o que acontece quando é aceita ou recusada.</p></div></section>
+<section class="scene center"><div class="scene-inner"><span class="scene-label">CENA 14</span><div class="flow"><span>POSSÍVEL</span><b>→</b><span>PROVÁVEL</span><b>→</b><span>O QUE CONSEGUE VALER?</span></div><p class="sub-question">Três ciclos, três modos diferentes de transformar algo aparentemente óbvio em problema de investigação.</p></div></section>
+</article>
+<!-- ==================== AULA 05 ==================== -->
+<article class="deck" data-deck="5" data-deck-title="Aula 05 · Jogue sua interpretação">
+<section class="scene"><div class="scene-inner"><span class="scene-label">CENA 01</span><h3>HOJE: TEXTO, PERGUNTAS, REVISÃO E JOGO</h3><ul><li>tirar dúvidas do texto;</li><li>reconstruir as quatro aulas;</li><li>revisar as seis cartas;</li><li>jogar uma nova análise em grupo.</li></ul></div></section>
+<section class="scene"><div class="scene-inner"><span class="scene-label">CENA 02</span><h3>O TEXTO TROUXE QUAIS PERGUNTAS?</h3><div class="live-columns"><div class="live-column"><h4>DÚVIDAS</h4><div class="editable" contenteditable="true"></div></div><div class="live-column"><h4>CONEXÕES COM AS AULAS</h4><div class="editable" contenteditable="true"></div></div></div></div></section>
+<section class="scene center"><div class="scene-inner"><span class="scene-label">CENA 03</span><h3>QUATRO AULAS. QUATRO OBJETOS.</h3><div class="concept-pieces"><span class="concept">🃏 UNO</span><span class="concept">🧀 PALAVRAS / 🎵 MÚSICAS</span><span class="concept">🎭 PALCO</span><span class="concept">📖 NORMA-PADRÃO</span></div><p class="sub-question">O que cada um acrescentou à pergunta “o que faz uma interpretação valer?”</p></div></section>
+<section class="scene"><div class="scene-inner"><span class="scene-label">CENA 04</span><h3>UNO: O QUE FICOU?</h3><div class="question-box"><p class="lead">Há regras, regras sobre regras e autoridades que reconhecem regras.</p></div><p class="sub-question">Qual momento do jogo tornou isso visível?</p></div></section>
+<section class="scene"><div class="scene-inner"><span class="scene-label">CENA 05</span><h3>SENTIDOS: O QUE FICOU?</h3><div class="question-box"><p class="lead">Mais de uma interpretação pode ser possível sem que todas consigam se sustentar do mesmo modo.</p></div><p class="sub-question">Que critério apareceu nas palavras, músicas ou literatura?</p></div></section>
+<section class="scene"><div class="scene-inner"><span class="scene-label">CENA 06</span><h3>PALCO: O QUE FICOU?</h3><div class="card-hand"><div class="mini-analysis-card"><strong>CENA</strong><span>onde?</span></div><div class="mini-analysis-card"><strong>PAPEL</strong><span>de que posição?</span></div><div class="mini-analysis-card"><strong>VOZ</strong><span>quem fala junto?</span></div><div class="mini-analysis-card"><strong>FOCO</strong><span>o que aparece?</span></div><div class="mini-analysis-card"><strong>BASTIDORES</strong><span>o que some?</span></div><div class="mini-analysis-card"><strong>DEUS EX</strong><span>quem encerra?</span></div></div></div></section>
+<section class="scene"><div class="scene-inner"><span class="scene-label">CENA 07</span><h3>NORMA-PADRÃO: O QUE FICOU?</h3><div class="question-box"><p class="lead">Uma formulação pode distribuir agência e apagar sua própria história, fazendo uma posição institucional soar como fato sem autor.</p></div><p class="sub-question">Que cartas foram indispensáveis para enxergar isso?</p></div></section>
+<section class="scene center"><div class="scene-inner"><span class="scene-label">CENA 08</span><p class="small">A ANÁLISE DO DISCURSO NOS AJUDOU A PERGUNTAR:</p><p class="huge">O QUE FAZ ISSO CONTAR?</p></div></section>
+<section class="scene"><div class="scene-inner"><span class="scene-label">CENA 09</span><h3>JOGO FINAL: ESCOLHA UMA SITUAÇÃO</h3><div class="formulation-list"><div class="formulation f1">“Machado de Assis é um dos maiores escritores brasileiros.”</div><div class="formulation f2">“A resposta correta é C.”</div><div class="formulation f3">“Essa palavra não existe.”</div><div class="formulation f4">“Esse texto não é adequado para um trabalho acadêmico.”</div><div class="formulation f4">“O correto é dizer chegar a algum lugar.”</div></div></div></section>
+<section class="scene center"><div class="scene-inner"><span class="scene-label">CENA 10</span><h3>PEGUE UMA MÃO DE QUATRO CARTAS</h3><div class="card-hand"><div class="mini-analysis-card"><strong>CENA</strong><span>onde?</span></div><div class="mini-analysis-card"><strong>PAPEL</strong><span>posição?</span></div><div class="mini-analysis-card"><strong>VOZ</strong><span>vozes?</span></div><div class="mini-analysis-card"><strong>FOCO</strong><span>holofote?</span></div><div class="mini-analysis-card"><strong>BASTIDORES</strong><span>apagamentos?</span></div><div class="mini-analysis-card"><strong>DEUS EX</strong><span>autoridade?</span></div></div><p class="sub-question">Sorteiem quatro. A análise precisa usar exatamente a mão recebida.</p></div></section>
+<section class="scene"><div class="scene-inner"><span class="scene-label">CENA 11</span><h3>AS CARTAS ESPECIAIS DO UNOLING</h3><div class="special-cards"><div class="special"><strong>↩ REVERSE</strong><p>Analise a mesma situação de outra posição-sujeito.</p></div><div class="special"><strong>⊘ SKIP</strong><p>Quem é impedido, ignorado ou estruturalmente dispensado de falar?</p></div><div class="special"><strong>★ WILD</strong><p>Crie uma pergunta de análise que nenhuma carta da mão fez.</p></div><div class="special"><strong>+4</strong><p>Liste quatro consequências de essa interpretação se tornar dominante.</p></div></div></div></section>
+<section class="scene center"><div class="scene-inner"><span class="scene-label">CENA 12</span><p class="huge">JOGUE SUA INTERPRETAÇÃO.</p><p class="sub-question">Não basta dizer “eu vejo assim”. Mostre a cena, a posição, as vozes e o que faz sua leitura conseguir valer.</p></div></section>
+<section class="scene"><div class="scene-inner"><span class="scene-label">CENA 13</span><h3>COMPAREM AS MÃOS</h3><div class="live-columns"><div class="live-column"><h4>O QUE UMA MÃO VIU?</h4><div class="editable" contenteditable="true"></div></div><div class="live-column"><h4>O QUE OUTRA MÃO TORNOU VISÍVEL?</h4><div class="editable" contenteditable="true"></div></div></div><p class="lead">Uma ferramenta teórica também dirige o olhar: ela torna certos problemas visíveis e deixa outros menos iluminados.</p></div></section>
+<section class="scene center"><div class="scene-inner"><span class="scene-label">CENA 14</span><div class="flow"><span>GERATIVISMO<br/>POSSÍVEL</span><b>→</b><span>SOCIOLINGUÍSTICA<br/>PROVÁVEL</span><b>→</b><span>ANÁLISE DO DISCURSO<br/>O QUE CONSEGUE VALER</span></div><p class="sub-question">Três teorias. Três perguntas. Três maneiras de tornar mecanismos invisíveis mais visíveis.</p></div></section>
+<section class="scene center"><div class="scene-inner"><span class="scene-label">CENA 15</span><p class="huge">E QUANDO UMA RESPOSTA APARECE...</p><p class="sub-question">...ela resolve alguma coisa, deixa outra fora do foco — e faz nascer uma nova pergunta.</p></div></section>
+</article>
+</div>
+<div aria-label="Controles da apresentação" class="presentation-ui">
+<div class="presentation-left"><button class="control-btn" id="exitPresentation" title="Sair (Esc)" type="button">✕</button><button class="control-btn" id="fullscreenBtn" title="Tela cheia" type="button">⛶</button></div>
+<div class="presentation-title" id="presentationTitle">CICLO 03</div>
+<div class="presentation-right"><button class="control-btn" id="prevScene" title="Anterior" type="button">←</button><span class="present-count" id="presentCount">1 / 1</span><button class="control-btn" id="nextScene" title="Próxima" type="button">→</button></div>
+<div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+</div>
+<script src="site-config.js"></script>
+<script src="site-nav.js"></script>
+<script>
+(() => {
+  const fallbackStates = {
+    "ciclo-03-aula-01":"current",
+    "ciclo-03-aula-02":"next",
+    "ciclo-03-aula-03":"locked",
+    "ciclo-03-aula-04":"locked",
+    "ciclo-03-aula-05":"locked"
+  };
+  const getState = id => window.PlayLing ? PlayLing.state(id) : (fallbackStates[id] || "locked");
+  const isAvailable = state => state === "current" || state === "open";
+
+  document.querySelectorAll("details.lesson").forEach(details => {
+    const id = details.dataset.lessonId;
+    const state = getState(id);
+    details.dataset.state = state;
+    if(state === "current") details.open = true;
+    const summary = details.querySelector("summary");
+    summary.addEventListener("click", ev => {
+      if(!isAvailable(state)){ ev.preventDefault(); details.open = false; }
+    });
+    const launch = details.querySelector(".present-launch");
+    if(launch && !isAvailable(state)){
+      launch.disabled = true;
+      launch.textContent = state === "next" ? "→ APRESENTAÇÃO A SEGUIR" : "🔒 APRESENTAÇÃO BLOQUEADA";
+    }
+  });
+
+  document.querySelectorAll("[data-sync]").forEach(el => {
+    el.addEventListener("input", () => {
+      const key = el.dataset.sync;
+      document.querySelectorAll(`[data-sync="${key}"]`).forEach(other => {
+        if(other !== el) other.innerHTML = el.innerHTML;
+      });
+    });
+  });
+
+  document.querySelectorAll(".scene h3").forEach(title => {
+    const words = title.textContent.trim().split(/\s+/).filter(Boolean).length;
+    if(words > 9) title.classList.add("very-long-title");
+    else if(words > 5) title.classList.add("long-title");
+  });
+
+  let activeDeck = null, scenes = [], sceneIndex = 0;
+  const titleEl = document.getElementById("presentationTitle");
+  const countEl = document.getElementById("presentCount");
+  const fillEl = document.getElementById("progressFill");
+
+  function renderScene(){
+    scenes.forEach((scene, i) => scene.classList.toggle("present-active", i === sceneIndex));
+    countEl.textContent = `${sceneIndex + 1} / ${scenes.length}`;
+    fillEl.style.width = `${((sceneIndex + 1) / scenes.length) * 100}%`;
+  }
+  function startPresentation(deckNumber){
+    const deck = document.querySelector(`.deck[data-deck="${deckNumber}"]`);
+    if(!deck) return;
+    document.querySelectorAll(".deck").forEach(d => d.classList.remove("active-deck"));
+    activeDeck = deck; activeDeck.classList.add("active-deck");
+    scenes = [...activeDeck.querySelectorAll(".scene")]; sceneIndex = 0;
+    titleEl.textContent = activeDeck.dataset.deckTitle || `AULA ${deckNumber}`;
+    document.body.classList.add("presentation");
+    document.querySelector(".presentations").setAttribute("aria-hidden","false");
+    renderScene();
+  }
+  function exitPresentation(){
+    document.body.classList.remove("presentation");
+    document.querySelector(".presentations").setAttribute("aria-hidden","true");
+    if(activeDeck) activeDeck.classList.remove("active-deck");
+    scenes.forEach(s => s.classList.remove("present-active"));
+    activeDeck = null; scenes = []; sceneIndex = 0;
+  }
+  function next(){ if(scenes.length){ sceneIndex = Math.min(sceneIndex + 1, scenes.length - 1); renderScene(); } }
+  function prev(){ if(scenes.length){ sceneIndex = Math.max(sceneIndex - 1, 0); renderScene(); } }
+
+  document.querySelectorAll(".present-launch:not(:disabled)").forEach(btn => btn.addEventListener("click", () => startPresentation(btn.dataset.launch)));
+  document.getElementById("nextScene").addEventListener("click", next);
+  document.getElementById("prevScene").addEventListener("click", prev);
+  document.getElementById("exitPresentation").addEventListener("click", exitPresentation);
+  document.getElementById("fullscreenBtn").addEventListener("click", async () => {
+    try{
+      if(!document.fullscreenElement && document.documentElement.requestFullscreen) await document.documentElement.requestFullscreen();
+      else if(document.exitFullscreen) await document.exitFullscreen();
+    }catch(e){}
+  });
+  document.addEventListener("keydown", ev => {
+    if(!document.body.classList.contains("presentation")) return;
+    if(ev.target && (ev.target.isContentEditable || /INPUT|TEXTAREA|SELECT/.test(ev.target.tagName))) return;
+    if(ev.key === "ArrowRight" || ev.key === "PageDown" || ev.key === " "){ ev.preventDefault(); next(); }
+    else if(ev.key === "ArrowLeft" || ev.key === "PageUp"){ ev.preventDefault(); prev(); }
+    else if(ev.key === "Home"){ ev.preventDefault(); sceneIndex = 0; renderScene(); }
+    else if(ev.key === "End"){ ev.preventDefault(); sceneIndex = scenes.length - 1; renderScene(); }
+    else if(ev.key === "Escape") exitPresentation();
+  });
+})();
+</script>
+</body>
+</html>

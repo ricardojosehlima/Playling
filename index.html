@@ -1,0 +1,388 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PlayLing — Linguística I</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#f3f0e8;
+      --ink:#171717;
+      --paper:#fffdf5;
+      --blue:#3154d8;   /* Aulas introdutórias */
+      --yellow:#f0c94c; /* LEGO */
+      --green:#25865a;  /* LingBet */
+      --red:#d83b46;    /* UnoLing */
+      --line:#171717;
+      --muted:#e8e5dc;
+      --shadow:6px 6px 0 var(--line);
+      --shadow-hover:3px 3px 0 var(--line);
+      --speed:.12s;
+    }
+
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--ink);font-family:"Space Mono",monospace}
+    a{color:inherit}
+    .wrap{width:min(1120px,92vw);margin:0 auto;padding:34px 0 70px}
+
+    .masthead{
+      text-align:center;
+      border-bottom:5px solid var(--line);
+      padding:6px 0 24px;
+    }
+    .course-name{
+      font-size:14px;
+      font-weight:700;
+      text-transform:uppercase;
+      letter-spacing:.16em;
+    }
+    .course-meta{
+      margin:10px 0 13px;
+      font-size:14px;
+      font-weight:700;
+    }
+    h1{
+      font-family:"Press Start 2P",monospace;
+      font-size:clamp(25px,4.7vw,52px);
+      line-height:1.38;
+      margin:0;
+      color:var(--blue);
+      text-shadow:
+        2px 2px 0 var(--yellow),
+        4px 4px 0 var(--green),
+        6px 6px 0 var(--red);
+    }
+
+    .panel{
+      border:3px solid var(--line);
+      background:var(--paper);
+      padding:22px 24px;
+      box-shadow:var(--shadow);
+    }
+    .idea{
+      margin-top:24px;
+      position:relative;
+      overflow:hidden;
+    }
+    .idea::before{
+      content:"";
+      position:absolute;
+      left:0;
+      top:0;
+      width:100%;
+      height:7px;
+      background:linear-gradient(
+        to right,
+        var(--blue) 0 25%,
+        var(--yellow) 25% 50%,
+        var(--green) 50% 75%,
+        var(--red) 75% 100%
+      );
+    }
+    .panel h2{
+      font-family:"Press Start 2P",monospace;
+      font-size:15px;
+      line-height:1.6;
+      margin:4px 0 14px;
+    }
+    .idea h2{color:var(--blue)}
+    .idea-text{
+      font-size:16px;
+      line-height:1.72;
+      margin:0;
+    }
+
+    .quick-links{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:16px;
+      margin-top:22px;
+    }
+    .quick-link{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      min-height:62px;
+      border:3px solid var(--line);
+      background:var(--paper);
+      padding:15px 18px;
+      color:var(--ink);
+      text-decoration:none;
+      font-weight:700;
+      text-align:center;
+      box-shadow:4px 4px 0 var(--line);
+      transition:transform var(--speed) ease, box-shadow var(--speed) ease, background var(--speed) ease;
+    }
+    .quick-link:hover,
+    .quick-link:focus-visible{
+      transform:translate(2px,2px);
+      box-shadow:2px 2px 0 var(--line);
+      background:#fff;
+      outline:none;
+    }
+    .quick-link .label{
+      font-family:"Press Start 2P",monospace;
+      font-size:12px;
+      line-height:1.5;
+    }
+    .quick-link .icon{font-size:18px;line-height:1}
+
+    .map{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:16px;
+      margin-top:28px;
+    }
+
+    /*
+      COMO LIBERAR UM MÓDULO MAIS TARDE
+      ----------------------------------
+      1) troque data-state="locked" por data-state="open"
+      2) acrescente href="nome-da-pagina.html"
+
+      Para marcar o módulo da aula atual:
+      data-state="current" + href="..." + aria-current="page"
+
+      Para marcar apenas o próximo módulo, ainda sem acesso:
+      data-state="next" e sem href
+
+      Exemplo:
+      <a class="module lego" data-state="open" href="legoling.html">...</a>
+    */
+
+    .module{
+      --accent:var(--blue);
+      border:3px solid var(--line);
+      background:var(--paper);
+      padding:18px 18px 46px;
+      min-height:182px;
+      position:relative;
+      display:block;
+      color:var(--ink);
+      text-decoration:none;
+      box-shadow:0 0 0 transparent;
+      transition:
+        transform var(--speed) ease,
+        box-shadow var(--speed) ease,
+        background var(--speed) ease,
+        opacity var(--speed) ease;
+    }
+    .module::before{
+      content:"";
+      position:absolute;
+      left:0;
+      top:0;
+      width:100%;
+      height:8px;
+      background:var(--accent);
+    }
+    .module.intro{--accent:var(--blue)}
+    .module.lego{--accent:var(--yellow)}
+    .module.bet{--accent:var(--green)}
+    .module.uno{--accent:var(--red)}
+
+    /* Cartões clicáveis: atual ou já liberado */
+    .module[data-state="current"],
+    .module[data-state="open"]{
+      cursor:pointer;
+      box-shadow:4px 4px 0 var(--line);
+    }
+    .module[data-state="current"]:hover,
+    .module[data-state="current"]:focus-visible,
+    .module[data-state="open"]:hover,
+    .module[data-state="open"]:focus-visible{
+      transform:translate(2px,2px);
+      box-shadow:2px 2px 0 var(--line);
+      background:#fff;
+      outline:none;
+    }
+    .module[data-state="current"]:focus-visible,
+    .module[data-state="open"]:focus-visible{
+      outline:3px dashed var(--accent);
+      outline-offset:4px;
+    }
+
+    /* Próximo e bloqueado continuam visíveis, mas não fingem ser links */
+    .module[data-state="next"],
+    .module[data-state="locked"]{
+      cursor:default;
+    }
+    .module[data-state="locked"]{
+      opacity:.72;
+    }
+
+    .kicker{
+      font-size:12px;
+      font-weight:700;
+      text-transform:uppercase;
+      margin-top:8px;
+    }
+    .module h3{font-size:18px;margin:10px 0}
+    .module p{font-size:14px;line-height:1.55;margin-bottom:0}
+
+    .status{
+      display:inline-block;
+      border:2px solid var(--line);
+      padding:4px 7px;
+      font-size:11px;
+      font-weight:700;
+      background:#eee;
+    }
+    .status::before{white-space:nowrap}
+
+    .module[data-state="current"] .status{background:#dce5ff}
+    .module[data-state="current"] .status::before{content:"▶ AGORA"}
+
+    .module[data-state="open"] .status{background:#e5f4e9}
+    .module[data-state="open"] .status::before{content:"✓ LIBERADO"}
+
+    .module[data-state="next"] .status{background:#edf1ff}
+    .module[data-state="next"] .status::before{content:"→ A SEGUIR"}
+
+    .module[data-state="locked"] .status{background:#ddd}
+    .module[data-state="locked"] .status::before{content:"🔒 BLOQUEADO"}
+
+    /* Indicação permanente de clique — importante no celular, onde não existe hover */
+    .enter{
+      display:none;
+      position:absolute;
+      right:16px;
+      bottom:14px;
+      font-family:"Press Start 2P",monospace;
+      font-size:9px;
+      line-height:1.4;
+      color:var(--accent);
+    }
+    .module[data-state="current"] .enter,
+    .module[data-state="open"] .enter{
+      display:block;
+    }
+
+    .footer-note{
+      margin-top:24px;
+      padding-top:14px;
+      border-top:2px solid var(--line);
+      font-size:12px;
+      line-height:1.6;
+      text-align:center;
+      opacity:.72;
+    }
+
+    @media(max-width:820px){
+      .map{grid-template-columns:1fr}
+      .quick-links{grid-template-columns:1fr}
+      .idea-text{font-size:15px}
+      h1{text-shadow:1px 1px 0 var(--yellow),2px 2px 0 var(--green),3px 3px 0 var(--red)}
+      .module[data-state="current"],
+      .module[data-state="open"]{
+        box-shadow:4px 4px 0 var(--line);
+      }
+    }
+
+    @media(prefers-reduced-motion:reduce){
+      *,*::before,*::after{transition:none!important}
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <header class="masthead">
+      <div class="course-name">LINGUÍSTICA I</div>
+      <div class="course-meta">Prof. Ricardo Joseh Lima - Turmas 01 e 02 - 2026.2</div>
+      <h1>PORTAL DO CURSO<br>PLAYLING</h1>
+    </header>
+
+    <section class="panel idea">
+      <h2>A IDEIA</h2>
+      <p class="idea-text">Linguística I vai começar apresentando as principais dicotomias de Saussure (língua e fala; sincronia e diacronia). Elas vão ser o ponto de partida para a introdução de correntes linguísticas contemporâneas (Gerativismo, Sociolinguística e Análise do Discurso). Cada uma delas vai revelar hipóteses, método e descobertas que vão trazer novidades e reflexões sobre o que é investigar a língua e sobre situações do nosso dia a dia. E vamos fazer isso jogando (e se tudo der certo, se divertindo)!</p>
+    </section>
+
+    <nav class="quick-links" aria-label="Acessos permanentes">
+      <a class="quick-link" href="avaliacoes.html"><span class="label">AVALIAÇÕES</span><span class="icon" aria-hidden="true">✦</span></a>
+      <a class="quick-link" href="cronograma.html"><span class="label">CRONOGRAMA</span><span class="icon" aria-hidden="true">→</span></a>
+      <a class="quick-link" href="textos.html"><span class="label">TEXTOS</span><span class="icon" aria-hidden="true">▤</span></a>
+    </nav>
+
+    <section class="map" aria-label="Mapa das aulas e ciclos">
+      <!--
+        Os estados NÃO são mais alterados aqui.
+        Para avançar o curso, edite somente site-config.js.
+      -->
+      <a class="module intro" data-items="aula-01" data-href="aula-01-jogo.html">
+        <span class="status"></span>
+        <div class="kicker">Aula 1</div>
+        <h3>Começar jogando</h3>
+        <p>Como um jogo leva a gente da intuição pra investigação?</p>
+        <span class="enter" aria-hidden="true">ENTRAR →</span>
+      </a>
+
+      <a class="module intro" data-items="aula-02,aula-03" data-href="aulas-02-03-saussure.html">
+        <span class="status"></span>
+        <div class="kicker">Aulas 2–3</div>
+        <h3>Duas decisões</h3>
+        <p>O que estudar? Como o Tempo entra no estudo?</p>
+        <span class="enter" aria-hidden="true">ENTRAR →</span>
+      </a>
+
+      <a class="module intro" data-items="aula-04" data-href="aula-04-lingua-linguagem.html">
+        <span class="status"></span>
+        <div class="kicker">Aula 4</div>
+        <h3>Língua e linguagem</h3>
+        <p>Como organizar um objeto complexo antes de entrar nas teorias?</p>
+        <span class="enter" aria-hidden="true">ENTRAR →</span>
+      </a>
+
+      <a class="module lego" data-items="ciclo-01" data-href="ciclo-01-lego-gerativismo.html">
+        <span class="status"></span>
+        <div class="kicker">Ciclo 1</div>
+        <h3>LEGO</h3>
+        <p>Como uma gramática organiza possibilidades?</p>
+        <span class="enter" aria-hidden="true">ENTRAR →</span>
+      </a>
+
+      <a class="module bet" data-items="ciclo-02" data-href="ciclo-02-lingbet-sociolinguistica.html">
+        <span class="status"></span>
+        <div class="kicker">Ciclo 2</div>
+        <h3>LingBet</h3>
+        <p>Como diferenciar palpites de hipóteses sustentadas?</p>
+        <span class="enter" aria-hidden="true">ENTRAR →</span>
+      </a>
+
+      <a class="module uno" data-items="ciclo-03" data-href="ciclo-03-unoling-analise-discurso.html">
+        <span class="status"></span>
+        <div class="kicker">Ciclo 3</div>
+        <h3>UnoLing</h3>
+        <p>Quem controla interpretações que se estabilizam e passam a valer?</p>
+        <span class="enter" aria-hidden="true">ENTRAR →</span>
+      </a>
+    </section>
+
+    <div class="footer-note">Os conteúdos serão liberados ao longo do curso.</div>
+  </main>
+
+  <script src="site-config.js"></script>
+  <script>
+    (() => {
+      if(!window.PlayLing) return;
+      document.querySelectorAll('.module[data-items]').forEach(module => {
+        const ids = module.dataset.items.split(',').map(s => s.trim()).filter(Boolean);
+        const state = PlayLing.groupState(ids);
+        module.dataset.state = state;
+        const available = state === 'current' || state === 'open';
+        if(available){
+          module.href = module.dataset.href;
+          module.removeAttribute('aria-disabled');
+          if(state === 'current') module.setAttribute('aria-current','page');
+        } else {
+          module.removeAttribute('href');
+          module.setAttribute('aria-disabled','true');
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

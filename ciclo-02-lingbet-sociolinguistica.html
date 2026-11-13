@@ -1,0 +1,1644 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<meta content="#25865a" name="theme-color"/>
+<title>Ciclo 02 — LingBet + Sociolinguística | PlayLing</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="site-common.css" rel="stylesheet"/>
+<style>
+    :root{
+      --bg:#f3f0e8;
+      --paper:#fffdf5;
+      --ink:#171717;
+      --line:#171717;
+      --yellow:#25865a;
+      --yellow-soft:#cfeadd;
+      --yellow-pale:#eef8f2;
+      --blue:#3154d8;
+      --blue-pale:#eef2ff;
+      --green:#25865a;
+      --green-pale:#e6f4ed;
+      --red:#d83b46;
+      --red-pale:#fbe8ea;
+      --purple:#7057b8;
+      --purple-pale:#eee9ff;
+      --muted:#77736a;
+      --disabled:#dedbd2;
+      --shadow:6px 6px 0 var(--line);
+      --shadow-small:3px 3px 0 var(--line);
+      --speed:.14s;
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;background:var(--bg);color:var(--ink);font-family:"Space Mono",monospace}
+    a{color:inherit}
+    button,a{font:inherit}
+    button{color:inherit}
+    .wrap{width:min(1080px,92vw);margin:0 auto;padding:24px 0 76px}
+
+    /* ---------- Landing ---------- */
+    .topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}
+    .back-link,.utility-link{
+      display:inline-flex;align-items:center;justify-content:center;min-height:42px;
+      border:2px solid var(--line);background:var(--paper);padding:9px 12px;
+      text-decoration:none;font-weight:700;box-shadow:var(--shadow-small);
+      transition:transform var(--speed),box-shadow var(--speed),background var(--speed)
+    }
+    .back-link:hover,.back-link:focus-visible,.utility-link:hover,.utility-link:focus-visible{
+      transform:translate(2px,2px);box-shadow:1px 1px 0 var(--line);background:#fff;outline:none
+    }
+    .mini-nav{display:flex;gap:9px;flex-wrap:wrap;justify-content:flex-end}
+
+    .cycle-head{
+      position:relative;overflow:hidden;border:3px solid var(--line);background:var(--paper);
+      box-shadow:var(--shadow);padding:28px 28px 25px
+    }
+    .cycle-head::before{content:"";position:absolute;left:0;top:0;width:100%;height:10px;background:var(--yellow)}
+    .eyebrow{
+      font-family:"Press Start 2P",monospace;font-size:10px;line-height:1.7;
+      color:#1d6a48;margin:5px 0 14px
+    }
+    .cycle-head h1{
+      font-family:"Press Start 2P",monospace;font-size:clamp(23px,4.2vw,44px);
+      line-height:1.35;margin:0;color:#20734e;text-shadow:2px 2px 0 #d9f1e4
+    }
+    .cycle-subtitle{margin:15px 0 0;font-size:clamp(15px,2vw,19px);line-height:1.65;font-weight:700}
+    .cycle-challenge{
+      margin-top:21px;border:3px solid var(--line);background:var(--yellow-pale);
+      padding:17px 19px;box-shadow:var(--shadow-small)
+    }
+    .cycle-challenge small{
+      display:block;font-family:"Press Start 2P",monospace;color:#1b6745;
+      font-size:9px;line-height:1.5;margin-bottom:8px
+    }
+    .cycle-challenge strong{font-size:clamp(18px,2.5vw,28px);line-height:1.45}
+
+    .cycle-road{
+      margin:25px 0 0;display:grid;grid-template-columns:repeat(5,1fr);gap:7px
+    }
+    .road-step{
+      border:2px solid var(--line);background:var(--paper);padding:10px 8px;
+      text-align:center;font-size:11px;line-height:1.45;font-weight:700;min-width:0
+    }
+    .road-step b{
+      display:block;font-family:"Press Start 2P",monospace;color:#1d6a48;
+      font-size:8px;line-height:1.5;margin-bottom:5px
+    }
+
+    .accordion-list{display:grid;gap:16px;margin-top:28px}
+    details.lesson{
+      border:3px solid var(--line);background:var(--paper);box-shadow:var(--shadow-small);
+      position:relative;overflow:hidden
+    }
+    details.lesson::before{content:"";position:absolute;left:0;top:0;width:100%;height:8px;background:var(--yellow)}
+    details.lesson[open]{box-shadow:var(--shadow)}
+    details.lesson[data-state="locked"],details.lesson[data-state="next"]{background:#e9e7df;color:#747168}
+    details.lesson[data-state="locked"]::before,details.lesson[data-state="next"]::before{background:#aaa69b}
+
+    summary.lesson-summary{
+      list-style:none;cursor:pointer;padding:23px 22px 19px;display:grid;
+      grid-template-columns:auto 1fr auto auto;gap:15px;align-items:center
+    }
+    summary.lesson-summary::-webkit-details-marker{display:none}
+    summary.lesson-summary:focus-visible{outline:4px solid rgba(240,201,76,.45);outline-offset:-5px}
+    .lesson-number{
+      width:52px;height:52px;border:3px solid var(--line);display:grid;place-items:center;
+      background:var(--yellow);font-family:"Press Start 2P",monospace;font-size:12px;box-shadow:2px 2px 0 var(--line)
+    }
+    .lesson-summary-text{min-width:0}
+    .permanent-name{
+      font-family:"Press Start 2P",monospace;font-size:8px;line-height:1.55;color:#1d6a48;margin-bottom:7px
+    }
+    .lesson-summary h2{
+      font-family:"Press Start 2P",monospace;font-size:clamp(13px,2vw,18px);
+      line-height:1.55;margin:0;color:#8b7000
+    }
+    .lesson-status{
+      border:2px solid var(--line);padding:6px 8px;background:var(--yellow-soft);
+      font-weight:700;font-size:10px;white-space:nowrap
+    }
+    details.lesson[data-state="open"] .lesson-status::before{content:"✓ LIBERADO"}
+    details.lesson[data-state="current"] .lesson-status::before{content:"▶ AGORA"}
+    details.lesson[data-state="next"] .lesson-status::before{content:"→ A SEGUIR"}
+    details.lesson[data-state="locked"] .lesson-status::before{content:"🔒 BLOQUEADO"}
+    details.lesson[data-state="next"] .lesson-status,
+    details.lesson[data-state="locked"] .lesson-status{background:#d6d3ca}
+    .summary-arrow{
+      font-family:"Press Start 2P",monospace;font-size:12px;margin-left:2px
+    }
+    details[open] .summary-arrow{transform:rotate(90deg)}
+
+    .lesson-body{border-top:2px dashed #9e988b;padding:20px 22px 22px}
+    .lesson-intro{font-size:14px;line-height:1.65;margin:0 0 14px}
+    .lesson-question{
+      border-left:7px solid var(--yellow);background:var(--yellow-pale);
+      padding:13px 14px;font-weight:700;margin:15px 0;font-size:15px;line-height:1.6
+    }
+    .present-launch{
+      width:100%;border:3px solid var(--line);background:var(--yellow);color:var(--ink);
+      padding:15px 16px;cursor:pointer;box-shadow:3px 3px 0 var(--line);
+      font-family:"Press Start 2P",monospace;font-size:10px;line-height:1.5;
+      transition:transform var(--speed),box-shadow var(--speed),filter var(--speed)
+    }
+    .present-launch:hover,.present-launch:focus-visible{
+      transform:translate(2px,2px);box-shadow:1px 1px 0 var(--line);filter:brightness(1.03);outline:none
+    }
+    .text-portal-callout strong{color:#1d6a48}
+    .locked-message{
+      display:none;border-top:2px dashed #aaa69b;padding:15px 22px 19px;font-size:13px;font-weight:700
+    }
+    details.lesson[data-state="next"] .locked-message,
+    details.lesson[data-state="locked"] .locked-message{display:block}
+    details.lesson[data-state="next"] .lesson-body,
+    details.lesson[data-state="locked"] .lesson-body{display:none}
+
+    .unlock-help{
+      margin-top:20px;border:3px solid var(--line);background:var(--paper);
+      padding:17px 20px;box-shadow:var(--shadow-small);font-size:13px;line-height:1.65
+    }
+    .unlock-help strong{color:#1d6a48}
+
+    /* ============================================================
+       PRESENTATIONS
+       ============================================================ */
+    .presentations,.deck,.scene{display:none}
+    body.presentation{overflow:hidden;background:var(--bg)}
+    body.presentation .wrap{display:none}
+    body.presentation .presentations{display:block}
+    body.presentation .deck.active-deck{display:block}
+    body.presentation .deck.active-deck .scene.present-active{
+      display:flex;position:fixed;inset:0;z-index:100;background:var(--paper);
+      padding:60px clamp(24px,5vw,72px) 108px;flex-direction:column;
+      justify-content:center;align-items:flex-start;overflow:auto;animation:sceneIn .18s ease-out
+    }
+    body.presentation .deck.active-deck .scene.center{align-items:center;text-align:center}
+    body.presentation .deck.active-deck .scene::before{
+      content:"";position:fixed;left:0;top:0;width:100%;height:11px;background:var(--yellow);z-index:101
+    }
+    .scene-inner{width:min(1100px,100%);margin:0 auto}
+    .scene.center .scene-inner{display:flex;flex-direction:column;align-items:center}
+    .scene-label{
+      display:inline-block;font-family:"Press Start 2P",monospace;font-size:9px;line-height:1.4;
+      color:#1d6a48;border:2px solid #1d6a48;padding:6px 8px;margin-bottom:17px
+    }
+    .scene h3{
+      font-family:"Press Start 2P",monospace;font-size:clamp(21px,2.8vw,37px);
+      line-height:1.35;color:#20734e;margin:0 0 19px;max-width:1050px
+    }
+    .scene h3.long-title{font-size:clamp(18px,2.2vw,31px);line-height:1.38}
+    .scene h3.very-long-title{font-size:clamp(16px,1.85vw,27px);line-height:1.4}
+    @media (min-width:800px) and (max-height:760px){
+      .scene h3{font-size:clamp(18px,2.25vw,31px);margin-bottom:13px}
+      .scene h3.long-title{font-size:clamp(16px,1.85vw,26px)}
+      .scene h3.very-long-title{font-size:clamp(15px,1.65vw,23px)}
+    }
+    .scene p,.scene li{font-size:clamp(16px,1.8vw,23px);line-height:1.55}
+    .scene p{margin:8px 0}.scene ul{margin:9px 0;padding-left:27px}.scene li{margin:7px 0}
+    .small{font-size:clamp(12px,1.3vw,16px)!important;line-height:1.55!important}
+    .lead{font-size:clamp(20px,2.45vw,30px)!important;font-weight:700;line-height:1.5!important}
+    .huge{
+      font-family:"Press Start 2P",monospace;font-size:clamp(29px,5.6vw,70px);
+      line-height:1.35;color:#20734e;text-align:center;margin:0
+    }
+    .huge.black{color:var(--ink)}
+    .sub-question{max-width:900px;text-align:center;font-size:clamp(18px,2.2vw,27px)!important;margin-top:23px!important}
+
+    .box,.activity-box,.question-box,.model-box,.data-box,.warning-box,.compare-box{
+      width:min(1000px,100%);border:3px solid var(--line);padding:21px 24px;box-shadow:var(--shadow-small)
+    }
+    .activity-box{background:var(--yellow-pale)}
+    .question-box{background:#fff}
+    .model-box{background:var(--purple-pale)}
+    .data-box{background:var(--blue-pale)}
+    .warning-box{background:var(--red-pale)}
+    .compare-box{background:var(--green-pale)}
+    .box h4,.activity-box h4,.question-box h4,.model-box h4,.data-box h4,.warning-box h4,.compare-box h4{
+      font-family:"Press Start 2P",monospace;font-size:clamp(11px,1.4vw,16px);
+      line-height:1.55;margin:0 0 13px;color:#1b6745
+    }
+
+    .live-columns{display:grid;grid-template-columns:1fr 1fr;gap:18px;width:min(1050px,100%)}
+    .live-column{border:3px solid var(--line);background:var(--paper);box-shadow:var(--shadow-small);min-height:290px;overflow:hidden}
+    .live-column h4{
+      margin:0;background:var(--yellow);color:var(--ink);padding:13px 14px;
+      font-family:"Press Start 2P",monospace;font-size:clamp(10px,1.2vw,14px);line-height:1.5
+    }
+    .editable{min-height:230px;padding:17px;font-size:clamp(14px,1.5vw,19px);line-height:1.55;outline:none;white-space:pre-wrap}
+    .editable:empty::before{content:"Clique aqui e registre as respostas da turma...";color:#969084}
+    .editable:focus{background:var(--yellow-pale)}
+    .live-hint{font-size:12px!important;color:var(--muted);margin-top:10px!important}
+
+    .lego-pieces{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin:22px 0}
+    .brick{
+      min-width:88px;min-height:52px;border:3px solid var(--line);display:grid;place-items:center;
+      font-weight:700;box-shadow:3px 3px 0 var(--line);padding:8px 11px
+    }
+    .brick:nth-child(4n+1){background:var(--yellow)}
+    .brick:nth-child(4n+2){background:#73bdf0}
+    .brick:nth-child(4n+3){background:#ef747c}
+    .brick:nth-child(4n){background:#77c58e}
+
+    .two-options{display:grid;grid-template-columns:1fr auto 1fr;align-items:stretch;gap:18px;width:min(1000px,100%);margin-top:17px}
+    .option{
+      border:4px solid var(--line);background:var(--yellow-pale);min-height:180px;
+      display:flex;align-items:center;justify-content:center;text-align:center;padding:23px;
+      font-family:"Press Start 2P",monospace;font-size:clamp(14px,1.8vw,21px);line-height:1.55;
+      box-shadow:var(--shadow-small)
+    }
+    .or{display:flex;align-items:center;justify-content:center;font-family:"Press Start 2P",monospace;color:#1d6a48;font-size:15px}
+
+    .flow{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:9px;margin:23px 0 0;width:100%}
+    .flow span{border:2px solid var(--line);background:var(--paper);padding:9px 12px;font-weight:700;font-size:clamp(12px,1.4vw,17px)}
+    .flow b{font-size:20px;color:#1d6a48}
+
+    .gridmap{
+      display:grid;grid-template-columns:repeat(7,42px);grid-template-rows:repeat(6,42px);
+      gap:2px;width:max-content;max-width:100%;margin:18px auto;padding:6px;border:3px solid var(--line);background:#fff
+    }
+    .cell{border:1px solid #c7c1b4;background:#faf8f1;position:relative}
+    .marker{
+      width:28px;height:28px;border:2px solid var(--line);display:grid;place-items:center;
+      font-family:"Press Start 2P",monospace;font-size:8px;position:absolute;left:5px;top:5px
+    }
+    .marker.a{background:var(--yellow)}.marker.b{background:#73bdf0}.marker.c{background:#ef747c}
+
+    .triptych{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;width:min(1050px,100%)}
+    .triptych > div{border:3px solid var(--line);padding:16px;background:var(--paper);box-shadow:var(--shadow-small)}
+    .triptych strong{
+      display:block;font-family:"Press Start 2P",monospace;font-size:clamp(10px,1.15vw,14px);
+      line-height:1.5;color:#1b6745;margin-bottom:9px
+    }
+
+    .subject-chair{
+      width:180px;height:145px;margin:18px auto;position:relative
+    }
+    .chair-back{position:absolute;left:30px;top:0;width:120px;height:80px;border:5px solid var(--line);background:var(--yellow-pale)}
+    .chair-seat{position:absolute;left:20px;top:74px;width:140px;height:28px;border:5px solid var(--line);background:var(--yellow)}
+    .chair-leg{position:absolute;top:99px;width:10px;height:46px;background:var(--line)}
+    .chair-leg.l{left:35px}.chair-leg.r{right:35px}
+    .chair-label{
+      position:absolute;left:50%;top:26px;transform:translateX(-50%);
+      font-family:"Press Start 2P",monospace;font-size:9px;line-height:1.4;text-align:center
+    }
+
+    .sentence{
+      width:min(1000px,100%);border:3px solid var(--line);background:#fff;padding:17px 20px;
+      box-shadow:var(--shadow-small);margin:12px 0
+    }
+    .sentence .source{
+      font-size:clamp(20px,2.4vw,30px);font-weight:700;line-height:1.45;margin-bottom:10px
+    }
+    .gloss{
+      display:grid;grid-template-columns:repeat(var(--cols,4),minmax(0,1fr));
+      gap:6px;margin-top:8px
+    }
+    .gloss span{border-top:2px solid #bbb4a7;padding-top:5px;font-size:clamp(11px,1.2vw,15px);line-height:1.35}
+    .natural{margin-top:11px!important;font-size:clamp(14px,1.45vw,18px)!important;font-weight:700}
+    .agreement{
+      display:inline-block;border:2px solid var(--line);background:var(--yellow-soft);
+      padding:4px 7px;font-weight:700
+    }
+    .subject-tag{
+      display:inline-block;border:2px solid var(--line);background:var(--blue-pale);
+      padding:4px 7px;font-weight:700
+    }
+    .controller-tag{
+      display:inline-block;border:2px solid var(--line);background:var(--green-pale);
+      padding:4px 7px;font-weight:700
+    }
+    .agreement-flow{
+      display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:10px;
+      width:min(960px,100%);margin:14px auto 4px;padding:10px 12px;
+      border:2px dashed #8d887d;background:#fffdf5
+    }
+    .agreement-flow .flow-label{
+      font-family:"Press Start 2P",monospace;font-size:8px;line-height:1.5;color:#5f5a50
+    }
+    .agreement-arrow{
+      font-family:"Press Start 2P",monospace;font-size:18px;line-height:1;color:var(--green)
+    }
+    .agreement-key{
+      display:flex;flex-wrap:wrap;gap:9px;align-items:center;justify-content:center;
+      width:min(960px,100%);margin:10px auto 0;font-size:12px;line-height:1.45
+    }
+    .agreement-key span{display:inline-flex;align-items:center;gap:6px}
+    .key-square{width:18px;height:18px;border:2px solid var(--line);display:inline-block}
+    .key-subject{background:var(--blue-pale)}
+    .key-controller{background:var(--green-pale)}
+    .key-verb{background:var(--yellow-soft)}
+
+    .matrix{border-collapse:collapse;width:min(1000px,100%);font-size:clamp(12px,1.3vw,16px)}
+    .matrix th,.matrix td{border:2px solid var(--line);padding:11px 10px;text-align:left;vertical-align:top}
+    .matrix th{background:var(--yellow);font-family:"Press Start 2P",monospace;font-size:clamp(8px,.95vw,11px);line-height:1.5}
+    .matrix tr:nth-child(even) td{background:var(--yellow-pale)}
+
+    .norm-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;width:min(1050px,100%)}
+    .norm{border:3px solid var(--line);background:#fff;box-shadow:var(--shadow-small);overflow:hidden}
+    .norm h4{margin:0;padding:13px 14px;background:var(--yellow);font-family:"Press Start 2P",monospace;font-size:clamp(10px,1.2vw,14px);line-height:1.5}
+    .norm-body{padding:15px}.norm-body p{font-size:clamp(15px,1.65vw,20px);margin:8px 0}
+
+    .concept-pieces{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;width:min(1050px,100%);margin-top:20px}
+    .concept{
+      border:3px solid var(--line);background:var(--yellow-pale);padding:11px 13px;
+      box-shadow:2px 2px 0 var(--line);font-weight:700;font-size:clamp(12px,1.35vw,16px)
+    }
+
+    /* ---------- Presentation controls ---------- */
+    .presentation-ui{
+      display:none;position:fixed;z-index:500;left:0;right:0;bottom:0;min-height:74px;
+      border-top:3px solid var(--line);background:var(--bg);padding:10px 16px;
+      align-items:center;justify-content:space-between;gap:12px
+    }
+    body.presentation .presentation-ui{display:flex}
+    .presentation-left,.presentation-right{display:flex;align-items:center;gap:8px}
+    .presentation-title{
+      font-family:"Press Start 2P",monospace;font-size:8px;line-height:1.4;
+      text-align:center;white-space:nowrap
+    }
+    .control-btn{
+      min-width:43px;min-height:40px;border:2px solid var(--line);background:var(--paper);
+      cursor:pointer;box-shadow:2px 2px 0 var(--line);font-weight:700;
+      transition:transform var(--speed),box-shadow var(--speed)
+    }
+    .control-btn:hover,.control-btn:focus-visible{transform:translate(1px,1px);box-shadow:1px 1px 0 var(--line);outline:none}
+    .present-count{font-weight:700;font-size:12px;white-space:nowrap}
+    .progress-track{position:fixed;left:0;bottom:74px;width:100%;height:4px;background:#d9d5ca;z-index:501}
+    .progress-fill{height:100%;width:0;background:var(--yellow);transition:width .12s linear}
+
+    @keyframes sceneIn{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
+    @media(max-width:860px){
+      .cycle-road{grid-template-columns:1fr}
+      .topbar{align-items:flex-start;flex-direction:column}.mini-nav{justify-content:flex-start}
+      summary.lesson-summary{grid-template-columns:auto 1fr}.lesson-status{grid-column:1/-1;width:max-content}
+      .triptych,.norm-grid,.live-columns{grid-template-columns:1fr}
+      .two-options{grid-template-columns:1fr}.or{padding:2px 0}
+      .gloss{grid-template-columns:1fr!important}
+    }
+    @media(max-width:760px){
+      .wrap{width:min(94vw,1080px);padding-top:15px}
+      .cycle-head{padding:24px 18px 20px}
+      body.presentation .deck.active-deck .scene.present-active{padding:50px 18px 105px}
+      .presentation-title,.progress-track{display:none}
+      .gridmap{grid-template-columns:repeat(7,34px);grid-template-rows:repeat(6,34px)}
+      .cell{min-width:34px;min-height:34px}.marker{width:24px;height:24px;left:4px;top:4px}
+    }
+    @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
+    @media print{.presentation-ui{display:none!important}}
+  
+    /* ---------- LingBet-specific components ---------- */
+    .bet-board{
+      display:grid;grid-template-columns:repeat(2,1fr);gap:14px;width:min(1000px,100%)
+    }
+    .bet-option{
+      border:3px solid var(--line);background:var(--paper);box-shadow:var(--shadow-small);
+      padding:16px;min-height:145px
+    }
+    .bet-option strong{
+      display:block;font-family:"Press Start 2P",monospace;font-size:clamp(10px,1.2vw,14px);
+      line-height:1.5;color:#1d6a48;margin-bottom:10px
+    }
+    .bet-count{
+      margin-top:12px;min-height:48px;border:2px dashed #8b877c;background:#fff;
+      padding:9px;font-size:18px;font-weight:700;outline:none
+    }
+    .bet-count:empty::before{content:"nº de apostas...";color:#9a958a;font-size:13px}
+
+    .prob-row{
+      display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:12px;
+      width:min(1050px,100%);margin:17px 0
+    }
+    .prob-card{
+      border:3px solid var(--line);background:var(--paper);box-shadow:var(--shadow-small);
+      padding:16px 18px;text-align:center;min-width:145px
+    }
+    .prob-card strong{
+      display:block;font-family:"Press Start 2P",monospace;font-size:clamp(10px,1.2vw,15px);
+      line-height:1.5;color:#1d6a48
+    }
+    .coin{
+      width:72px;height:72px;border-radius:50%;border:4px solid var(--line);
+      background:var(--yellow-soft);display:grid;place-items:center;
+      font-family:"Press Start 2P",monospace;font-size:12px;box-shadow:4px 4px 0 var(--line)
+    }
+    .die{
+      width:74px;height:74px;border:4px solid var(--line);background:#fff;
+      display:grid;place-items:center;font-size:34px;font-weight:700;box-shadow:4px 4px 0 var(--line)
+    }
+    .sequence{
+      display:inline-flex;gap:4px;align-items:center;border:2px solid var(--line);
+      background:#fff;padding:7px 9px;font-weight:700
+    }
+
+    .not-list{
+      display:grid;gap:10px;width:min(1000px,100%);margin-top:14px
+    }
+    .not-item{
+      border:3px solid var(--line);padding:12px 15px;background:var(--red-pale);font-weight:700
+    }
+    .yes-item{
+      border:3px solid var(--line);padding:12px 15px;background:var(--green-pale);font-weight:700
+    }
+    .not-item b,.yes-item b{
+      font-family:"Press Start 2P",monospace;font-size:9px;line-height:1.5;margin-right:7px
+    }
+
+    .odds-card{
+      border:4px solid var(--line);background:#101b16;color:#fff;padding:22px 24px;
+      box-shadow:var(--shadow);width:min(820px,100%)
+    }
+    .odds-card .odds-number{
+      font-family:"Press Start 2P",monospace;font-size:clamp(35px,6vw,72px);
+      color:#75dba5;line-height:1.2
+    }
+    .odds-card p{font-size:clamp(15px,1.6vw,20px);margin:10px 0}
+    .odds-card .calc{
+      border-top:2px dashed #8fae9e;padding-top:12px;margin-top:12px;font-weight:700
+    }
+
+    .hundred-grid{
+      display:grid;grid-template-columns:repeat(10,22px);grid-template-rows:repeat(10,22px);
+      gap:3px;width:max-content;max-width:100%;margin:17px auto
+    }
+    .hundred-grid span{border:1px solid var(--line);background:#e2ded5}
+    .hundred-grid span.hit{background:var(--green)}
+    .expectation{
+      border:3px solid var(--line);background:var(--yellow-pale);
+      padding:14px 17px;box-shadow:var(--shadow-small);width:min(900px,100%);text-align:center
+    }
+
+    .combo-bet{
+      display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:11px;align-items:center;
+      width:min(1050px,100%);margin-top:16px
+    }
+    .combo-piece{
+      border:3px solid var(--line);background:#fff;padding:17px;text-align:center;
+      box-shadow:var(--shadow-small);font-weight:700
+    }
+    .combo-piece strong{
+      display:block;font-family:"Press Start 2P",monospace;color:#1d6a48;
+      font-size:clamp(9px,1.1vw,13px);line-height:1.5;margin-bottom:8px
+    }
+    .combo-symbol{
+      font-family:"Press Start 2P",monospace;font-size:18px;color:#1d6a48;text-align:center
+    }
+
+    .group-rules{
+      display:grid;grid-template-columns:repeat(3,1fr);gap:14px;width:min(1050px,100%)
+    }
+    .group-rule{
+      border:3px solid var(--line);background:#fff;box-shadow:var(--shadow-small);padding:16px
+    }
+    .group-rule strong{
+      display:block;font-family:"Press Start 2P",monospace;font-size:11px;line-height:1.5;
+      color:#1d6a48;margin-bottom:10px
+    }
+    .group-rule .rule{font-weight:700;line-height:1.55}
+
+    .social-cloud{
+      display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:12px;
+      width:min(980px,100%);margin-top:18px
+    }
+    .social-bubble{
+      border:3px solid var(--line);border-radius:999px;background:#fff;
+      padding:12px 16px;box-shadow:var(--shadow-small);font-weight:700
+    }
+    .social-bubble:nth-child(3n+1){background:var(--green-pale)}
+    .social-bubble:nth-child(3n+2){background:var(--blue-pale)}
+    .social-bubble:nth-child(3n){background:var(--purple-pale)}
+
+    .slang-life{
+      display:grid;grid-template-columns:repeat(6,1fr);gap:9px;align-items:stretch;
+      width:min(1080px,100%);margin-top:16px
+    }
+    .slang-step{
+      border:3px solid var(--line);background:#fff;padding:13px 10px;
+      box-shadow:2px 2px 0 var(--line);font-size:clamp(11px,1.15vw,15px);line-height:1.45;font-weight:700
+    }
+    .slang-step b{
+      display:block;font-family:"Press Start 2P",monospace;font-size:8px;line-height:1.45;
+      color:#1d6a48;margin-bottom:7px
+    }
+
+    .generation-table{
+      border-collapse:collapse;width:min(960px,100%);font-size:clamp(12px,1.35vw,16px)
+    }
+    .generation-table th,.generation-table td{
+      border:2px solid var(--line);padding:10px;text-align:center
+    }
+    .generation-table th{
+      background:var(--green);color:#fff;font-family:"Press Start 2P",monospace;
+      font-size:clamp(8px,.95vw,11px);line-height:1.5
+    }
+    .generation-table td.editable-cell{
+      min-height:44px;background:#fff;outline:none;font-weight:700
+    }
+    .generation-table td.editable-cell:empty::before{content:"anote";color:#aaa59a}
+
+    .context-grid{
+      display:grid;grid-template-columns:1fr 1fr;gap:15px;width:min(1050px,100%)
+    }
+    .context-card{
+      border:3px solid var(--line);background:#fff;box-shadow:var(--shadow-small);padding:16px
+    }
+    .context-card h4{
+      font-family:"Press Start 2P",monospace;font-size:10px;line-height:1.5;color:#1d6a48;margin:0 0 10px
+    }
+    .context-card p{font-size:clamp(14px,1.5vw,18px);margin:7px 0}
+
+    .bar-chart{
+      width:min(950px,100%);display:grid;gap:13px;margin-top:17px
+    }
+    .bar-row{
+      display:grid;grid-template-columns:minmax(110px,180px) 1fr 58px;gap:10px;align-items:center
+    }
+    .bar-label{font-weight:700}
+    .bar-track{height:32px;border:2px solid var(--line);background:#e4e0d7}
+    .bar-fill{height:100%;background:var(--green)}
+    .bar-value{font-weight:700;text-align:right}
+    .chart-note{
+      border:2px dashed #8b877c;background:#fff;padding:10px 12px;font-size:12px!important;
+      width:min(950px,100%)
+    }
+
+    .scenario-grid{
+      display:grid;grid-template-columns:1fr 1fr;gap:16px;width:min(1050px,100%)
+    }
+    .scenario{
+      border:3px solid var(--line);background:#fff;box-shadow:var(--shadow-small);padding:17px
+    }
+    .scenario h4{
+      font-family:"Press Start 2P",monospace;font-size:10px;line-height:1.55;color:#1d6a48;margin:0 0 10px
+    }
+    .scenario p{font-size:clamp(13px,1.4vw,17px);margin:7px 0}
+
+    .evidence-grid{
+      display:grid;grid-template-columns:repeat(2,1fr);gap:13px;width:min(1050px,100%)
+    }
+    .evidence{
+      border:3px solid var(--line);background:#fff;padding:14px 16px;box-shadow:var(--shadow-small)
+    }
+    .evidence strong{
+      display:block;font-family:"Press Start 2P",monospace;font-size:9px;line-height:1.5;
+      color:#1d6a48;margin-bottom:8px
+    }
+    .chips{display:flex;flex-wrap:wrap;gap:9px;justify-content:center;margin-top:18px}
+    .chip{
+      width:48px;height:48px;border-radius:50%;border:3px solid var(--line);background:var(--green);
+      color:#fff;display:grid;place-items:center;font-family:"Press Start 2P",monospace;
+      font-size:10px;box-shadow:2px 2px 0 var(--line)
+    }
+
+    @media(max-width:860px){
+      .bet-board,.group-rules,.context-grid,.scenario-grid,.evidence-grid{grid-template-columns:1fr}
+      .slang-life{grid-template-columns:1fr 1fr}
+      .combo-bet{grid-template-columns:1fr}
+      .combo-symbol{padding:3px}
+    }
+    @media(max-width:520px){
+      .slang-life{grid-template-columns:1fr}
+      .hundred-grid{grid-template-columns:repeat(10,17px);grid-template-rows:repeat(10,17px)}
+      .bar-row{grid-template-columns:90px 1fr 42px}
+    }
+</style>
+</head>
+<body>
+<main class="wrap">
+<div class="topbar">
+<a class="back-link" href="index.html">← PORTAL</a>
+<nav aria-label="Acessos rápidos" class="mini-nav">
+<a class="utility-link" href="avaliacoes.html">AVALIAÇÕES</a>
+<a class="utility-link" href="cronograma.html">CRONOGRAMA</a>
+<a class="utility-link" href="textos.html">TEXTOS</a>
+</nav>
+</div>
+<header class="cycle-head">
+<p class="eyebrow">PLAYLING · CICLO 02 · LINGBET + SOCIOLINGUÍSTICA</p>
+<h1>O QUE TORNA UMA FORMA PROVÁVEL?</h1>
+<p class="cycle-subtitle">
+      Cinco aulas para trocar palpites sobre o futuro da língua por
+      <strong>dados, padrões e graus de confiança</strong>.
+    </p>
+<div class="cycle-challenge">
+<small>DESAFIO DO CICLO</small>
+<strong>Dá para prever o futuro do português? “Cê” vai substituir “você”? “A gente” vai substituir “nós”?</strong>
+</div>
+<div aria-label="Estrutura do ciclo" class="cycle-road">
+<div class="road-step"><b>01</b>JOGO &amp;<br/>PROBLEMA</div>
+<div class="road-step"><b>02</b>MODELO &amp;<br/>HIPÓTESE</div>
+<div class="road-step"><b>03</b>ANÁLISE &amp;<br/>TESTE</div>
+<div class="road-step"><b>04</b>APLICAÇÃO &amp;<br/>CONFRONTO</div>
+<div class="road-step"><b>05</b>REVISÃO &amp;<br/>NOVO JOGO</div>
+</div>
+</header>
+<!--
+    ============================================================
+    COMO LIBERAR AS AULAS DO CICLO 02
+    ============================================================
+    Edite APENAS site-config.js.
+
+      "ciclo-02-aula-01": "current",
+      "ciclo-02-aula-02": "next",
+      "ciclo-02-aula-03": "locked",
+      "ciclo-02-aula-04": "locked",
+      "ciclo-02-aula-05": "locked"
+
+    Exemplo — quando chegar à Aula 02:
+      "ciclo-02-aula-01": "open",
+      "ciclo-02-aula-02": "current",
+      "ciclo-02-aula-03": "next",
+      "ciclo-02-aula-04": "locked",
+      "ciclo-02-aula-05": "locked"
+
+    Estados:
+      current = aula atual
+      open    = aula passada e acessível
+      next    = próxima aula, título visível e conteúdo bloqueado
+      locked  = aula futura
+    ============================================================
+  -->
+<section aria-label="Cinco aulas do Ciclo 02" class="accordion-list">
+<details class="lesson" data-lesson-id="ciclo-02-aula-01">
+<summary class="lesson-summary">
+<span class="lesson-number">01</span>
+<span class="lesson-summary-text">
+<span class="permanent-name">JOGO &amp; PROBLEMA</span>
+<h2>QUANTO VOCÊ APOSTA?</h2>
+</span>
+<span class="lesson-status"></span>
+<span class="summary-arrow">›</span>
+</summary>
+<div class="lesson-body">
+<p class="lesson-intro">Começamos apostando no futuro de “cê” e “a gente” e desmontamos, passo a passo, a aparente simplicidade de uma probabilidade.</p>
+<div class="lesson-question">Prever um caso é a mesma coisa que conhecer uma probabilidade?</div>
+<button class="present-launch" data-launch="1" type="button">▶ APRESENTAÇÃO AULA 01</button>
+<div class="text-portal-callout"><strong>Tem texto sobre este assunto.</strong> Acesse diretamente a pasta de textos no Google Drive.<br/><a class="text-portal-link" href="https://drive.google.com/drive/folders/1tIUsTf-qjTyWiIr1S74jszs9MIUOoq1M?usp=sharing" rel="noopener noreferrer" target="_blank">ABRIR TEXTOS NO DRIVE →</a></div>
+</div>
+<div class="locked-message">Esta aula ainda não está liberada.</div>
+</details>
+<details class="lesson" data-lesson-id="ciclo-02-aula-02">
+<summary class="lesson-summary">
+<span class="lesson-number">02</span>
+<span class="lesson-summary-text">
+<span class="permanent-name">MODELO &amp; HIPÓTESE</span>
+<h2>A LÍNGUA JOGA EM GRUPO</h2>
+</span>
+<span class="lesson-status"></span>
+<span class="summary-arrow">›</span>
+</summary>
+<div class="lesson-body">
+<p class="lesson-intro">O próximo resultado individual continua incerto, mas distribuições de grupos começam a revelar padrões. Depois, acompanhamos a vida — e a possível morte — de uma gíria.</p>
+<div class="lesson-question">Como algo imprevisível pessoa por pessoa pode se tornar reconhecível quando olhamos para grupos?</div>
+<button class="present-launch" data-launch="2" type="button">▶ APRESENTAÇÃO AULA 02</button>
+<div class="text-portal-callout"><strong>Tem texto sobre este assunto.</strong> Acesse diretamente a pasta de textos no Google Drive.<br/><a class="text-portal-link" href="https://drive.google.com/drive/folders/1tIUsTf-qjTyWiIr1S74jszs9MIUOoq1M?usp=sharing" rel="noopener noreferrer" target="_blank">ABRIR TEXTOS NO DRIVE →</a></div>
+</div>
+<div class="locked-message">A próxima aula já está no mapa, mas ainda não pode ser aberta.</div>
+</details>
+<details class="lesson" data-lesson-id="ciclo-02-aula-03">
+<summary class="lesson-summary">
+<span class="lesson-number">03</span>
+<span class="lesson-summary-text">
+<span class="permanent-name">ANÁLISE &amp; TESTE</span>
+<h2>QUANDO A VARIAÇÃO VIRA MUDANÇA?</h2>
+</span>
+<span class="lesson-status"></span>
+<span class="summary-arrow">›</span>
+</summary>
+<div class="lesson-body">
+<p class="lesson-intro">Duas formas coexistirem não basta. Vamos procurar competição, distribuição e movimento através do tempo.</p>
+<div class="lesson-question">Que evidência transforma “duas formas existem” em “uma mudança pode estar acontecendo”?</div>
+<button class="present-launch" data-launch="3" type="button">▶ APRESENTAÇÃO AULA 03</button>
+<div class="text-portal-callout"><strong>Tem texto sobre este assunto.</strong> Acesse diretamente a pasta de textos no Google Drive.<br/><a class="text-portal-link" href="https://drive.google.com/drive/folders/1tIUsTf-qjTyWiIr1S74jszs9MIUOoq1M?usp=sharing" rel="noopener noreferrer" target="_blank">ABRIR TEXTOS NO DRIVE →</a></div>
+</div>
+<div class="locked-message">Esta aula ainda está bloqueada.</div>
+</details>
+<details class="lesson" data-lesson-id="ciclo-02-aula-04">
+<summary class="lesson-summary">
+<span class="lesson-number">04</span>
+<span class="lesson-summary-text">
+<span class="permanent-name">APLICAÇÃO &amp; CONFRONTO</span>
+<h2>“CÊ” VAI? “A GENTE” VAI?</h2>
+</span>
+<span class="lesson-status"></span>
+<span class="summary-arrow">›</span>
+</summary>
+<div class="lesson-body">
+<p class="lesson-intro">Voltamos às apostas iniciais. Primeiro precisamos descobrir onde as formas realmente competem e o que um retrato de gerações permite — ou não — concluir.</p>
+<div class="lesson-question">Uma previsão científica começa respondendo à pergunta ou começa corrigindo a pergunta?</div>
+<button class="present-launch" data-launch="4" type="button">▶ APRESENTAÇÃO AULA 04</button>
+<div class="text-portal-callout"><strong>Tem texto sobre este assunto.</strong> Acesse diretamente a pasta de textos no Google Drive.<br/><a class="text-portal-link" href="https://drive.google.com/drive/folders/1tIUsTf-qjTyWiIr1S74jszs9MIUOoq1M?usp=sharing" rel="noopener noreferrer" target="_blank">ABRIR TEXTOS NO DRIVE →</a></div>
+</div>
+<div class="locked-message">Esta aula ainda está bloqueada.</div>
+</details>
+<details class="lesson" data-lesson-id="ciclo-02-aula-05">
+<summary class="lesson-summary">
+<span class="lesson-number">05</span>
+<span class="lesson-summary-text">
+<span class="permanent-name">REVISÃO &amp; NOVO JOGO</span>
+<h2>APOSTE DE NOVO — AGORA COM DADOS</h2>
+</span>
+<span class="lesson-status"></span>
+<span class="summary-arrow">›</span>
+</summary>
+<div class="lesson-body">
+<p class="lesson-intro">Texto, perguntas, reconstrução do percurso e uma nova rodada de LingBet. Desta vez, toda aposta precisa mostrar sua evidência.</p>
+<div class="lesson-question">Como muda uma aposta quando somos obrigados a dizer em que dados ela se apoia?</div>
+<button class="present-launch" data-launch="5" type="button">▶ APRESENTAÇÃO AULA 05</button>
+<div class="text-portal-callout"><strong>Tem texto sobre este assunto.</strong> Acesse diretamente a pasta de textos no Google Drive.<br/><a class="text-portal-link" href="https://drive.google.com/drive/folders/1tIUsTf-qjTyWiIr1S74jszs9MIUOoq1M?usp=sharing" rel="noopener noreferrer" target="_blank">ABRIR TEXTOS NO DRIVE →</a></div>
+</div>
+<div class="locked-message">Esta aula ainda está bloqueada.</div>
+</details>
+</section>
+<div class="unlock-help"><strong>PARA LIBERAR AS AULAS:</strong> use somente <code>site-config.js</code>. As cinco apresentações já estão dentro desta página.</div>
+<nav aria-label="Navegação entre partes do curso" class="course-sequence-nav" data-course-nav="" data-current="ciclo-02"></nav>
+</main>
+<div aria-hidden="true" class="presentations">
+<!-- ========================================================
+       AULA 01
+       ======================================================== -->
+<article class="deck" data-deck="1" data-deck-title="Aula 01 · Quanto você aposta?">
+<section class="scene center">
+<div class="scene-inner">
+<span class="scene-label">CENA 01</span>
+<p class="small">LINGBET · APOSTA INICIAL</p>
+<p class="huge black">QUAL É O FUTURO?</p>
+<p class="sub-question">“Cê” vai substituir “você”? “A gente” vai substituir “nós”?</p>
+</div>
+</section>
+<section class="scene">
+<div class="scene-inner">
+<span class="scene-label">CENA 02</span>
+<h3>FAÇAM SUAS APOSTAS</h3>
+<div class="bet-board" data-sync-board="lingbet-inicial">
+<div class="bet-option"><strong>APOSTA A</strong><p>Nenhuma das duas substituições.</p><div class="bet-count" contenteditable="true" data-sync="bet-a"></div></div>
+<div class="bet-option"><strong>APOSTA B</strong><p>Só “cê” substitui “você”.</p><div class="bet-count" contenteditable="true" data-sync="bet-b"></div></div>
+<div class="bet-option"><strong>APOSTA C</strong><p>Só “a gente” substitui “nós”.</p><div class="bet-count" contenteditable="true" data-sync="bet-c"></div></div>
+<div class="bet-option"><strong>APOSTA D</strong><p>As duas substituições acontecem.</p><div class="bet-count" contenteditable="true" data-sync="bet-d"></div></div>
+</div>
+<p class="live-hint">Registre o número de apostas. Não discuta ainda quem está “certo”.</p>
+</div>
+</section>
+<section class="scene center">
+<div class="scene-inner">
+<span class="scene-label">CENA 03</span>
+<h3>PROBABILIDADE DO ZERO: UMA MOEDA</h3>
+<div class="prob-row">
+<div class="coin">C</div><div class="or">OU</div><div class="coin">K</div>
+</div>
+<p class="lead">Se a moeda for equilibrada: 1 chance em 2 para cada lado.</p>
+<p class="small">C = cara · K = coroa</p>
+</div>
+</section>
+<section class="scene">
+<div class="scene-inner">
+<span class="scene-label">CENA 04</span>
+<h3>DUAS JOGADAS: QUANTAS SEQUÊNCIAS?</h3>
+<div class="prob-row">
+<span class="sequence">CC</span><span class="sequence">CK</span><span class="sequence">KC</span><span class="sequence">KK</span>
+</div>
+<p class="lead">Escolher antecipadamente uma sequência exata → 1 em 4.</p>
+<div class="flow"><span>1 jogada: 2</span><b>→</b><span>2 jogadas: 4</span><b>→</b><span>3: 8</span><b>→</b><span>4: 16</span><b>→</b><span>8: 256</span></div>
+</div>
+</section>
+<section class="scene">
+<div class="scene-inner">
+<span class="scene-label">CENA 05</span>
+<h3>O QUE QUER DIZER “1 EM 256”?</h3>
+<div class="yes-item"><b>SIM</b> Existem 256 sequências possíveis de oito lançamentos; uma delas é a sequência exata escolhida antes.</div>
+<div class="not-list">
+<div class="not-item"><b>NÃO</b> Não significa que você vai acertar exatamente uma vez a cada 256 tentativas.</div>
+<div class="not-item"><b>NÃO</b> Não significa que, depois de 255 erros, o próximo acerto ficou “devendo”.</div>
+<div class="not-item"><b>NÃO</b> Não diz qual será o próximo resultado.</div>
+</div>
+</div>
+</section>
+<section class="scene">
+<div class="scene-inner">
+<span class="scene-label">CENA 06</span>
+<h3>E COM UM DADO?</h3>
+<div class="prob-row">
+<div class="prob-card"><div class="die">⚄</div><strong>1 LANÇAMENTO</strong><p>1 em 6</p></div>
+<div class="prob-card"><strong>2 EXATOS</strong><p class="lead">1 em 36</p></div>
+<div class="prob-card"><strong>3 EXATOS</strong><p class="lead">1 em 216</p></div>
+<div class="prob-card"><strong>10 EXATOS</strong><p class="lead">1 em 60.466.176</p></div>
+</div>
+<p class="small">Não precisamos calcular isso à mão. O ponto é observar como uma sequência de exigências vai multiplicando possibilidades.</p>
+</div>
+</section>
+<section class="scene center">
+<div class="scene-inner">
+<span class="scene-label">CENA 07</span>
+<h3>ENTRA A CASA DE APOSTAS: ODD 2,50</h3>
+<div class="odds-card">
+<div class="odds-number">2,50</div>
+<p>Você aposta R$ 1.</p>
+<p>Se vencer, recebe R$ 2,50 no total → lucro de R$ 1,50.</p>
+<div class="calc">Ignorando por um instante a margem da casa: 1 ÷ 2,50 = 0,40 → probabilidade implícita de 40%.</div>
+</div>
+</div>
+</section>
+<section class="scene">
+<div class="scene-inner">
+<span class="scene-label">CENA 08</span>
+<h3>MAS O QUE QUER DIZER 40%?</h3>
+<div aria-label="100 quadrados, 40 destacados" class="hundred-grid"><span class="hit"></span><span class="hit"></span><span class="hit"></span><span class="hit"></span><span class="hit"></span><span class="hit"></span><span class="hit"></span><span class="hit"></span><span class="hit"></span><span class="hit"></span><span class="hit"></span><span class="hit"></span><span class="hit"></span><span class="hit"></span><span class="hit"></span><span class="hit"></span><span class="hit"></span><span class="hit"></span><span class="hit"></span><span class="hit"></span><span class="hit"></span><span class="hit"></span><span class="hit"></span><span class="hit"></span><span class="hit"></span><span class="hit"></span><span class="hit"></span><span class="hit"></span><span class="hit"></span><span class="hit"></span><span class="hit"></span><span class="hit"></span><span class="hit"></span><span class="hit"></span><span class="hit"></span><span class="hit"></span><span class="hit"></span><span class="hit"></span><span class="hit"></span><span class="hit"></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+<div class="expectation">
+<p class="lead">Num modelo repetido muitas vezes em condições comparáveis, esperamos uma frequência em torno de 40%.</p>
+</div>
+<p class="sub-question">Isso significa “vai ganhar exatamente 40 de cada 100 jogos”?</p>
+</div>
+</section>
+<section class="scene">
+<div class="scene-inner">
+<span class="scene-label">CENA 09</span>
+<h3>40 EM 100 É UMA EXPECTATIVA, NÃO UMA AGENDA</h3>
+<div class="not-list">
+<div class="not-item"><b>NÃO</b> Os primeiros 40 jogos não são “vitórias reservadas”.</div>
+<div class="not-item"><b>NÃO</b> Em 100 jogos, não precisamos obter exatamente 40 vitórias.</div>
+</div>
+<div class="yes-item"><b>MODELO</b> Se cada um de 100 jogos independentes tivesse realmente chance 40%, o número esperado seria 40 — mas resultados como 35, 42 ou 44 continuam possíveis.</div>
+<p class="small">Nesse modelo artificial, a chance de terminar com <strong>exatamente 40</strong> vitórias é apenas cerca de 8%. O centro da distribuição não é uma promessa.</p>
+</div>
+</section>
+<section class="scene">
+<div class="scene-inner">
+<span class="scene-label">CENA 10</span>
+<h3>FUTEBOL NÃO É MOEDA</h3>
+<div class="triptych">
+<div><strong>MOEDA</strong><p>Podemos definir um modelo simples: resultados, em princípio, equiprováveis.</p></div>
+<div><strong>JOGO</strong><p>Os 40% precisam ser estimados a partir de informações, modelo e condições.</p></div>
+<div><strong>ODD</strong><p>É também um preço: pode incorporar margem da casa e movimentos do mercado.</p></div>
+</div>
+<p class="lead">A odd parece um número simples. Por trás dela há um modelo.</p>
+</div>
+</section>
+<section class="scene">
+<div class="scene-inner">
+<span class="scene-label">CENA 11</span>
+<h3>E UMA APOSTA COMBO?</h3>
+<p class="small">EXEMPLO ILUSTRATIVO</p>
+<div class="combo-bet">
+<div class="combo-piece"><strong>TIME VENCE</strong>40%</div>
+<div class="combo-symbol">E</div>
+<div class="combo-piece"><strong>JOGADOR MARCA</strong>50%</div>
+<div class="combo-symbol">→</div>
+<div class="combo-piece"><strong>SE FOSSEM INDEPENDENTES</strong>20% · odd justa 5,00</div>
+</div>
+<div class="warning-box" style="margin-top:18px">
+<h4>SÓ QUE...</h4>
+<p>Em futebol, marcar um gol e o time vencer podem estar relacionados. Se os eventos não forem independentes, simplesmente multiplicar 40% × 50% pode produzir uma estimativa ruim.</p>
+</div>
+</div>
+</section>
+<section class="scene center">
+<div class="scene-inner">
+<span class="scene-label">CENA 12</span>
+<p class="huge">E A LÍNGUA?</p>
+<p class="sub-question">Consigo prever se a próxima pessoa vai dizer “nós” ou “a gente”?</p>
+</div>
+</section>
+<section class="scene">
+<div class="scene-inner">
+<span class="scene-label">CENA 13</span>
+<h3>UM CASO PODE SER INCERTO. O PADRÃO PODE NÃO SER.</h3>
+<div class="flow">
+<span>1 ocorrência</span><b>→</b><span>difícil prever</span><b>→</b>
+<span>100 ocorrências</span><b>→</b><span>distribuição começa a aparecer</span>
+</div>
+<p class="lead">Probabilidade não precisa adivinhar cada caso para revelar uma regularidade.</p>
+</div>
+</section>
+<section class="scene">
+<div class="scene-inner">
+<span class="scene-label">CENA 14</span>
+<h3>AS CHANCES SÃO IGUAIS PARA TODO MUNDO?</h3>
+<div class="live-columns">
+<div class="live-column"><h4>O QUE PODERIA ALTERAR AS CHANCES?</h4><div class="editable" contenteditable="true"></div></div>
+<div class="live-column"><h4>COMO DESCOBRIR?</h4><div class="editable" contenteditable="true"></div></div>
+</div>
+<p class="live-hint">Guarde as hipóteses. A próxima aula muda a escala: do indivíduo para os grupos.</p>
+</div>
+</section>
+</article>
+<!-- ========================================================
+       AULA 02
+       ======================================================== -->
+<article class="deck" data-deck="2" data-deck-title="Aula 02 · A língua joga em grupo">
+<section class="scene">
+<div class="scene-inner">
+<span class="scene-label">CENA 01</span>
+<h3>HOJE: DO PRÓXIMO RESULTADO AO PADRÃO DO GRUPO</h3>
+<ul>
+<li>jogar o mesmo dado com regras diferentes;</li>
+<li>procurar distribuições;</li>
+<li>pensar sociedades como grupos sobrepostos;</li>
+<li>acompanhar a vida e a morte possível de uma gíria.</li>
+</ul>
+</div>
+</section>
+<section class="scene">
+<div class="scene-inner">
+<span class="scene-label">CENA 02</span>
+<h3>MESMO DADO. TRÊS REGRAS SECRETAS.</h3>
+<div class="activity-box">
+<h4>ATIVIDADE</h4>
+<p>Cada grupo recebe um cartão secreto que transforma cada número do dado em <strong>X</strong> ou <strong>Y</strong>.</p>
+<p>Façam 18 lançamentos e anotem apenas X/Y. Não revelem a regra.</p>
+</div>
+<div class="prob-row"><div class="die">⚅</div><span class="brick">X</span><span class="brick">Y</span></div>
+</div>
+</section>
+<section class="scene">
+<div class="scene-inner">
+<span class="scene-label">CENA 03</span>
+<h3>QUE SEQUÊNCIAS APARECERAM?</h3>
+<div class="live-columns">
+<div class="live-column"><h4>SEQUÊNCIA 1</h4><div class="editable" contenteditable="true"></div></div>
+<div class="live-column"><h4>SEQUÊNCIA 2</h4><div class="editable" contenteditable="true"></div></div>
+</div>
+<div class="live-column" style="margin-top:16px;width:100%">
+<h4>SEQUÊNCIA 3</h4><div class="editable" contenteditable="true" style="min-height:100px"></div>
+</div>
+<p class="sub-question">Sem conhecer as regras, já dá para desconfiar de diferenças entre os grupos?</p>
+</div>
+</section>
+<section class="scene">
+<div class="scene-inner">
+<span class="scene-label">CENA 04</span>
+<h3>REVELA AS REGRAS</h3>
+<div class="group-rules">
+<div class="group-rule"><strong>GRUPO A</strong><div class="rule">1–5 → X<br/>6 → Y</div></div>
+<div class="group-rule"><strong>GRUPO B</strong><div class="rule">1–3 → X<br/>4–6 → Y</div></div>
+<div class="group-rule"><strong>GRUPO C</strong><div class="rule">1 → X<br/>2–6 → Y</div></div>
+</div>
+<p class="lead">Ninguém sabia o próximo lançamento. Mesmo assim, os grupos tenderam a produzir distribuições diferentes.</p>
+</div>
+</section>
+<section class="scene center">
+<div class="scene-inner">
+<span class="scene-label">CENA 05</span>
+<p class="huge">INCERTEZA INDIVIDUAL ≠ ALEATORIEDADE SOCIAL</p>
+<p class="sub-question">Podemos não saber o próximo X/Y e ainda reconhecer de qual grupo uma longa sequência provavelmente veio.</p>
+</div>
+</section>
+<section class="scene">
+<div class="scene-inner">
+<span class="scene-label">CENA 06</span>
+<h3>UMA SOCIEDADE NÃO É SÓ 1 + 1 + 1 + 1...</h3>
+<p class="lead">Cada pessoa participa de vários grupos, redes e comunidades ao mesmo tempo.</p>
+<div class="social-cloud">
+<span class="social-bubble">idade</span><span class="social-bubble">bairro / região</span>
+<span class="social-bubble">escola</span><span class="social-bubble">trabalho</span>
+<span class="social-bubble">redes de amizade</span><span class="social-bubble">renda</span>
+<span class="social-bubble">gênero</span><span class="social-bubble">interesses</span>
+<span class="social-bubble">estilos</span>
+</div>
+<p class="small">Essas categorias não determinam mecanicamente como alguém fala. Elas podem ajudar a revelar distribuições.</p>
+</div>
+</section>
+<section class="scene">
+<div class="scene-inner">
+<span class="scene-label">CENA 07</span>
+<h3>E A FALA PODE ENTRAR NESSAS IDENTIFICAÇÕES</h3>
+<div class="question-box">
+<h4>PERGUNTA</h4>
+<p class="lead">Como você reconhece — ou acha que reconhece — alguém como “do seu grupo”?</p>
+</div>
+<div class="live-columns" style="margin-top:16px">
+<div class="live-column"><h4>FORA DA LÍNGUA</h4><div class="editable" contenteditable="true"></div></div>
+<div class="live-column"><h4>NA LÍNGUA</h4><div class="editable" contenteditable="true"></div></div>
+</div>
+</div>
+</section>
+<section class="scene center">
+<div class="scene-inner">
+<span class="scene-label">CENA 08</span>
+<h3>NASCE UMA GÍRIA</h3>
+<p class="lead">Uma forma começa a circular em uma rede jovem e passa a funcionar como um sinal de pertencimento, estilo ou distância de outros grupos.</p>
+<p class="small">Não é necessário imaginar uma reunião em que adolescentes “decidem” inventá-la.</p>
+</div>
+</section>
+<section class="scene">
+<div class="scene-inner">
+<span class="scene-label">CENA 09</span>
+<h3>A VIDA DE UMA GÍRIA</h3>
+<div class="slang-life">
+<div class="slang-step"><b>1 · NASCE</b>circula em uma rede</div>
+<div class="slang-step"><b>2 · PEGA</b>mais membros usam</div>
+<div class="slang-step"><b>3 · MARCA</b>fica associada ao grupo</div>
+<div class="slang-step"><b>4 · VAZA</b>outros grupos conhecem</div>
+<div class="slang-step"><b>5 · MUDA DE VALOR</b>perde exclusividade</div>
+<div class="slang-step"><b>6 · E AGORA?</b>some, muda, generaliza ou volta depois</div>
+</div>
+</div>
+</section>
+<section class="scene">
+<div class="scene-inner">
+<span class="scene-label">CENA 10</span>
+<h3>E POR QUE UMA GÍRIA PODE “MORRER”?</h3>
+<div class="model-box">
+<h4>UMA POSSIBILIDADE SOCIAL</h4>
+<p>Se uma forma ajudava a marcar um grupo e passa a ser usada por pais, professores, crianças ou pela publicidade, ela pode deixar de cumprir o mesmo trabalho social.</p>
+</div>
+<p class="sub-question">Se seus pais começam a usar a sua gíria favorita... ela continua sendo a mesma coisa?</p>
+</div>
+</section>
+<section class="scene">
+<div class="scene-inner">
+<span class="scene-label">CENA 11</span>
+<h3>MAS ISSO NÃO É UMA LEI DA MORTE DAS GÍRIAS</h3>
+<div class="triptych">
+<div><strong>PODE SUMIR</strong><p>perde espaço.</p></div>
+<div><strong>PODE MUDAR</strong><p>ganha outro sentido ou outro grupo.</p></div>
+<div><strong>PODE VIRAR COMUM</strong><p>deixa de soar como gíria.</p></div>
+</div>
+<p class="lead">O que importa é que circulação e significado social também podem ser investigados.</p>
+</div>
+</section>
+<section class="scene center">
+<div class="scene-inner">
+<span class="scene-label">CENA 12</span>
+<p class="huge">PADRÃO NÃO É DESTINO.</p>
+<p class="sub-question">Mas um padrão social pode transformar “parece aleatório” em uma pergunta investigável.</p>
+<p class="small">Próxima pergunta: se duas formas variam, isso já quer dizer que uma está substituindo a outra?</p>
+</div>
+</section>
+</article>
+<!-- ========================================================
+       AULA 03
+       ======================================================== -->
+<article class="deck" data-deck="3" data-deck-title="Aula 03 · Quando a variação vira mudança?">
+<section class="scene center">
+<div class="scene-inner">
+<span class="scene-label">CENA 01</span>
+<p class="huge">VARIAÇÃO ≠ MUDANÇA</p>
+<p class="sub-question">Duas formas existirem ao mesmo tempo ainda não conta a história inteira.</p>
+</div>
+</section>
+<section class="scene center">
+<div class="scene-inner">
+<span class="scene-label">CENA 02</span>
+<h3>UMA PESSOA USA UMA FORMA NOVA.</h3>
+<p class="sub-question">A língua mudou?</p>
+<div class="two-options"><div class="option">SIM?</div><div class="or">OU</div><div class="option">AINDA NÃO SABEMOS?</div></div>
+</div>
+</section>
+<section class="scene center">
+<div class="scene-inner">
+<span class="scene-label">CENA 03</span>
+<h3>DUAS FORMAS EXISTEM NA COMUNIDADE.</h3>
+<p class="sub-question">Agora podemos dizer que uma está substituindo a outra?</p>
+</div>
+</section>
+<section class="scene">
+<div class="scene-inner">
+<span class="scene-label">CENA 04</span>
+<h3>PRIMEIRO: ELAS DISPUTAM O MESMO LUGAR?</h3>
+<div class="context-grid">
+<div class="context-card"><h4>CONTEXTO X</h4><p>Forma A ✓</p><p>Forma B ✓</p><p><strong>Aqui existe competição.</strong></p></div>
+<div class="context-card"><h4>CONTEXTO Y</h4><p>Forma A ✓</p><p>Forma B —</p><p><strong>Aqui não há alternância direta.</strong></p></div>
+</div>
+<p class="lead">Antes de contar variantes, precisamos delimitar onde elas realmente são alternativas.</p>
+<p class="small">Termo que pode aparecer no texto: <strong>contexto de variação / envelope de variação</strong>.</p>
+</div>
+</section>
+<section class="scene">
+<div class="scene-inner">
+<span class="scene-label">CENA 05</span>
+<h3>JOGO 1: VARIAÇÃO ESTÁVEL</h3>
+<div class="activity-box">
+<h4>MESMA REGRA EM QUATRO “GERAÇÕES”</h4>
+<p>Dado: 1–3 → B · 4–6 → A. Cada pessoa lança uma vez por geração; juntamos os resultados da turma.</p>
+</div>
+<table class="generation-table">
+<thead><tr><th>GERAÇÃO</th><th>A</th><th>B</th><th>O QUE PARECE?</th></tr></thead>
+<tbody>
+<tr><td>1</td><td class="editable-cell" contenteditable="true"></td><td class="editable-cell" contenteditable="true"></td><td class="editable-cell" contenteditable="true"></td></tr>
+<tr><td>2</td><td class="editable-cell" contenteditable="true"></td><td class="editable-cell" contenteditable="true"></td><td class="editable-cell" contenteditable="true"></td></tr>
+<tr><td>3</td><td class="editable-cell" contenteditable="true"></td><td class="editable-cell" contenteditable="true"></td><td class="editable-cell" contenteditable="true"></td></tr>
+<tr><td>4</td><td class="editable-cell" contenteditable="true"></td><td class="editable-cell" contenteditable="true"></td><td class="editable-cell" contenteditable="true"></td></tr>
+</tbody>
+</table>
+</div>
+</section>
+<section class="scene">
+<div class="scene-inner">
+<span class="scene-label">CENA 06</span>
+<h3>JOGO 2: MUDANÇA EM PROGRESSO</h3>
+<div class="activity-box">
+<h4>A REGRA MUDA ENTRE “GERAÇÕES”</h4>
+<p>G1: B só no 1 · G2: B no 1–2 · G3: B no 1–4 · G4: B no 1–5.</p>
+</div>
+<table class="generation-table">
+<thead><tr><th>GERAÇÃO</th><th>A</th><th>B</th><th>O QUE PARECE?</th></tr></thead>
+<tbody>
+<tr><td>1</td><td class="editable-cell" contenteditable="true"></td><td class="editable-cell" contenteditable="true"></td><td class="editable-cell" contenteditable="true"></td></tr>
+<tr><td>2</td><td class="editable-cell" contenteditable="true"></td><td class="editable-cell" contenteditable="true"></td><td class="editable-cell" contenteditable="true"></td></tr>
+<tr><td>3</td><td class="editable-cell" contenteditable="true"></td><td class="editable-cell" contenteditable="true"></td><td class="editable-cell" contenteditable="true"></td></tr>
+<tr><td>4</td><td class="editable-cell" contenteditable="true"></td><td class="editable-cell" contenteditable="true"></td><td class="editable-cell" contenteditable="true"></td></tr>
+</tbody>
+</table>
+</div>
+</section>
+<section class="scene">
+<div class="scene-inner">
+<span class="scene-label">CENA 07</span>
+<h3>OS DOIS JOGOS TÊM ACASO. SÓ UM TEM DIREÇÃO.</h3>
+<div class="two-options">
+<div class="option">VARIAÇÃO ESTÁVEL<br/><br/>as proporções oscilam, sem tendência construída</div>
+<div class="or">×</div>
+<div class="option">MUDANÇA EM PROGRESSO<br/><br/>a distribuição se desloca ao longo do tempo</div>
+</div>
+</div>
+</section>
+<section class="scene">
+<div class="scene-inner">
+<span class="scene-label">CENA 08</span>
+<h3>UM MODELO DE TRABALHO</h3>
+<div class="flow">
+<span>VARIAÇÃO EXISTE</span><b>→</b><span>MESMO CONTEXTO?</span><b>→</b>
+<span>COMO SE DISTRIBUI?</span><b>→</b><span>A DISTRIBUIÇÃO MUDA NO TEMPO?</span>
+</div>
+<p class="small">Uma forma também pode expandir para novos contextos; “substituição total” não é o único tipo possível de mudança.</p>
+</div>
+</section>
+<section class="scene center">
+<div class="scene-inner">
+<span class="scene-label">CENA 09</span>
+<h3>AMANHÃ ALGUÉM DIZ “QUIÇÁ”.</h3>
+<p class="sub-question">Pronto: “quiçá” voltou à gramática produtiva do português brasileiro?</p>
+<div class="prob-row"><span class="brick">estilo?</span><span class="brick">citação?</span><span class="brick">ironia?</span><span class="brick">aprendido na escola?</span><span class="brick">uso produtivo?</span></div>
+</div>
+</section>
+<section class="scene">
+<div class="scene-inner">
+<span class="scene-label">CENA 10</span>
+<h3>NOTA TEÓRICA: CENTRAL × PERIFÉRICO</h3>
+<div class="model-box">
+<h4>UMA DISTINÇÃO USADA EM ALGUMAS ABORDAGENS</h4>
+<p>Alguns modelos distinguem conhecimento gramatical mais central e produtivo de material mais periférico, aprendido, fossilizado ou fortemente marcado.</p>
+<p class="lead">Aqui, a ideia serve só como lembrete: <strong>uma ocorrência não prova produtividade.</strong></p>
+</div>
+<p class="small">Não será a ferramenta principal da nossa análise sociolinguística.</p>
+</div>
+</section>
+<section class="scene">
+<div class="scene-inner">
+<span class="scene-label">CENA 11</span>
+<h3>QUE EVIDÊNCIA COMEÇA A CONVENCER?</h3>
+<div class="live-columns">
+<div class="live-column"><h4>PRECISAMOS OBSERVAR...</h4><div class="editable" contenteditable="true"></div></div>
+<div class="live-column"><h4>E COMPARAR...</h4><div class="editable" contenteditable="true"></div></div>
+</div>
+<p class="small">Falantes, grupos, contextos, frequências, gerações, momentos históricos...</p>
+</div>
+</section>
+<section class="scene center">
+<div class="scene-inner">
+<span class="scene-label">CENA 12</span>
+<p class="huge">ENTÃO VAMOS TESTAR AS APOSTAS.</p>
+<p class="sub-question">“Cê” × “você” · “a gente” × “nós”</p>
+</div>
+</section>
+</article>
+<!-- ========================================================
+       AULA 04
+       ======================================================== -->
+<article class="deck" data-deck="4" data-deck-title="Aula 04 · “Cê” vai? “A gente” vai?">
+<section class="scene center">
+<div class="scene-inner">
+<span class="scene-label">CENA 01</span>
+<p class="small">VOLTA AO LINGBET</p>
+<p class="huge black">“CÊ” VAI? “A GENTE” VAI?</p>
+<p class="sub-question">Hoje as apostas encontram dados — e talvez a própria pergunta precise mudar.</p>
+</div>
+</section>
+<section class="scene center">
+<div class="scene-inner">
+<span class="scene-label">CENA 02</span>
+<h3>“CÊ VAI SUBSTITUIR VOCÊ.”</h3>
+<p class="sub-question">Substituir <strong>onde</strong>?</p>
+<p class="lead">Antes de prever o futuro, precisamos descobrir se as duas formas disputam os mesmos lugares.</p>
+</div>
+</section>
+<section class="scene">
+<div class="scene-inner">
+<span class="scene-label">CENA 03</span>
+<h3>COMPLETE COMO VOCÊ FALARIA</h3>
+<div class="data-box">
+<p>Eu vi <strong>___</strong> na rua ontem.</p>
+<p>Ela gosta de <strong>___</strong>.</p>
+<p>Isso é entre eu e <strong>___</strong>.</p>
+<p><strong>___</strong> vai ao cinema amanhã?</p>
+<p>Eu queria que <strong>___</strong> falasse a verdade.</p>
+</div>
+<p class="small">Compare “você” e “cê”. As respostas podem variar entre falantes e regiões: isso também é dado.</p>
+</div>
+</section>
+<section class="scene">
+<div class="scene-inner">
+<span class="scene-label">CENA 04</span>
+<h3>O QUE A TURMA ENCONTROU?</h3>
+<div class="context-grid">
+<div class="context-card"><h4>OS DOIS SOARAM POSSÍVEIS</h4><div class="editable" contenteditable="true" style="min-height:170px"></div></div>
+<div class="context-card"><h4>“CÊ” SOOU BLOQUEADO OU MUITO MARCADO</h4><div class="editable" contenteditable="true" style="min-height:170px"></div></div>
+</div>
+<p class="lead">Em muitas variedades, “cê” tem distribuição mais restrita do que “você”, especialmente fora da posição de sujeito.</p>
+</div>
+</section>
+<section class="scene">
+<div class="scene-inner">
+<span class="scene-label">CENA 05</span>
+<h3>A PERGUNTA JÁ MUDOU</h3>
+<div class="two-options">
+<div class="option">ANTES<br/><br/>“Cê vai substituir você?”</div>
+<div class="or">→</div>
+<div class="option">AGORA<br/><br/>Em quais contextos “cê” e “você” realmente competem? Esses contextos estão se expandindo?</div>
+</div>
+<p class="small">Não precisamos exigir competição em todos os contextos para haver mudança; expansão para novos contextos também pode ser mudança.</p>
+</div>
+</section>
+<section class="scene center">
+<div class="scene-inner">
+<span class="scene-label">CENA 06</span>
+<h3>E “TU”?</h3>
+<p class="lead">Nosso “mercado” talvez nem tenha só dois competidores.</p>
+<div class="prob-row"><span class="brick">VOCÊ</span><span class="brick">CÊ</span><span class="brick">TU</span></div>
+<p class="sub-question">Em quais regiões, grupos e situações cada forma entra na disputa?</p>
+</div>
+</section>
+<section class="scene">
+<div class="scene-inner">
+<span class="scene-label">CENA 07</span>
+<h3>PRIMEIRO RESULTADO DO LINGBET</h3>
+<div class="warning-box">
+<h4>“CÊ VAI SIMPLESMENTE SUBSTITUIR VOCÊ”</h4>
+<p class="lead">A pergunta é simples demais para os dados que acabamos de observar.</p>
+<p>Uma previsão melhor precisa especificar contextos, grupos e direção da expansão.</p>
+</div>
+</div>
+</section>
+<section class="scene center">
+<div class="scene-inner">
+<span class="scene-label">CENA 08</span>
+<h3>E “A GENTE” × “NÓS”?</h3>
+<p class="sub-question">Aqui vamos restringir a aposta ao <strong>uso como sujeito</strong>. “Substituir nós” em todo o paradigma seria outra pergunta.</p>
+</div>
+</section>
+<section class="scene">
+<div class="scene-inner">
+<span class="scene-label">CENA 09</span>
+<h3>UM RETRATO DE HOJE</h3>
+<p class="small">SIMULAÇÃO DIDÁTICA · NÃO SÃO DADOS REAIS</p>
+<div class="bar-chart">
+<div class="bar-row"><span class="bar-label">18–25</span><div class="bar-track"><div class="bar-fill" style="width:80%"></div></div><span class="bar-value">80%</span></div>
+<div class="bar-row"><span class="bar-label">40–50</span><div class="bar-track"><div class="bar-fill" style="width:55%"></div></div><span class="bar-value">55%</span></div>
+<div class="bar-row"><span class="bar-label">65+</span><div class="bar-track"><div class="bar-fill" style="width:30%"></div></div><span class="bar-value">30%</span></div>
+</div>
+<p class="chart-note">Percentual ilustrativo de uso de “a gente” como sujeito.</p>
+<p class="sub-question">Os jovens usam mais. Isso prova que “a gente” está substituindo “nós”?</p>
+</div>
+</section>
+<section class="scene center">
+<div class="scene-inner">
+<span class="scene-label">CENA 10</span>
+<p class="huge">TALVEZ.</p>
+<p class="sub-question">O mesmo retrato pode ter pelo menos duas histórias por trás.</p>
+</div>
+</section>
+<section class="scene">
+<div class="scene-inner">
+<span class="scene-label">CENA 11</span>
+<h3>HISTÓRIA A: MUDANÇA NA COMUNIDADE</h3>
+<p class="small">SIMULAÇÃO</p>
+<div class="scenario">
+<h4>UMA COORTE É ACOMPANHADA</h4>
+<p>Aos 20 anos: 80% “a gente”.</p>
+<p>Vinte anos depois, as mesmas pessoas: 78% “a gente”.</p>
+<p>Nova geração jovem: 85% “a gente”.</p>
+<p class="lead">A preferência alta acompanha os falantes enquanto eles envelhecem.</p>
+</div>
+</div>
+</section>
+<section class="scene">
+<div class="scene-inner">
+<span class="scene-label">CENA 12</span>
+<h3>HISTÓRIA B: GRADAÇÃO ETÁRIA</h3>
+<p class="small">SIMULAÇÃO</p>
+<div class="scenario">
+<h4>A MESMA COORTE MUDA COM A IDADE</h4>
+<p>Aos 20 anos: 80% “a gente”.</p>
+<p>Vinte anos depois, as mesmas pessoas: 55% “a gente”.</p>
+<p>Nova geração jovem: novamente 80%.</p>
+<p class="lead">O padrão pertence mais à fase da vida do que a uma mudança permanente da comunidade.</p>
+</div>
+</div>
+</section>
+<section class="scene">
+<div class="scene-inner">
+<span class="scene-label">CENA 13</span>
+<h3>TEMPO APARENTE × TEMPO REAL</h3>
+<div class="two-options">
+<div class="option">TEMPO APARENTE<br/><br/>compara gerações diferentes em um mesmo momento</div>
+<div class="or">×</div>
+<div class="option">TEMPO REAL<br/><br/>compara a comunidade ou as mesmas coortes em momentos diferentes</div>
+</div>
+<p class="lead">Os dois ajudam. Nenhum transforma previsão em certeza.</p>
+</div>
+</section>
+<section class="scene">
+<div class="scene-inner">
+<span class="scene-label">CENA 14</span>
+<h3>O QUE AS NOSSAS PISTAS PERMITEM DIZER?</h3>
+<div class="context-grid">
+<div class="context-card"><h4>CÊ × VOCÊ</h4><p>A distribuição restrita torna a previsão de “substituição total” mal formulada. Precisamos observar expansão e contextos de competição.</p></div>
+<div class="context-card"><h4>A GENTE × NÓS</h4><p>Diferenças entre gerações podem sugerir mudança, mas só o retrato de tempo aparente não garante substituição futura.</p></div>
+</div>
+<p class="lead">A ciência não tirou nossa dúvida. Ela transformou a dúvida em perguntas melhores.</p>
+</div>
+</section>
+</article>
+<!-- ========================================================
+       AULA 05
+       ======================================================== -->
+<article class="deck" data-deck="5" data-deck-title="Aula 05 · Aposte de novo — agora com dados">
+<section class="scene">
+<div class="scene-inner">
+<span class="scene-label">CENA 01</span>
+<h3>HOJE: TEXTO, PERGUNTAS, REVISÃO E UMA NOVA APOSTA</h3>
+<ul>
+<li>tirar dúvidas do texto;</li>
+<li>reconstruir o caminho das quatro aulas;</li>
+<li>separar dado, análise e previsão;</li>
+<li>apostar outra vez — agora justificando.</li>
+</ul>
+</div>
+</section>
+<section class="scene">
+<div class="scene-inner">
+<span class="scene-label">CENA 02</span>
+<h3>O TEXTO TROUXE QUAIS PERGUNTAS?</h3>
+<div class="live-columns">
+<div class="live-column"><h4>DÚVIDAS</h4><div class="editable" contenteditable="true"></div></div>
+<div class="live-column"><h4>CONEXÕES COM AS AULAS</h4><div class="editable" contenteditable="true"></div></div>
+</div>
+</div>
+</section>
+<section class="scene center">
+<div class="scene-inner">
+<span class="scene-label">CENA 03</span>
+<h3>QUATRO AULAS. QUATRO PISTAS.</h3>
+<div class="concept-pieces">
+<span class="concept">🪙 MOEDA / 🎲 DADO</span>
+<span class="concept">👥 GRUPOS</span>
+<span class="concept">↔ VARIAÇÃO / MUDANÇA</span>
+<span class="concept">CÊ / A GENTE</span>
+</div>
+<p class="sub-question">O que cada uma acrescentou à nossa capacidade de fazer uma previsão?</p>
+</div>
+</section>
+<section class="scene">
+<div class="scene-inner">
+<span class="scene-label">CENA 04</span>
+<h3>PROBABILIDADE: O QUE FICOU?</h3>
+<div class="question-box"><p class="lead">Uma probabilidade descreve incerteza e distribuição; não promete a sequência dos próximos casos.</p></div>
+<p class="sub-question">Que exemplo da Aula 01 explica melhor isso?</p>
+</div>
+</section>
+<section class="scene">
+<div class="scene-inner">
+<span class="scene-label">CENA 05</span>
+<h3>GRUPOS: O QUE FICOU?</h3>
+<div class="question-box"><p class="lead">O indivíduo pode surpreender; uma distribuição social pode continuar sendo sistemática.</p></div>
+<p class="sub-question">E onde entra a vida de uma gíria?</p>
+</div>
+</section>
+<section class="scene">
+<div class="scene-inner">
+<span class="scene-label">CENA 06</span>
+<h3>VARIAÇÃO E MUDANÇA: O QUE FICOU?</h3>
+<div class="question-box"><p class="lead">Coexistência não basta. Precisamos delimitar contextos e procurar movimento na distribuição.</p></div>
+<p class="sub-question">Como os dois jogos de dados mostraram isso?</p>
+</div>
+</section>
+<section class="scene">
+<div class="scene-inner">
+<span class="scene-label">CENA 07</span>
+<h3>CÊ E A GENTE: O QUE FICOU?</h3>
+<div class="question-box"><p class="lead">Uma boa previsão precisa dizer exatamente o que está comparando, em quais contextos, grupos e momentos.</p></div>
+<p class="sub-question">O que havia de errado nas nossas apostas iniciais?</p>
+</div>
+</section>
+<section class="scene center">
+<div class="scene-inner">
+<span class="scene-label">CENA 08</span>
+<p class="small">A SOCIOLINGUÍSTICA NOS AJUDOU A PERGUNTAR:</p>
+<p class="huge">O QUE TORNA ISSO PROVÁVEL?</p>
+</div>
+</section>
+<section class="scene">
+<div class="scene-inner">
+<span class="scene-label">CENA 09</span>
+<h3>LINGBET FINAL: CARTAS DE EVIDÊNCIA</h3>
+<p class="small">CENÁRIO DIDÁTICO — AS CARTAS ABAIXO NÃO SÃO RESULTADOS EMPÍRICOS REAIS</p>
+<div class="evidence-grid">
+<div class="evidence"><strong>CARTA 1</strong>Na amostra, “cê” aparece principalmente como sujeito.</div>
+<div class="evidence"><strong>CARTA 2</strong>“Você” aparece em mais tipos de posição sintática.</div>
+<div class="evidence"><strong>CARTA 3</strong>No retrato geracional, jovens usam mais “a gente” como sujeito.</div>
+<div class="evidence"><strong>CARTA 4</strong>Não temos acompanhamento em tempo real das mesmas coortes.</div>
+<div class="evidence"><strong>CARTA 5</strong>Em algumas comunidades, “tu” também participa da competição.</div>
+<div class="evidence"><strong>CARTA 6</strong>A distribuição muda conforme contexto e grupo.</div>
+</div>
+</div>
+</section>
+<section class="scene center">
+<div class="scene-inner">
+<span class="scene-label">CENA 10</span>
+<h3>VOCÊ TEM 10 FICHAS DE CONFIANÇA</h3>
+<div class="chips">
+<span class="chip">1</span><span class="chip">2</span><span class="chip">3</span><span class="chip">4</span><span class="chip">5</span>
+<span class="chip">6</span><span class="chip">7</span><span class="chip">8</span><span class="chip">9</span><span class="chip">10</span>
+</div>
+<p class="sub-question">Distribua as fichas entre as hipóteses. Quanto mais fichas, maior sua confiança.</p>
+</div>
+</section>
+<section class="scene center">
+<div class="scene-inner">
+<span class="scene-label">CENA 11</span>
+<p class="huge">TODA APOSTA PRECISA MOSTRAR SUA EVIDÊNCIA.</p>
+<p class="sub-question">“Eu acho” pode começar a investigação. Não pode terminar a investigação.</p>
+</div>
+</section>
+<section class="scene">
+<div class="scene-inner">
+<span class="scene-label">CENA 12</span>
+<h3>PRIMEIRA APOSTA × ÚLTIMA APOSTA</h3>
+<div class="bet-board">
+<div class="bet-option"><strong>APOSTA A · INÍCIO</strong><div class="bet-count" contenteditable="true" data-sync="bet-a"></div></div>
+<div class="bet-option"><strong>APOSTA B · INÍCIO</strong><div class="bet-count" contenteditable="true" data-sync="bet-b"></div></div>
+<div class="bet-option"><strong>APOSTA C · INÍCIO</strong><div class="bet-count" contenteditable="true" data-sync="bet-c"></div></div>
+<div class="bet-option"><strong>APOSTA D · INÍCIO</strong><div class="bet-count" contenteditable="true" data-sync="bet-d"></div></div>
+</div>
+<div class="live-column" style="margin-top:18px;width:100%">
+<h4>O QUE MUDOU NA NOSSA FORMA DE APOSTAR?</h4>
+<div class="editable" contenteditable="true" style="min-height:120px"></div>
+</div>
+</div>
+</section>
+<section class="scene center">
+<div class="scene-inner">
+<span class="scene-label">CENA 13</span>
+<p class="small">JÁ PERGUNTAMOS O QUE É POSSÍVEL. AGORA, O QUE É PROVÁVEL.</p>
+<p class="huge">MAS QUEM FAZ UMA INTERPRETAÇÃO VALER?</p>
+<p class="sub-question">Essa pergunta abre o próximo ciclo.</p>
+</div>
+</section>
+</article>
+</div>
+<div aria-label="Controles da apresentação" class="presentation-ui">
+<div class="presentation-left">
+<button class="control-btn" id="exitPresentation" title="Sair (Esc)" type="button">✕</button>
+<button class="control-btn" id="fullscreenBtn" title="Tela cheia" type="button">⛶</button>
+</div>
+<div class="presentation-title" id="presentationTitle">CICLO 02</div>
+<div class="presentation-right">
+<button class="control-btn" id="prevScene" title="Anterior" type="button">←</button>
+<span class="present-count" id="presentCount">1 / 1</span>
+<button class="control-btn" id="nextScene" title="Próxima" type="button">→</button>
+</div>
+<div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+</div>
+<script src="site-config.js"></script>
+<script src="site-nav.js"></script>
+<script>
+(() => {
+  const fallbackStates = {
+    "ciclo-02-aula-01":"current",
+    "ciclo-02-aula-02":"next",
+    "ciclo-02-aula-03":"locked",
+    "ciclo-02-aula-04":"locked",
+    "ciclo-02-aula-05":"locked"
+  };
+
+  const getState = id => window.PlayLing ? PlayLing.state(id) : (fallbackStates[id] || "locked");
+  const isAvailable = state => state === "current" || state === "open";
+
+  document.querySelectorAll("details.lesson").forEach(details => {
+    const id = details.dataset.lessonId;
+    const state = getState(id);
+    details.dataset.state = state;
+    if(state === "current") details.open = true;
+
+    const summary = details.querySelector("summary");
+    summary.addEventListener("click", ev => {
+      if(!isAvailable(state)){
+        ev.preventDefault();
+        details.open = false;
+      }
+    });
+
+    const launch = details.querySelector(".present-launch");
+    if(launch && !isAvailable(state)){
+      launch.disabled = true;
+      launch.textContent = state === "next" ? "→ APRESENTAÇÃO A SEGUIR" : "🔒 APRESENTAÇÃO BLOQUEADA";
+    }
+  });
+
+  document.querySelectorAll("[data-sync]").forEach(el => {
+    el.addEventListener("input", () => {
+      const key = el.dataset.sync;
+      document.querySelectorAll(`[data-sync="${key}"]`).forEach(other => {
+        if(other !== el) other.innerHTML = el.innerHTML;
+      });
+    });
+  });
+
+  document.querySelectorAll(".scene h3").forEach(title => {
+    const words = title.textContent.trim().split(/\s+/).filter(Boolean).length;
+    if(words > 9) title.classList.add("very-long-title");
+    else if(words > 5) title.classList.add("long-title");
+  });
+
+  let activeDeck = null;
+  let scenes = [];
+  let sceneIndex = 0;
+
+  const titleEl = document.getElementById("presentationTitle");
+  const countEl = document.getElementById("presentCount");
+  const fillEl = document.getElementById("progressFill");
+
+  function renderScene(){
+    scenes.forEach((scene, i) => scene.classList.toggle("present-active", i === sceneIndex));
+    countEl.textContent = `${sceneIndex + 1} / ${scenes.length}`;
+    fillEl.style.width = `${((sceneIndex + 1) / scenes.length) * 100}%`;
+  }
+
+  function startPresentation(deckNumber){
+    const deck = document.querySelector(`.deck[data-deck="${deckNumber}"]`);
+    if(!deck) return;
+    document.querySelectorAll(".deck").forEach(d => d.classList.remove("active-deck"));
+    activeDeck = deck;
+    activeDeck.classList.add("active-deck");
+    scenes = [...activeDeck.querySelectorAll(".scene")];
+    sceneIndex = 0;
+    titleEl.textContent = activeDeck.dataset.deckTitle || `AULA ${deckNumber}`;
+    document.body.classList.add("presentation");
+    document.querySelector(".presentations").setAttribute("aria-hidden","false");
+    renderScene();
+  }
+
+  function exitPresentation(){
+    document.body.classList.remove("presentation");
+    document.querySelector(".presentations").setAttribute("aria-hidden","true");
+    if(activeDeck) activeDeck.classList.remove("active-deck");
+    scenes.forEach(s => s.classList.remove("present-active"));
+    activeDeck = null; scenes = []; sceneIndex = 0;
+  }
+
+  function next(){
+    if(!scenes.length) return;
+    sceneIndex = Math.min(sceneIndex + 1, scenes.length - 1);
+    renderScene();
+  }
+
+  function prev(){
+    if(!scenes.length) return;
+    sceneIndex = Math.max(sceneIndex - 1, 0);
+    renderScene();
+  }
+
+  document.querySelectorAll(".present-launch:not(:disabled)").forEach(btn => {
+    btn.addEventListener("click", () => startPresentation(btn.dataset.launch));
+  });
+  document.getElementById("nextScene").addEventListener("click", next);
+  document.getElementById("prevScene").addEventListener("click", prev);
+  document.getElementById("exitPresentation").addEventListener("click", exitPresentation);
+
+  document.getElementById("fullscreenBtn").addEventListener("click", async () => {
+    try{
+      if(!document.fullscreenElement && document.documentElement.requestFullscreen){
+        await document.documentElement.requestFullscreen();
+      }else if(document.exitFullscreen){
+        await document.exitFullscreen();
+      }
+    }catch(e){}
+  });
+
+  document.addEventListener("keydown", ev => {
+    if(!document.body.classList.contains("presentation")) return;
+    if(ev.target && (ev.target.isContentEditable || /INPUT|TEXTAREA|SELECT/.test(ev.target.tagName))) return;
+    if(ev.key === "ArrowRight" || ev.key === "PageDown" || ev.key === " "){ ev.preventDefault(); next(); }
+    else if(ev.key === "ArrowLeft" || ev.key === "PageUp"){ ev.preventDefault(); prev(); }
+    else if(ev.key === "Home"){ ev.preventDefault(); sceneIndex = 0; renderScene(); }
+    else if(ev.key === "End"){ ev.preventDefault(); sceneIndex = scenes.length - 1; renderScene(); }
+    else if(ev.key === "Escape"){ exitPresentation(); }
+  });
+})();
+</script>
+</body>
+</html>

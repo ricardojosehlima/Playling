@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<meta content="#3154d8" name="theme-color"/>
+<title>Aula 04 — Língua e linguagem | PlayLing</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<style>
+    :root{
+      --bg:#f3f0e8;
+      --paper:#fffdf5;
+      --ink:#171717;
+      --line:#171717;
+      --blue:#3154d8;
+      --blue-soft:#dce5ff;
+      --blue-pale:#eef2ff;
+      --yellow:#f0c94c;
+      --yellow-pale:#fff6c9;
+      --green:#25865a;
+      --green-pale:#e6f4ed;
+      --red:#d83b46;
+      --red-pale:#fbe8ea;
+      --muted:#77736a;
+      --disabled:#dedbd2;
+      --shadow:6px 6px 0 var(--line);
+      --shadow-small:3px 3px 0 var(--line);
+      --speed:.14s;
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      background:var(--bg);
+      color:var(--ink);
+      font-family:"Space Mono",monospace;
+    }
+    a{color:inherit}
+    button,a{font:inherit}
+    button{color:inherit}
+    .wrap{width:min(1080px,92vw);margin:0 auto;padding:24px 0 76px}
+
+    /* ---------- Landing ---------- */
+    .topbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom:18px;
+    }
+    .back-link,.utility-link{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-height:42px;
+      border:2px solid var(--line);
+      background:var(--paper);
+      padding:9px 12px;
+      text-decoration:none;
+      font-weight:700;
+      box-shadow:var(--shadow-small);
+      transition:transform var(--speed),box-shadow var(--speed),background var(--speed);
+    }
+    .back-link:hover,.back-link:focus-visible,
+    .utility-link:hover,.utility-link:focus-visible{
+      transform:translate(2px,2px);
+      box-shadow:1px 1px 0 var(--line);
+      background:#fff;
+      outline:none;
+    }
+    .mini-nav{display:flex;gap:9px;flex-wrap:wrap;justify-content:flex-end}
+
+    .lesson-head{
+      position:relative;
+      overflow:hidden;
+      border:3px solid var(--line);
+      background:var(--paper);
+      box-shadow:var(--shadow);
+      padding:28px 28px 24px;
+    }
+    .lesson-head::before{
+      content:"";
+      position:absolute;
+      left:0;top:0;width:100%;height:9px;
+      background:var(--blue);
+    }
+    .eyebrow{
+      font-family:"Press Start 2P",monospace;
+      font-size:11px;
+      line-height:1.7;
+      color:var(--blue);
+      margin:4px 0 14px;
+    }
+    .lesson-head h1{
+      font-family:"Press Start 2P",monospace;
+      font-size:clamp(23px,4.2vw,46px);
+      line-height:1.35;
+      margin:0;
+      color:var(--blue);
+      text-shadow:2px 2px 0 #b9c7ff;
+    }
+    .lesson-subtitle{
+      margin:16px 0 0;
+      font-size:clamp(15px,2vw,19px);
+      line-height:1.65;
+      font-weight:700;
+      max-width:920px;
+    }
+
+    .lesson-card{
+      position:relative;
+      border:3px solid var(--line);
+      background:var(--paper);
+      padding:24px 23px 23px;
+      box-shadow:var(--shadow-small);
+      margin-top:26px;
+      overflow:hidden;
+    }
+    .lesson-card::before{
+      content:"";
+      position:absolute;
+      left:0;top:0;width:100%;height:8px;
+      background:var(--blue);
+    }
+    .card-status{
+      display:inline-block;
+      border:2px solid var(--line);
+      background:var(--blue-soft);
+      padding:5px 8px;
+      font-size:11px;
+      font-weight:700;
+      margin:3px 0 14px;
+    }
+    .lesson-card h2{
+      font-family:"Press Start 2P",monospace;
+      color:var(--blue);
+      font-size:clamp(16px,2.2vw,23px);
+      line-height:1.55;
+      margin:3px 0 12px;
+    }
+    .lesson-card p{font-size:14px;line-height:1.65;margin:0 0 15px}
+    .big-question{
+      border-left:7px solid var(--blue);
+      background:var(--blue-pale);
+      padding:13px 14px;
+      font-weight:700;
+      margin:17px 0;
+      font-size:15px;
+      line-height:1.6;
+    }
+    .present-launch{
+      width:100%;
+      border:3px solid var(--line);
+      background:var(--blue);
+      color:#fff;
+      padding:15px 16px;
+      cursor:pointer;
+      box-shadow:3px 3px 0 var(--line);
+      font-family:"Press Start 2P",monospace;
+      font-size:10px;
+      line-height:1.5;
+      transition:transform var(--speed),box-shadow var(--speed),filter var(--speed);
+    }
+    .present-launch:hover,.present-launch:focus-visible{
+      transform:translate(2px,2px);
+      box-shadow:1px 1px 0 var(--line);
+      filter:brightness(1.08);
+      outline:none;
+    }
+    .present-launch:disabled{
+      background:var(--disabled);
+      color:#77736a;
+      cursor:not-allowed;
+      box-shadow:none;
+      filter:none;
+    }
+    .present-launch:disabled:hover,.present-launch:disabled:focus-visible{
+      transform:none;box-shadow:none;filter:none;
+    }
+    .card-material{
+      margin-top:16px;
+      border-top:2px dashed #8c8a82;
+      padding-top:14px;
+    }
+    .card-material-label{
+      display:block;
+      font-family:"Press Start 2P",monospace;
+      color:var(--blue);
+      font-size:8px;
+      line-height:1.55;
+      margin-bottom:7px;
+    }
+    .drive-card-link{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      border:2px solid var(--line);
+      background:#eee;
+      color:#77736a;
+      padding:10px 11px;
+      text-decoration:none;
+      font-weight:700;
+      font-size:12px;
+      line-height:1.45;
+      cursor:not-allowed;
+      opacity:.8;
+    }
+    .drive-card-link.is-active{
+      background:#fff;
+      color:var(--ink);
+      cursor:pointer;
+      opacity:1;
+      box-shadow:2px 2px 0 var(--line);
+    }
+    .drive-card-link.is-active:hover,.drive-card-link.is-active:focus-visible{
+      transform:translate(1px,1px);
+      box-shadow:1px 1px 0 var(--line);
+      background:var(--blue-pale);
+      outline:none;
+    }
+    .drive-arrow{
+      font-family:"Press Start 2P",monospace;
+      font-size:10px;
+      white-space:nowrap;
+    }
+    .landing-note{
+      margin-top:20px;
+      border:3px solid var(--line);
+      background:var(--paper);
+      padding:17px 20px;
+      box-shadow:var(--shadow-small);
+      line-height:1.65;
+      font-size:14px;
+    }
+    .landing-note strong{color:var(--blue)}
+
+    /* ============================================================
+       APRESENTAÇÃO
+       ============================================================ */
+    .presentation-deck{display:none}
+    .scene{display:none}
+
+    body.presentation{
+      overflow:hidden;
+      background:var(--bg);
+    }
+    body.presentation .wrap{display:none}
+    body.presentation .presentation-deck{display:block}
+    body.presentation .scene.present-active{
+      display:flex;
+      position:fixed;
+      inset:0;
+      z-index:100;
+      background:var(--paper);
+      padding:58px clamp(24px,5vw,72px) 104px;
+      flex-direction:column;
+      justify-content:center;
+      align-items:flex-start;
+      overflow:auto;
+      animation:sceneIn .18s ease-out;
+    }
+    body.presentation .scene.center{align-items:center;text-align:center}
+    body.presentation .scene::before{
+      content:"";
+      position:fixed;
+      left:0;top:0;width:100%;height:11px;
+      background:var(--blue);
+      z-index:101;
+    }
+    .scene-inner{width:min(1100px,100%);margin:0 auto}
+    .scene.center .scene-inner{display:flex;flex-direction:column;align-items:center}
+    .scene-label{
+      display:inline-block;
+      font-family:"Press Start 2P",monospace;
+      font-size:9px;
+      line-height:1.4;
+      color:var(--blue);
+      border:2px solid var(--blue);
+      padding:6px 8px;
+      margin-bottom:15px;
+    }
+    .scene h3{
+      font-family:"Press Start 2P",monospace;
+      font-size:clamp(20px,2.7vw,36px);
+      line-height:1.35;
+      color:var(--blue);
+      margin:0 0 18px;
+      max-width:1050px;
+    }
+    .scene h3.long-title{
+      font-size:clamp(18px,2.15vw,29px);
+      line-height:1.4;
+    }
+    .scene h3.very-long-title{
+      font-size:clamp(16px,1.85vw,25px);
+      line-height:1.42;
+    }
+    @media (min-width:800px) and (max-height:760px){
+      body.presentation .scene.present-active{padding-top:48px;padding-bottom:94px}
+      .scene h3{font-size:clamp(18px,2.25vw,30px);margin-bottom:13px}
+      .scene h3.long-title{font-size:clamp(16px,1.9vw,25px)}
+      .scene h3.very-long-title{font-size:clamp(15px,1.65vw,22px)}
+    }
+    .scene p,.scene li{
+      font-size:clamp(16px,1.75vw,22px);
+      line-height:1.52;
+    }
+    .scene p{margin:8px 0}
+    .scene ul{margin:9px 0;padding-left:28px}
+    .scene li{margin:7px 0}
+    .small{font-size:clamp(12px,1.3vw,16px)!important;line-height:1.55!important}
+    .lead{font-size:clamp(19px,2.35vw,29px)!important;font-weight:700;line-height:1.5!important}
+    .huge-question{
+      font-family:"Press Start 2P",monospace;
+      font-size:clamp(27px,5vw,64px);
+      color:var(--blue);
+      line-height:1.35;
+      margin:0;
+      text-align:center;
+    }
+    .sub-question{
+      max-width:900px;
+      text-align:center;
+      font-size:clamp(17px,2vw,25px)!important;
+      margin-top:23px!important;
+    }
+
+    .activity-box,.reflection-box,.map-box,.saussure-box,.reassure-box,.source-box{
+      width:min(1020px,100%);
+      border:3px solid var(--line);
+      background:var(--blue-pale);
+      padding:21px 24px;
+      box-shadow:var(--shadow-small);
+    }
+    .activity-box h4,.reflection-box h4,.map-box h4,.saussure-box h4,.reassure-box h4,.source-box h4{
+      font-family:"Press Start 2P",monospace;
+      color:var(--blue);
+      font-size:clamp(11px,1.35vw,16px);
+      line-height:1.55;
+      margin:0 0 13px;
+    }
+
+    .excerpt-grid{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:13px;
+      width:min(1050px,100%);
+    }
+    .excerpt-grid.five{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .excerpt-card{
+      border:2px solid var(--line);
+      background:#fff;
+      padding:13px 14px;
+      min-width:0;
+      box-shadow:2px 2px 0 var(--line);
+      font-size:clamp(13px,1.35vw,17px);
+      line-height:1.48;
+    }
+    .excerpt-card .n{
+      display:inline-block;
+      margin-right:7px;
+      color:var(--blue);
+      font-weight:700;
+    }
+    .excerpt-card.key{
+      grid-column:1 / -1;
+      background:var(--blue-pale);
+      border-width:3px;
+      font-size:clamp(14px,1.55vw,19px);
+    }
+    .source-note{
+      color:var(--muted);
+      font-size:12px!important;
+      margin-top:12px!important;
+    }
+
+    .definition-board{
+      width:min(980px,100%);
+      border:4px solid var(--line);
+      background:#fff;
+      box-shadow:var(--shadow-small);
+      overflow:hidden;
+    }
+    .definition-board .prompt{
+      background:var(--blue);
+      color:#fff;
+      padding:13px 15px;
+      font-family:"Press Start 2P",monospace;
+      font-size:clamp(10px,1.2vw,14px);
+      line-height:1.5;
+    }
+    .definition-editor{
+      min-height:230px;
+      padding:20px;
+      font-size:clamp(18px,2vw,25px);
+      line-height:1.55;
+      outline:none;
+      white-space:pre-wrap;
+    }
+    .definition-editor:empty::before{
+      content:"Clique aqui para escrever a definição provisória da turma. Atenção! Essa definição NÃO vai ficar guardada aqui, portanto, consiga um meio de registrar essa definição...";
+      color:#969084;
+    }
+    .definition-editor:focus{background:var(--blue-pale)}
+    .edit-hint{font-size:12px!important;color:var(--muted);margin-top:10px!important}
+
+    .working-map{
+      display:grid;
+      grid-template-columns:1fr;
+      gap:13px;
+      width:min(900px,100%);
+      margin-top:8px;
+    }
+    .map-level{
+      position:relative;
+      border:3px solid var(--line);
+      background:#fff;
+      padding:16px 18px;
+      text-align:center;
+      box-shadow:var(--shadow-small);
+    }
+    .map-level strong{
+      display:block;
+      font-family:"Press Start 2P",monospace;
+      color:var(--blue);
+      font-size:clamp(13px,1.8vw,20px);
+      line-height:1.5;
+      margin-bottom:6px;
+    }
+    .map-level span{font-size:clamp(14px,1.55vw,19px);font-weight:700;line-height:1.45}
+    .map-arrow{
+      text-align:center;
+      font-family:"Press Start 2P",monospace;
+      color:var(--blue);
+      font-size:18px;
+      line-height:1;
+    }
+    .map-split{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:13px;
+    }
+    .working-note{
+      margin-top:14px!important;
+      padding-left:12px;
+      border-left:6px solid var(--blue);
+      font-size:clamp(12px,1.3vw,16px)!important;
+    }
+
+    .phrase-focus{
+      width:min(1000px,100%);
+      border:4px solid var(--line);
+      background:#fff;
+      padding:21px 22px;
+      box-shadow:var(--shadow-small);
+      font-size:clamp(18px,2.1vw,27px);
+      line-height:1.55;
+      font-weight:700;
+    }
+    .phrase-focus mark{
+      background:var(--blue-soft);
+      color:var(--ink);
+      padding:2px 5px;
+    }
+
+    .saussure-coordinates{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:18px;
+      width:min(1050px,100%);
+    }
+    .coordinate{
+      border:3px solid var(--line);
+      background:#fff;
+      padding:18px;
+      box-shadow:var(--shadow-small);
+      min-width:0;
+    }
+    .coordinate .question{
+      font-family:"Press Start 2P",monospace;
+      color:var(--blue);
+      font-size:clamp(10px,1.35vw,15px);
+      line-height:1.55;
+      margin-bottom:14px;
+    }
+    .coordinate .pair{
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      gap:9px;
+      flex-wrap:wrap;
+      font-weight:700;
+      font-size:clamp(18px,2.1vw,27px);
+    }
+    .coordinate .pair b{color:var(--blue)}
+
+    .tension{
+      display:grid;
+      grid-template-columns:1fr auto 1fr;
+      align-items:center;
+      gap:18px;
+      width:min(920px,100%);
+      margin-top:15px;
+    }
+    .tension-box{
+      border:4px solid var(--line);
+      background:var(--blue-pale);
+      padding:25px 18px;
+      text-align:center;
+      box-shadow:var(--shadow-small);
+      font-family:"Press Start 2P",monospace;
+      color:var(--blue);
+      font-size:clamp(16px,2.4vw,30px);
+      line-height:1.4;
+    }
+    .tension-arrow{font-family:"Press Start 2P",monospace;color:var(--blue);font-size:22px}
+
+    .theory-grid{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:15px;
+      width:min(1100px,100%);
+    }
+    .theory-card{
+      border:3px solid var(--line);
+      padding:17px 16px;
+      box-shadow:var(--shadow-small);
+      min-width:0;
+    }
+    .theory-card.yellow{background:var(--yellow-pale);border-top:10px solid var(--yellow)}
+    .theory-card.green{background:var(--green-pale);border-top:10px solid var(--green)}
+    .theory-card.red{background:var(--red-pale);border-top:10px solid var(--red)}
+    .theory-card h4{
+      margin:0 0 12px;
+      font-family:"Press Start 2P",monospace;
+      font-size:clamp(10px,1.25vw,14px);
+      line-height:1.55;
+    }
+    .theory-card p{
+      font-size:clamp(13px,1.35vw,17px);
+      line-height:1.5;
+      margin:0;
+      font-weight:700;
+    }
+
+    .method-chips{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      width:min(1000px,100%);
+      margin-top:18px;
+    }
+    .method-chips span{
+      border:2px solid var(--line);
+      background:#fff;
+      padding:10px 12px;
+      font-weight:700;
+      font-size:clamp(13px,1.45vw,17px);
+    }
+
+    .cycle-steps{
+      display:grid;
+      grid-template-columns:repeat(5,minmax(0,1fr));
+      gap:10px;
+      width:min(1100px,100%);
+    }
+    .cycle-step{
+      border:3px solid var(--line);
+      background:#fff;
+      padding:15px 10px;
+      min-height:145px;
+      box-shadow:var(--shadow-small);
+      text-align:center;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      gap:8px;
+    }
+    .cycle-step .num{
+      font-family:"Press Start 2P",monospace;
+      color:var(--blue);
+      font-size:12px;
+    }
+    .cycle-step strong{font-size:clamp(13px,1.4vw,17px);line-height:1.45}
+    .cycle-colors{
+      display:grid;
+      grid-template-columns:1fr 1fr 1fr;
+      height:8px;
+      width:min(1100px,100%);
+      margin-top:15px;
+      border:2px solid var(--line);
+    }
+    .cycle-colors span:nth-child(1){background:var(--yellow)}
+    .cycle-colors span:nth-child(2){background:var(--green)}
+    .cycle-colors span:nth-child(3){background:var(--red)}
+
+    .checklist{
+      width:min(920px,100%);
+      margin:0;
+      padding:0;
+      list-style:none;
+    }
+    .checklist li{
+      border-bottom:2px dashed #b9b4a8;
+      padding:10px 0;
+      font-weight:700;
+    }
+    .checklist li::before{content:"✓ ";color:var(--blue);font-weight:700}
+    .next-box{
+      margin-top:20px;
+      border:3px solid var(--line);
+      background:var(--yellow-pale);
+      padding:14px 17px;
+      box-shadow:var(--shadow-small);
+      font-weight:700;
+    }
+
+    /* ---------- UI inferior ---------- */
+    .presentation-ui{
+      display:none;
+      position:fixed;
+      z-index:500;
+      left:0;right:0;bottom:0;
+      min-height:74px;
+      border-top:3px solid var(--line);
+      background:var(--bg);
+      padding:10px 16px;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+    }
+    body.presentation .presentation-ui{display:flex}
+    .presentation-left,.presentation-right{display:flex;align-items:center;gap:8px}
+    .presentation-title{
+      font-family:"Press Start 2P",monospace;
+      font-size:9px;
+      line-height:1.4;
+      text-align:center;
+      white-space:nowrap;
+    }
+    .control-btn{
+      min-width:43px;
+      min-height:40px;
+      border:2px solid var(--line);
+      background:var(--paper);
+      cursor:pointer;
+      box-shadow:2px 2px 0 var(--line);
+      font-weight:700;
+      transition:transform var(--speed),box-shadow var(--speed);
+    }
+    .control-btn:hover,.control-btn:focus-visible{
+      transform:translate(1px,1px);
+      box-shadow:1px 1px 0 var(--line);
+      outline:none;
+    }
+    .present-count{font-weight:700;font-size:12px;white-space:nowrap}
+    .progress-track{
+      position:fixed;
+      left:0;bottom:74px;
+      width:100%;height:4px;
+      background:#d9d5ca;
+      z-index:501;
+    }
+    .progress-fill{height:100%;width:0;background:var(--blue);transition:width .12s linear}
+
+    @keyframes sceneIn{from{opacity:.35;transform:translateY(4px)}to{opacity:1;transform:none}}
+
+    @media(max-width:780px){
+      .wrap{width:min(94vw,1080px);padding-top:14px}
+      .topbar{align-items:flex-start;flex-direction:column}
+      .mini-nav{justify-content:flex-start}
+      .lesson-head{padding:24px 19px 20px}
+      .lesson-card{padding:22px 17px 18px}
+      .excerpt-grid,.excerpt-grid.five,.map-split,.saussure-coordinates,.theory-grid,.cycle-steps{grid-template-columns:1fr}
+      .excerpt-card.key{grid-column:auto}
+      .tension{grid-template-columns:1fr;gap:10px}
+      .tension-arrow{transform:rotate(90deg);text-align:center}
+      body.presentation .scene.present-active{
+        padding:48px 18px 100px;
+        justify-content:flex-start;
+      }
+      .scene-inner{padding-top:8px}
+      .presentation-title{display:none}
+      .presentation-ui{padding:8px 9px;min-height:68px}
+      .progress-track{bottom:68px}
+      .definition-editor{min-height:180px}
+    }
+
+    @media(max-width:460px){
+      .lesson-head h1{font-size:24px}
+      .huge-question{font-size:28px}
+      .scene h3{font-size:20px}
+      .scene h3.long-title,.scene h3.very-long-title{font-size:18px}
+      .excerpt-card{font-size:13px}
+      .control-btn{min-width:39px}
+    }
+
+    @media(prefers-reduced-motion:reduce){
+      *{scroll-behavior:auto!important;animation:none!important;transition:none!important}
+    }
+
+    @media print{
+      .topbar,.present-launch,.presentation-deck,.presentation-ui,.progress-track{display:none!important}
+      body{background:#fff}
+      .wrap{width:100%;padding:0}
+      .lesson-head,.lesson-card,.landing-note{box-shadow:none;break-inside:avoid}
+    }
+  </style>
+<link href="site-common.css" rel="stylesheet"/>
+</head>
+<body>
+<main class="wrap">
+<nav aria-label="Navegação da aula" class="topbar">
+<a class="back-link" href="index.html">← PORTAL</a>
+<div class="mini-nav">
+<a class="utility-link" href="avaliacoes.html">AVALIAÇÕES</a>
+<a class="utility-link" href="cronograma.html">CRONOGRAMA</a>
+<a class="utility-link" href="textos.html">TEXTOS</a>
+</div>
+</nav>
+<header class="lesson-head">
+<div class="eyebrow">PLAYLING · BLOCO INTRODUTÓRIO · AULA 04</div>
+<h1>LÍNGUA E LINGUAGEM</h1>
+<p class="lesson-subtitle">Definições que parecem simples, um texto que amplia o problema e um mapa para entrar nos três ciclos do curso.</p>
+</header>
+<section aria-labelledby="aula04-title" class="lesson-card">
+<span class="card-status" id="aula04Status">🔒 BLOQUEADO</span>
+<h2 id="aula04-title">AULA 04 — LÍNGUA E LINGUAGEM</h2>
+<p>Vamos construir uma definição provisória de linguagem, colocar a prova com trechos de um texto de J. Luiz Fiorin e usar o resultado para retomar Saussure e abrir os caminhos do Gerativismo, da Sociolinguística e da Análise do Discurso.</p>
+<div class="big-question">O que é <strong>língua</strong>? O que é <strong>linguagem</strong>? E como definições podem ser obtidas e ao mesmo tempo gerar novas investigações?</div>
+<button class="present-launch" id="launchPresentation" type="button">▶ APRESENTAÇÃO</button>
+<div class="card-material">
+<span class="card-material-label">TEXTOS E MATERIAIS DE LEITURA</span>
+<a class="drive-card-link is-active" href="https://drive.google.com/drive/folders/1tIUsTf-qjTyWiIr1S74jszs9MIUOoq1M?usp=sharing" rel="noopener noreferrer" target="_blank">
+<span>Tem texto sobre esse conteúdo. Acesse diretamente a pasta de textos no Google Drive.</span>
+<span class="drive-arrow">DRIVE →</span>
+</a>
+</div>
+</section>
+<aside class="landing-note">
+<strong>Essa é a última aula do bloco introdutório.</strong> Depois dela, os três ciclos seguem uma mesma sequência: jogo e problema → método e investigação → análise e aplicação → descobertas e limites → revisão.
+    </aside>
+<nav aria-label="Aula anterior e próximo ciclo" class="course-sequence-nav" data-course-nav="" data-current="aula-04"></nav>
+</main>
+<section aria-hidden="true" class="presentation-deck" id="presentationDeck">
+<article class="scene" data-scene="1" id="cena-01">
+<div class="scene-inner">
+<span class="scene-label">Cena 01</span>
+<h3>HOJE A GENTE VAI...</h3>
+<ul class="checklist">
+<li>tentar definir <strong>língua</strong> e <strong>linguagem</strong>;</li>
+<li>testar uma definição contra novas informações;</li>
+<li>retomar os posicionamentos de Saussure;</li>
+<li>abrir os três caminhos que vão organizar o restante do curso.</li>
+</ul>
+</div>
+</article>
+<article class="scene center" data-scene="2" id="cena-02">
+<div class="scene-inner">
+<span class="scene-label">Cena 02</span>
+<p class="huge-question">O QUE É LÍNGUA?<br/><br/>O QUE É LINGUAGEM?</p>
+<p class="sub-question">Uma disciplina de Linguística I deveria conseguir responder isso, certo?</p>
+</div>
+</article>
+<article class="scene" data-scene="3" id="cena-03">
+<div class="scene-inner">
+<span class="scene-label">Cena 03</span>
+<h3>10 TRECHOS EM BUSCA DE “LINGUAGEM”</h3>
+<div class="activity-box">
+<h4>A ATIVIDADE</h4>
+<p>Vamos receber as informações aos poucos.</p>
+<p>A cada conjunto de trechos, nossa tarefa é completar — ou revisar — uma frase:</p>
+<p class="lead"><strong>LINGUAGEM É...</strong></p>
+<p>A gente não precisa acertar de primeira. Precisamos construir uma definição que dê conta do que a gente já analisou.</p>
+</div>
+<p class="source-note">Trechos de José Luiz Fiorin, “A linguagem humana: do mito à ciência”, em <em>Linguística? Que é isso?</em> (Contexto, 2021).</p>
+</div>
+</article>
+<article class="scene" data-scene="4" id="cena-04">
+<div class="scene-inner">
+<span class="scene-label">Cena 04</span>
+<h3>EVIDÊNCIA 01</h3>
+<div class="excerpt-grid">
+<div class="excerpt-card"><span class="n">1)</span>“A linguagem é a capacidade específica da espécie humana de se comunicar por meio de signos.”</div>
+<div class="excerpt-card"><span class="n">2)</span>“A linguagem é a capacidade específica da espécie humana de produzir sentidos.”</div>
+</div>
+<p class="lead" style="margin-top:24px">Com apenas essas informações, como podemos completar <strong>“Linguagem é...”</strong>?</p>
+</div>
+</article>
+<article class="scene" data-scene="5" id="cena-05">
+<div class="scene-inner">
+<span class="scene-label">Cena 05</span>
+<h3>NOSSA PRIMEIRA DEFINIÇÃO</h3>
+<div class="definition-board">
+<div class="prompt">LINGUAGEM É...</div>
+<div aria-label="Definição provisória de linguagem" class="definition-editor" contenteditable="true" data-definition-editor="" role="textbox"></div>
+</div>
+<p class="edit-hint">Você pode clicar no quadro e registrar a definição da turma.</p>
+</div>
+</article>
+<article class="scene" data-scene="6" id="cena-06">
+<div class="scene-inner">
+<span class="scene-label">Cena 06</span>
+<h3>EVIDÊNCIA 02</h3>
+<div class="excerpt-grid five">
+<div class="excerpt-card"><span class="n">3)</span>“A linguagem é uma forma de perceber o mundo.”</div>
+<div class="excerpt-card"><span class="n">4)</span>“A linguagem é uma atividade simbólica [...] as palavras criam conceitos e [...] categorizam o mundo.”</div>
+<div class="excerpt-card"><span class="n">5)</span>“A linguagem interpreta o mundo.”</div>
+<div class="excerpt-card"><span class="n">6)</span>“A principal função da linguagem é comunicar.”</div>
+<div class="excerpt-card key"><span class="n">7)</span>“A linguagem é uma forma de o homem agir no mundo.”</div>
+</div>
+</div>
+</article>
+<article class="scene" data-scene="7" id="cena-07">
+<div class="scene-inner">
+<span class="scene-label">Cena 07</span>
+<h3>MANTEMOS OU AMPLIAMOS?</h3>
+<p class="lead">A primeira definição estava errada — ou apenas ainda não dava conta de tudo?</p>
+<div class="definition-board" style="margin-top:18px">
+<div class="prompt">NOVA VERSÃO — LINGUAGEM É...</div>
+<div aria-label="Definição revisada de linguagem" class="definition-editor" contenteditable="true" data-definition-editor="" role="textbox"></div>
+</div>
+<p class="edit-hint">Os dois quadros estão sincronizados: a definição pode ser revisada ao longo da atividade.</p>
+</div>
+</article>
+<article class="scene" data-scene="8" id="cena-08">
+<div class="scene-inner">
+<span class="scene-label">Cena 08</span>
+<h3>EVIDÊNCIA 03</h3>
+<div class="excerpt-grid">
+<div class="excerpt-card"><span class="n">8)</span>A comunicação das abelhas “não é linguagem no sentido humano”; o diálogo é apresentado como condição da linguagem humana.</div>
+<div class="excerpt-card"><span class="n">9)</span>O princípio da linguagem humana é apresentado como a criatividade; os animais teriam códigos de sinais, não linguagem.</div>
+<div class="excerpt-card key"><span class="n">10)</span>“A Linguística tem por finalidade elucidar o funcionamento da <strong>linguagem humana</strong>, descrevendo e explicando a <strong>estrutura</strong> e o <strong>uso</strong> das diferentes <strong>línguas</strong> faladas no mundo.”</div>
+</div>
+<p class="source-note">Nos itens 8 e 9, a formulação foi condensada para caber na tela; o texto integral está no material da aula.</p>
+</div>
+</article>
+<article class="scene" data-scene="9" id="cena-09">
+<div class="scene-inner">
+<span class="scene-label">Cena 09</span>
+<h3>AGORA PODEMOS ORGANIZAR</h3>
+<div class="working-map">
+<div class="map-level">
+<strong>LINGUAGEM "HUMANA"</strong>
+<span>o fenômeno / a capacidade geral que queremos compreender</span>
+</div>
+<div class="map-arrow">↓</div>
+<div class="map-level">
+<strong>LÍNGUAS</strong>
+<span>os diferentes sistemas que investigamos para entender esse fenômeno</span>
+</div>
+<div class="map-arrow">↓</div>
+<div class="map-split">
+<div class="map-level"><strong>ESTRUTURA</strong><span>como as línguas se organizam</span></div>
+<div class="map-level"><strong>USO</strong><span>como elas são realizadas em situações concretas</span></div>
+</div>
+</div>
+<p class="working-note">Este é um <strong>mapa de trabalho para a disciplina</strong>: ele organiza o problema sem pretender ser uma definição universal para todas as teorias.</p>
+</div>
+</article>
+<article class="scene" data-scene="10" id="cena-10">
+<div class="scene-inner">
+<span class="scene-label">Cena 10</span>
+<h3 class="long-title">POR QUE “LINGUAGEM HUMANA” E NÃO APENAS “LÍNGUA”?</h3>
+<div class="reflection-box">
+<p><strong>“Linguagem”</strong> nomeia aqui o fenômeno mais amplo que a Linguística quer compreender.</p>
+<p><strong>“Línguas”</strong> são os sistemas abstratos que fornecem os dados para essa investigação.</p>
+<p>E a expressão <strong>“linguagem humana”</strong> delimita o uso técnico do termo diante de outros usos correntes de “linguagem”.</p>
+</div>
+<p class="lead" style="margin-top:20px">A definição não desapareceu. Ela ganhou <strong>detalhes</strong>.</p>
+</div>
+</article>
+<article class="scene" data-scene="11" id="cena-11">
+<div class="scene-inner">
+<span class="scene-label">Cena 11</span>
+<h3>E O TEXTO DO FIORIN?</h3>
+<div class="reflection-box">
+<p>Mesmo dez trechos curtos exigiram comparação, revisão de hipóteses e distinções conceituais.</p>
+<p>Por isso, nesse curso, o texto normalmente <strong>não vem primeiro</strong>.</p>
+<div class="method-chips">
+<span>PROBLEMA</span><span>ATIVIDADE</span><span>CONCEITOS</span><span>TEORIA</span><span>LEITURA</span>
+</div>
+<p style="margin-top:16px">Os textos continuam importantes: eles entram quando já temos algumas ferramentas para compreendê-los, aprofundá-los e questioná-los.</p>
+</div>
+<p class="small" style="margin-top:14px">Os materiais de leitura ficam organizados na pasta de textos no Google Drive.</p>
+</div>
+</article>
+<article class="scene" data-scene="12" id="cena-12">
+<div class="scene-inner">
+<span class="scene-label">Cena 12</span>
+<h3>JÁ TEMOS NOSSAS PRIMEIRAS COORDENADAS</h3>
+<div class="saussure-coordinates">
+<div class="coordinate">
+<div class="question">O QUE PRIVILEGIAR?</div>
+<div class="pair"><b>LÍNGUA</b><span>↔</span><b>FALA</b></div>
+</div>
+<div class="coordinate">
+<div class="question">E O TEMPO?</div>
+<div class="pair"><b>SINCRONIA</b><span>↔</span><b>DIACRONIA</b></div>
+</div>
+</div>
+<p class="lead" style="margin-top:23px">Saussure mostrou pra gente que fazer Linguística exige <strong>escolhas de objeto e de perspectiva</strong>.</p>
+</div>
+</article>
+<article class="scene" data-scene="13" id="cena-13">
+<div class="scene-inner">
+<span class="scene-label">Cena 13</span>
+<h3>UMA FRASE LEVA A GENTE DE VOLTA PRO PROBLEMA</h3>
+<div class="phrase-focus">A Linguística descreve e explica a <mark>estrutura</mark> e o <mark>uso</mark> das diferentes línguas.</div>
+<div class="tension">
+<div class="tension-box">ESTRUTURA</div>
+<div class="tension-arrow">↔</div>
+<div class="tension-box">USO</div>
+</div>
+<p class="small" style="margin-top:16px"><strong>Estrutura/uso não são sinônimos exatos de língua/fala.</strong> Mas recolocam uma tensão que já conhecemos: organização do sistema e suas realizações concretas.</p>
+</div>
+</article>
+<article class="scene" data-scene="14" id="cena-14">
+<div class="scene-inner">
+<span class="scene-label">Cena 14</span>
+<h3>TRÊS CAMINHOS. TRÊS PERGUNTAS.</h3>
+<div class="theory-grid">
+<div class="theory-card yellow">
+<h4>GERATIVISMO</h4>
+<p>Já que existe uma organização abstrata por trás do que a gente fala, <strong>como podemos descobrir como é essa organização e o que ela nos revela?</strong></p>
+</div>
+<div class="theory-card green">
+<h4>SOCIOLINGUÍSTICA</h4>
+<p>A fala varia de modo aleatório? <strong>Ou seria possível medir essa variação e identificar mudanças? Que ferramentas poderiam nos ajudar nessa medição</strong></p>
+</div>
+<div class="theory-card red">
+<h4>ANÁLISE DO DISCURSO</h4>
+<p>Já que nossa comunicação acontece em situações concretas, <strong>como os sentidos são construídos e algumas interpretações ganham força enquanto outras não?</strong></p>
+</div>
+</div>
+</div>
+</article>
+<article class="scene" data-scene="15" id="cena-15">
+<div class="scene-inner">
+<span class="scene-label">Cena 15</span>
+<h3 class="long-title">DAQUI EM DIANTE: PERGUNTAS DIRETAS, MÉTODO EXPLÍCITO</h3>
+<div class="reassure-box">
+<h4>EM CADA CICLO, VAMOS TER...</h4>
+<div class="method-chips">
+<span>UMA PERGUNTA</span>
+<span>HIPÓTESES</span>
+<span>MÉTODO</span>
+<span>DADOS</span>
+<span>ANÁLISE</span>
+<span>CONCLUSÕES</span>
+<span>LIMITES</span>
+</div>
+<p style="margin-top:17px"><strong>Teorias não servem para responder perguntas difíceis. Elas nos dão um modo organizado de trabalhar com elas</strong>.</p>
+</div>
+</div>
+</article>
+<article class="scene" data-scene="16" id="cena-16">
+<div class="scene-inner">
+<span class="scene-label">Cena 16</span>
+<h3>O RITMO DOS TRÊS CICLOS</h3>
+<div class="cycle-steps">
+<div class="cycle-step"><span class="num">01</span><strong>Jogo e problema</strong></div>
+<div class="cycle-step"><span class="num">02</span><strong>Método e investigação</strong></div>
+<div class="cycle-step"><span class="num">03</span><strong>Análise e aplicação</strong></div>
+<div class="cycle-step"><span class="num">04</span><strong>Descobertas e limites</strong></div>
+<div class="cycle-step"><span class="num">05</span><strong>Revisão</strong></div>
+</div>
+<div aria-hidden="true" class="cycle-colors"><span></span><span></span><span></span></div>
+<p class="small" style="margin-top:15px">A sequência será a mesma em LEGO/Gerativismo, LingBet/Sociolinguística e UnoLing/Análise do Discurso.</p>
+</div>
+</article>
+<article class="scene" data-scene="17" id="cena-17">
+<div class="scene-inner">
+<span class="scene-label">Cena 17</span>
+<h3>HOJE A GENTE VIU...</h3>
+<ul class="checklist">
+<li>que uma definição pode ser construída e ampliada conforme surgem novas informações;</li>
+<li>um mapa de trabalho para relacionar <strong>linguagem humana</strong>, <strong>línguas</strong>, <strong>estrutura</strong> e <strong>uso</strong>;</li>
+<li>como as escolhas de Saussure ajudam a organizar os próximos problemas;</li>
+<li>as três perguntas que vão abrir os ciclos do curso.</li>
+</ul>
+<div class="next-box">A SEGUIR: <strong>LEGO + GERATIVISMO</strong> — Como analisar construções linguísticas de um modo universal?</div>
+<p class="small" style="margin-top:13px">Texto e material de leitura: link disponível no cartão desta aula.</p>
+</div>
+</article>
+</section>
+<div aria-hidden="true" class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+<div aria-hidden="true" class="presentation-ui" id="presentationUI">
+<div class="presentation-left">
+<button class="control-btn" id="exitPresentation" title="Sair da apresentação" type="button">×</button>
+<button class="control-btn" id="prevScene" title="Cena anterior" type="button">←</button>
+</div>
+<div class="presentation-title">PLAYLING · AULA 04 · LÍNGUA E LINGUAGEM</div>
+<div class="presentation-right">
+<span class="present-count" id="sceneCount">1 / 17</span>
+<button class="control-btn" id="nextScene" title="Próxima cena" type="button">→</button>
+<button class="control-btn" id="fullscreenButton" title="Tela cheia" type="button">⛶</button>
+</div>
+</div>
+<script src="site-config.js"></script>
+<script src="site-nav.js"></script>
+<script>
+    (() => {
+      const body = document.body;
+      const launch = document.getElementById('launchPresentation');
+      const deck = document.getElementById('presentationDeck');
+      const scenes = Array.from(deck.querySelectorAll('.scene'));
+      const prev = document.getElementById('prevScene');
+      const next = document.getElementById('nextScene');
+      const exit = document.getElementById('exitPresentation');
+      const count = document.getElementById('sceneCount');
+      const progress = document.getElementById('progressFill');
+      const fullscreen = document.getElementById('fullscreenButton');
+      const ui = document.getElementById('presentationUI');
+      let current = 0;
+
+      // Estado desta aula definido em site-config.js.
+      const aula04State = window.PlayLing ? PlayLing.state('aula-04') : 'locked';
+      const status04 = document.getElementById('aula04Status');
+      const stateLabels = {current:'▶ AGORA', open:'✓ LIBERADO', next:'→ A SEGUIR', locked:'🔒 BLOQUEADO'};
+      if(status04) status04.textContent = stateLabels[aula04State] || stateLabels.locked;
+      const aula04Available = aula04State === 'current' || aula04State === 'open';
+      launch.disabled = !aula04Available;
+      launch.textContent = aula04Available ? '▶ APRESENTAÇÃO' : '🔒 APRESENTAÇÃO BLOQUEADA';
+
+      /* ---------- Títulos adaptativos ----------
+         Regra mantida desde as aulas 02–03:
+         títulos com mais palavras recebem classes menores automaticamente.
+      */
+      scenes.forEach(scene => {
+        const title = scene.querySelector('h3');
+        if (!title) return;
+        const words = title.textContent.trim().split(/\s+/).filter(Boolean).length;
+        if (words > 9) title.classList.add('very-long-title');
+        else if (words > 5) title.classList.add('long-title');
+      });
+
+      /* ---------- Sincroniza os dois quadros de definição ---------- */
+      const editors = Array.from(document.querySelectorAll('[data-definition-editor]'));
+      let definitionHTML = '';
+      editors.forEach(editor => {
+        editor.addEventListener('input', () => {
+          definitionHTML = editor.innerHTML;
+          editors.forEach(other => {
+            if (other !== editor && other.innerHTML !== definitionHTML) other.innerHTML = definitionHTML;
+          });
+        });
+      });
+
+      function isEditing() {
+        const active = document.activeElement;
+        return active && (active.isContentEditable || /INPUT|TEXTAREA|SELECT/.test(active.tagName));
+      }
+
+      function showScene(index, updateHash = true) {
+        current = Math.max(0, Math.min(index, scenes.length - 1));
+        scenes.forEach((scene, i) => scene.classList.toggle('present-active', i === current));
+        count.textContent = `${current + 1} / ${scenes.length}`;
+        progress.style.width = `${((current + 1) / scenes.length) * 100}%`;
+        prev.disabled = current === 0;
+        next.disabled = current === scenes.length - 1;
+        if (updateHash) history.replaceState(null, '', `#cena-${String(current + 1).padStart(2,'0')}`);
+      }
+
+      function startPresentation(index = 0) {
+        body.classList.add('presentation');
+        deck.setAttribute('aria-hidden','false');
+        ui.setAttribute('aria-hidden','false');
+        showScene(index);
+      }
+
+      function stopPresentation() {
+        body.classList.remove('presentation');
+        deck.setAttribute('aria-hidden','true');
+        ui.setAttribute('aria-hidden','true');
+        scenes.forEach(scene => scene.classList.remove('present-active'));
+        history.replaceState(null, '', location.pathname + location.search);
+      }
+
+      launch.addEventListener('click', () => startPresentation(0));
+      prev.addEventListener('click', () => showScene(current - 1));
+      next.addEventListener('click', () => showScene(current + 1));
+      exit.addEventListener('click', stopPresentation);
+
+      fullscreen.addEventListener('click', async () => {
+        try {
+          if (!document.fullscreenElement) await document.documentElement.requestFullscreen();
+          else await document.exitFullscreen();
+        } catch (_) {}
+      });
+
+      document.addEventListener('keydown', e => {
+        if (!body.classList.contains('presentation') || isEditing()) return;
+        if (['ArrowRight','PageDown',' '].includes(e.key)) {
+          e.preventDefault();
+          showScene(current + 1);
+        } else if (['ArrowLeft','PageUp'].includes(e.key)) {
+          e.preventDefault();
+          showScene(current - 1);
+        } else if (e.key === 'Home') {
+          e.preventDefault(); showScene(0);
+        } else if (e.key === 'End') {
+          e.preventDefault(); showScene(scenes.length - 1);
+        } else if (e.key === 'Escape' && !document.fullscreenElement) {
+          stopPresentation();
+        }
+      });
+
+      /* Permite abrir diretamente uma cena via #cena-XX. */
+      const hashMatch = location.hash.match(/^#cena-(\d{2})$/);
+      if (hashMatch) {
+        const index = Number(hashMatch[1]) - 1;
+        if (index >= 0 && index < scenes.length) startPresentation(index);
+      }
+
+      /* Também permite ?modo=aula para abrir já em apresentação. */
+      const params = new URLSearchParams(location.search);
+      if (!body.classList.contains('presentation') && params.get('modo') === 'aula') startPresentation(0);
+    })();
+  </script>
+</body>
+</html>

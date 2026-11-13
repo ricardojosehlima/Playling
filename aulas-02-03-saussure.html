@@ -1,0 +1,1240 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<meta content="#3154d8" name="theme-color"/>
+<title>Aulas 02 e 03 — PlayLing | Linguística I</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<style>
+    :root{
+      --bg:#f3f0e8;
+      --paper:#fffdf5;
+      --ink:#171717;
+      --line:#171717;
+      --blue:#3154d8;
+      --blue-soft:#dce5ff;
+      --blue-pale:#eef2ff;
+      --yellow:#f0c94c;
+      --green:#25865a;
+      --red:#d83b46;
+      --muted:#77736a;
+      --disabled:#dedbd2;
+      --shadow:6px 6px 0 var(--line);
+      --shadow-small:3px 3px 0 var(--line);
+      --speed:.14s;
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      background:var(--bg);
+      color:var(--ink);
+      font-family:"Space Mono",monospace;
+    }
+    a{color:inherit}
+    button,a{font:inherit}
+    button{color:inherit}
+
+    .wrap{width:min(1080px,92vw);margin:0 auto;padding:24px 0 76px}
+
+    /* ---------- Navegação superior ---------- */
+    .topbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom:18px;
+    }
+    .back-link,.utility-link{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-height:42px;
+      border:2px solid var(--line);
+      background:var(--paper);
+      padding:9px 12px;
+      text-decoration:none;
+      font-weight:700;
+      box-shadow:var(--shadow-small);
+      transition:transform var(--speed),box-shadow var(--speed),background var(--speed);
+    }
+    .back-link:hover,.back-link:focus-visible,
+    .utility-link:hover,.utility-link:focus-visible{
+      transform:translate(2px,2px);
+      box-shadow:1px 1px 0 var(--line);
+      background:#fff;
+      outline:none;
+    }
+    .mini-nav{display:flex;gap:9px;flex-wrap:wrap;justify-content:flex-end}
+
+    /* ---------- Cabeçalho ---------- */
+    .lesson-head{
+      position:relative;
+      overflow:hidden;
+      border:3px solid var(--line);
+      background:var(--paper);
+      box-shadow:var(--shadow);
+      padding:28px 28px 24px;
+    }
+    .lesson-head::before{
+      content:"";
+      position:absolute;
+      left:0;top:0;width:100%;height:9px;
+      background:var(--blue);
+    }
+    .eyebrow{
+      font-family:"Press Start 2P",monospace;
+      font-size:11px;
+      line-height:1.7;
+      color:var(--blue);
+      margin:4px 0 14px;
+    }
+    .lesson-head h1{
+      font-family:"Press Start 2P",monospace;
+      font-size:clamp(23px,4.2vw,46px);
+      line-height:1.35;
+      margin:0;
+      color:var(--blue);
+      text-shadow:2px 2px 0 #b9c7ff;
+    }
+    .lesson-subtitle{
+      margin:16px 0 0;
+      font-size:clamp(15px,2vw,19px);
+      line-height:1.65;
+      font-weight:700;
+      max-width:900px;
+    }
+
+    /* ---------- Cartões das duas aulas ---------- */
+    .pair-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:18px;
+      margin-top:26px;
+    }
+    .lesson-card{
+      --accent:var(--blue);
+      position:relative;
+      border:3px solid var(--line);
+      background:var(--paper);
+      padding:23px 22px 22px;
+      min-height:300px;
+      box-shadow:var(--shadow-small);
+      overflow:hidden;
+    }
+    .lesson-card::before{
+      content:"";
+      position:absolute;
+      left:0;top:0;width:100%;height:8px;
+      background:var(--accent);
+    }
+    .lesson-card[data-state="locked"],
+    .lesson-card[data-state="next"]{opacity:.72}
+    .card-status{
+      display:inline-block;
+      border:2px solid var(--line);
+      background:var(--blue-soft);
+      padding:5px 8px;
+      font-size:11px;
+      font-weight:700;
+      margin:3px 0 14px;
+    }
+    .lesson-card[data-state="current"] .card-status::before{content:"▶ AGORA"}
+    .lesson-card[data-state="open"] .card-status::before{content:"✓ LIBERADO"}
+    .lesson-card[data-state="next"] .card-status{background:#edf1ff}
+    .lesson-card[data-state="next"] .card-status::before{content:"→ A SEGUIR"}
+    .lesson-card[data-state="locked"] .card-status{background:#ddd}
+    .lesson-card[data-state="locked"] .card-status::before{content:"🔒 BLOQUEADO"}
+    .lesson-card h2{
+      font-family:"Press Start 2P",monospace;
+      color:var(--blue);
+      font-size:clamp(16px,2.2vw,23px);
+      line-height:1.55;
+      margin:3px 0 12px;
+    }
+    .lesson-card p{font-size:14px;line-height:1.65;margin:0 0 15px}
+    .lesson-card .big-question{
+      border-left:7px solid var(--blue);
+      background:var(--blue-pale);
+      padding:12px 14px;
+      font-weight:700;
+      margin:17px 0;
+    }
+    .present-launch{
+      width:100%;
+      border:3px solid var(--line);
+      background:var(--blue);
+      color:#fff;
+      padding:14px 16px;
+      cursor:pointer;
+      box-shadow:3px 3px 0 var(--line);
+      font-family:"Press Start 2P",monospace;
+      font-size:10px;
+      line-height:1.5;
+      transition:transform var(--speed),box-shadow var(--speed),filter var(--speed);
+    }
+    .present-launch:hover,.present-launch:focus-visible{
+      transform:translate(2px,2px);
+      box-shadow:1px 1px 0 var(--line);
+      filter:brightness(1.08);
+      outline:none;
+    }
+    .lesson-card[data-state="locked"] .present-launch,
+    .lesson-card[data-state="next"] .present-launch{
+      background:var(--disabled);
+      color:#77736a;
+      cursor:not-allowed;
+      box-shadow:none;
+    }
+    .lesson-card[data-state="locked"] .present-launch:hover,
+    .lesson-card[data-state="locked"] .present-launch:focus-visible,
+    .lesson-card[data-state="next"] .present-launch:hover,
+    .lesson-card[data-state="next"] .present-launch:focus-visible{
+      transform:none;
+      filter:none;
+      box-shadow:none;
+    }
+    .card-material{
+      margin-top:14px;
+      border-top:2px dashed #8c8a82;
+      padding-top:13px;
+    }
+    .card-material-label{
+      display:block;
+      font-family:"Press Start 2P",monospace;
+      color:var(--blue);
+      font-size:8px;
+      line-height:1.55;
+      margin-bottom:7px;
+    }
+    .drive-card-link{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      border:2px solid var(--line);
+      background:#fff;
+      color:var(--ink);
+      padding:10px 11px;
+      text-decoration:none;
+      font-weight:700;
+      font-size:12px;
+      line-height:1.45;
+      transition:transform var(--speed),box-shadow var(--speed),background var(--speed);
+    }
+    .drive-card-link.is-active{box-shadow:2px 2px 0 var(--line)}
+    .drive-card-link.is-active:hover,.drive-card-link.is-active:focus-visible{
+      transform:translate(1px,1px);
+      box-shadow:1px 1px 0 var(--line);
+      background:var(--blue-pale);
+      outline:none;
+    }
+    .drive-card-link[aria-disabled="true"]{
+      background:#eee;
+      color:#77736a;
+      cursor:not-allowed;
+      opacity:.78;
+    }
+    .drive-card-link .drive-arrow{
+      font-family:"Press Start 2P",monospace;
+      font-size:10px;
+      white-space:nowrap;
+    }
+
+    .pair-note{
+      margin-top:20px;
+      border:3px solid var(--line);
+      background:var(--paper);
+      padding:17px 20px;
+      box-shadow:var(--shadow-small);
+      line-height:1.65;
+      font-size:14px;
+    }
+    .pair-note strong{color:var(--blue)}
+
+    /* ============================================================
+       APRESENTAÇÕES
+       ============================================================ */
+    .presentations{display:none}
+    .deck{display:none}
+    .scene{display:none}
+
+    body.presentation{
+      overflow:hidden;
+      background:var(--bg);
+    }
+    body.presentation .wrap{display:none}
+    body.presentation .presentations{display:block}
+    body.presentation .deck.active-deck{display:block}
+    body.presentation .deck.active-deck .scene.present-active{
+      display:flex;
+      position:fixed;
+      inset:0;
+      z-index:100;
+      background:var(--paper);
+      padding:62px clamp(24px,5vw,72px) 108px;
+      flex-direction:column;
+      justify-content:center;
+      align-items:flex-start;
+      overflow:auto;
+      animation:sceneIn .18s ease-out;
+    }
+    body.presentation .deck.active-deck .scene.center{align-items:center;text-align:center}
+    body.presentation .deck.active-deck .scene::before{
+      content:"";
+      position:fixed;
+      left:0;top:0;width:100%;height:11px;
+      background:var(--blue);
+      z-index:101;
+    }
+    .scene-inner{width:min(1100px,100%);margin:0 auto}
+    .scene.center .scene-inner{display:flex;flex-direction:column;align-items:center}
+    .scene-label{
+      display:inline-block;
+      font-family:"Press Start 2P",monospace;
+      font-size:9px;
+      line-height:1.4;
+      color:var(--blue);
+      border:2px solid var(--blue);
+      padding:6px 8px;
+      margin-bottom:17px;
+    }
+    .scene h3{
+      font-family:"Press Start 2P",monospace;
+      font-size:clamp(22px,3vw,40px);
+      line-height:1.35;
+      color:var(--blue);
+      margin:0 0 20px;
+      max-width:1050px;
+    }
+    .scene h3.long-title{
+      font-size:clamp(19px,2.35vw,33px);
+      line-height:1.38;
+    }
+    .scene h3.very-long-title{
+      font-size:clamp(18px,2vw,29px);
+      line-height:1.4;
+    }
+    @media (min-width:800px) and (max-height:760px){
+      .scene h3{font-size:clamp(19px,2.5vw,34px);margin-bottom:14px}
+      .scene h3.long-title{font-size:clamp(17px,2vw,28px)}
+      .scene h3.very-long-title{font-size:clamp(16px,1.8vw,25px)}
+    }
+
+    .scene p,.scene li{
+      font-size:clamp(17px,2vw,25px);
+      line-height:1.55;
+    }
+    .scene p{margin:9px 0}
+    .scene ul{margin:10px 0;padding-left:28px}
+    .scene li{margin:8px 0}
+    .small{font-size:clamp(13px,1.4vw,17px)!important;line-height:1.55!important}
+    .lead{font-size:clamp(21px,2.6vw,32px)!important;font-weight:700;line-height:1.5!important}
+    .huge-question{
+      font-family:"Press Start 2P",monospace;
+      font-size:clamp(30px,5.8vw,75px);
+      color:var(--blue);
+      line-height:1.35;
+      margin:0;
+      text-align:center;
+    }
+    .sub-question{
+      max-width:900px;
+      text-align:center;
+      font-size:clamp(18px,2.3vw,29px)!important;
+      margin-top:25px!important;
+    }
+    .transition-word{
+      font-family:"Press Start 2P",monospace;
+      color:var(--blue);
+      font-size:clamp(30px,5vw,68px);
+      line-height:1.35;
+      text-align:center;
+    }
+
+    .activity-box,.reflection-box,.choice-box,.saussure-box,.reveal-box,.term-box,.drive-box{
+      width:min(1000px,100%);
+      border:3px solid var(--line);
+      background:var(--blue-pale);
+      padding:22px 25px;
+      box-shadow:var(--shadow-small);
+    }
+    .activity-box h4,.reflection-box h4,.choice-box h4,.saussure-box h4,.reveal-box h4,.term-box h4,.drive-box h4{
+      font-family:"Press Start 2P",monospace;
+      color:var(--blue);
+      font-size:clamp(12px,1.5vw,17px);
+      line-height:1.55;
+      margin:0 0 14px;
+    }
+
+    .class1-memory{
+      display:inline-block;
+      border:3px solid var(--line);
+      padding:9px 12px;
+      background:var(--blue);
+      color:white;
+      font-family:"Press Start 2P",monospace;
+      font-size:10px;
+      line-height:1.4;
+      margin-bottom:18px;
+    }
+    .flow{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      flex-wrap:wrap;
+      gap:10px;
+      margin:24px 0 0;
+      width:100%;
+    }
+    .flow span{
+      border:2px solid var(--line);
+      background:var(--paper);
+      padding:10px 13px;
+      font-weight:700;
+      font-size:clamp(13px,1.5vw,18px);
+    }
+    .flow b{font-size:20px;color:var(--blue)}
+
+    .scale-number{
+      font-family:"Press Start 2P",monospace;
+      font-size:clamp(42px,8vw,100px);
+      color:var(--blue);
+      line-height:1;
+      margin-bottom:20px;
+    }
+    .scale-grid{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:12px;
+      width:min(1000px,100%);
+      margin-top:22px;
+    }
+    .scale-grid div{
+      border:2px solid var(--line);
+      padding:16px 12px;
+      text-align:center;
+      background:var(--blue-pale);
+      font-weight:700;
+      font-size:clamp(14px,1.6vw,19px);
+    }
+
+    .two-options{
+      display:grid;
+      grid-template-columns:1fr auto 1fr;
+      align-items:stretch;
+      gap:18px;
+      width:min(1000px,100%);
+      margin-top:18px;
+    }
+    .option{
+      border:4px solid var(--line);
+      background:var(--blue-pale);
+      min-height:190px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      padding:25px;
+      font-family:"Press Start 2P",monospace;
+      font-size:clamp(15px,2vw,24px);
+      line-height:1.55;
+      box-shadow:var(--shadow-small);
+    }
+    .or{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-family:"Press Start 2P",monospace;
+      color:var(--blue);
+      font-size:16px;
+    }
+
+    .live-columns{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:18px;
+      width:min(1050px,100%);
+    }
+    .live-column{
+      border:3px solid var(--line);
+      background:var(--paper);
+      box-shadow:var(--shadow-small);
+      min-height:330px;
+      overflow:hidden;
+    }
+    .live-column h4{
+      margin:0;
+      background:var(--blue);
+      color:white;
+      padding:14px 15px;
+      font-family:"Press Start 2P",monospace;
+      font-size:clamp(11px,1.3vw,15px);
+      line-height:1.5;
+    }
+    .editable{
+      min-height:260px;
+      padding:18px;
+      font-size:clamp(15px,1.65vw,20px);
+      line-height:1.55;
+      outline:none;
+      white-space:pre-wrap;
+    }
+    .editable:empty::before{
+      content:"Esse espaço vai ficar em branco. Crie o seu próprio espaço para registrar as respostas da turma...";
+      color:#969084;
+    }
+    .editable:focus{background:var(--blue-pale)}
+    .live-hint{
+      font-size:12px!important;
+      color:var(--muted);
+      margin-top:12px!important;
+    }
+
+    .saussure-name{
+      font-family:"Press Start 2P",monospace;
+      font-size:clamp(28px,5vw,66px);
+      color:var(--blue);
+      line-height:1.35;
+      margin-bottom:22px;
+    }
+    .reveal-answer{
+      font-family:"Press Start 2P",monospace;
+      font-size:clamp(20px,3.5vw,45px);
+      line-height:1.45;
+      color:var(--blue);
+      text-align:center;
+      margin:8px 0 23px;
+    }
+    .analogy-note{
+      border-top:2px dashed var(--line);
+      padding-top:14px;
+      margin-top:18px;
+      font-size:clamp(13px,1.4vw,17px)!important;
+    }
+    .choice-cost{
+      margin-top:20px!important;
+      font-weight:700;
+      border-left:7px solid var(--blue);
+      padding:10px 14px;
+      background:var(--blue-pale);
+    }
+
+    .terms{
+      display:grid;
+      grid-template-columns:1fr auto 1fr;
+      align-items:center;
+      gap:18px;
+      width:min(1050px,100%);
+    }
+    .term{
+      border:4px solid var(--line);
+      background:var(--blue-pale);
+      padding:25px 18px;
+      text-align:center;
+      box-shadow:var(--shadow-small);
+    }
+    .term strong{
+      display:block;
+      font-family:"Press Start 2P",monospace;
+      font-size:clamp(19px,3vw,38px);
+      color:var(--blue);
+      line-height:1.45;
+      margin-bottom:13px;
+    }
+    .term span{font-size:clamp(14px,1.6vw,20px);font-weight:700;line-height:1.45}
+    .times{font-family:"Press Start 2P",monospace;font-size:25px;color:var(--blue)}
+
+    .checklist{
+      width:min(900px,100%);
+      margin:0;
+      padding:0;
+      list-style:none;
+    }
+    .checklist li{
+      border-bottom:2px dashed #b9b4a8;
+      padding:10px 0;
+      font-weight:700;
+    }
+    .checklist li::before{content:"✓ ";color:var(--blue);font-weight:700}
+    .drive-box{margin-top:24px;background:#fff}
+    .drive-box p{font-size:clamp(14px,1.5vw,18px);margin:0}
+    .drive-pill{
+      display:inline-block;
+      margin-top:13px;
+      border:2px solid var(--line);
+      background:var(--blue-soft);
+      padding:8px 10px;
+      font-family:"Press Start 2P",monospace;
+      font-size:9px;
+      line-height:1.45;
+    }
+
+    /* ---------- Barra inferior da apresentação ---------- */
+    .presentation-ui{
+      display:none;
+      position:fixed;
+      z-index:500;
+      left:0;right:0;bottom:0;
+      min-height:74px;
+      border-top:3px solid var(--line);
+      background:var(--bg);
+      padding:10px 16px;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+    }
+    body.presentation .presentation-ui{display:flex}
+    .presentation-left,.presentation-right{display:flex;align-items:center;gap:8px}
+    .presentation-title{
+      font-family:"Press Start 2P",monospace;
+      font-size:9px;
+      line-height:1.4;
+      text-align:center;
+      white-space:nowrap;
+    }
+    .control-btn{
+      min-width:43px;
+      min-height:40px;
+      border:2px solid var(--line);
+      background:var(--paper);
+      cursor:pointer;
+      box-shadow:2px 2px 0 var(--line);
+      font-weight:700;
+      transition:transform var(--speed),box-shadow var(--speed);
+    }
+    .control-btn:hover,.control-btn:focus-visible{
+      transform:translate(1px,1px);
+      box-shadow:1px 1px 0 var(--line);
+      outline:none;
+    }
+    .present-count{font-weight:700;font-size:12px;white-space:nowrap}
+    .progress-track{
+      position:fixed;
+      left:0;bottom:74px;
+      width:100%;height:4px;
+      background:#d9d5ca;
+      z-index:501;
+    }
+    .progress-fill{height:100%;width:0;background:var(--blue);transition:width .12s linear}
+
+    @keyframes sceneIn{
+      from{opacity:0;transform:translateY(7px)}
+      to{opacity:1;transform:translateY(0)}
+    }
+
+    @media(max-width:760px){
+      .wrap{width:min(94vw,1080px);padding-top:15px}
+      .topbar{align-items:flex-start;flex-direction:column}
+      .mini-nav{justify-content:flex-start}
+      .pair-grid{grid-template-columns:1fr}
+      .lesson-head{padding:24px 18px 20px}
+      body.presentation .deck.active-deck .scene.present-active{padding:50px 18px 105px}
+      .two-options,.terms{grid-template-columns:1fr}
+      .or,.times{padding:2px 0}
+      .live-columns{grid-template-columns:1fr}
+      .live-column{min-height:230px}
+      .editable{min-height:170px}
+      .scale-grid{grid-template-columns:1fr 1fr}
+      .presentation-title,.progress-track{display:none}
+    }
+
+    @media(prefers-reduced-motion:reduce){
+      *{scroll-behavior:auto!important;animation:none!important;transition:none!important}
+    }
+
+    @media print{
+      .presentation-ui{display:none!important}
+    }
+  </style>
+<link href="site-common.css" rel="stylesheet"/>
+</head>
+<body>
+<main class="wrap" id="landing">
+<div class="topbar">
+<a class="back-link" href="index.html">← PORTAL</a>
+<nav aria-label="Acessos rápidos" class="mini-nav">
+<a class="utility-link" href="avaliacoes.html">AVALIAÇÕES</a>
+<a class="utility-link" href="cronograma.html">CRONOGRAMA</a>
+<a class="utility-link" href="textos.html">TEXTOS</a>
+</nav>
+</div>
+<header class="lesson-head">
+<p class="eyebrow">PLAYLING · AULAS 02 E 03 · INTRODUÇÃO</p>
+<h1>DUAS ESCOLHAS DE SAUSSURE</h1>
+<p class="lesson-subtitle">
+        As aulas 02 e 03 formam um par: primeiro, a gente vai discutir <strong>o que estudar</strong>;
+        depois, vamos ver <strong>como o Tempo entra nesse estudo</strong>. A estrutura das apresentações das duas aulas é a mesma.
+      </p>
+</header>
+<!--
+      ============================================================
+      COMO LIBERAR A AULA 03 QUANDO CHEGAR O MOMENTO
+      ============================================================
+
+      Faça APENAS estas duas mudanças nos cartões abaixo:
+
+      1) Na Aula 02, troque:
+           data-state="current"
+         por:
+           data-state="open"
+
+      2) Na Aula 03, troque:
+           data-state="locked"
+         por:
+           data-state="current"
+
+      O JavaScript lê esses estados automaticamente:
+      - current = aula atual, apresentação liberada
+      - open    = aula anterior, apresentação continua liberada
+      - locked  = apresentação bloqueada
+
+      NÃO é necessário alterar o código da apresentação da Aula 03.
+      Ela já está completa neste mesmo arquivo.
+    -->
+<section aria-label="Aulas 02 e 03" class="pair-grid">
+<article class="lesson-card" data-lesson="2" data-state="current">
+<span aria-label="Aula atual" class="card-status"></span>
+<h2>AULA 02<br/>O QUE ESTUDAR?</h2>
+<p>
+          Vamos fazer uma atividade de improvisação, observar o que varia e o que não varia e transformar essa experiência
+          em um problema de investigação.
+        </p>
+<div class="big-question">Estudar o que varia ou o que está por trás da variação?</div>
+<button class="present-launch" data-launch="2" type="button">▶ APRESENTAÇÃO AULA 02</button>
+<div class="card-material">
+<span class="card-material-label">TEXTOS E MATERIAIS DE LEITURA</span>
+<a class="drive-card-link is-active" href="https://drive.google.com/drive/folders/1tIUsTf-qjTyWiIr1S74jszs9MIUOoq1M?usp=sharing" rel="noopener noreferrer" target="_blank">
+<span>Tem texto sobre esse conteúdo. Acesse diretamente a pasta de textos no Google Drive.</span>
+<span class="drive-arrow">DRIVE →</span>
+</a>
+</div>
+</article>
+<article class="lesson-card" data-lesson="3" data-state="locked">
+<span aria-label="Aula bloqueada" class="card-status"></span>
+<h2>AULA 03<br/>E O PAPEL DO TEMPO?</h2>
+<p>
+          Vamos voltar a mesma atividade e mudar a pergunta: quando é necessário conhecer o que veio antes
+          para compreender o que observamos agora?
+        </p>
+<div class="big-question">Para estudar um momento no tempo, precisamos sempre reconstruir sua história?</div>
+<button class="present-launch" data-launch="3" disabled="" type="button">🔒 APRESENTAÇÃO BLOQUEADA</button>
+<div class="card-material">
+<span class="card-material-label">TEXTOS E MATERIAIS DE LEITURA</span>
+<a class="drive-card-link is-active" href="https://drive.google.com/drive/folders/1tIUsTf-qjTyWiIr1S74jszs9MIUOoq1M?usp=sharing" rel="noopener noreferrer" target="_blank">
+<span>Tem texto sobre esse conteúdo. Acesse diretamente a pasta de textos no Google Drive.</span>
+<span class="drive-arrow">DRIVE →</span>
+</a>
+</div>
+</article>
+</section>
+<aside class="pair-note">
+<strong>MESMA ESTRUTURA, NOVO PROBLEMA.</strong>
+      Nas duas aulas, vamos jogar, refletir sobre o jogo, formular um posicionamento metodológico,
+      comparar possibilidades e só então revelar os termos usados por Saussure.
+    </aside>
+<nav aria-label="Aula anterior e próxima aula" class="course-sequence-nav" data-course-nav="" data-current-group="aula-02,aula-03"></nav>
+</main>
+<!-- ============================================================
+       APRESENTAÇÕES — ficam invisíveis até o botão APRESENTAÇÃO
+       ============================================================ -->
+<section aria-hidden="true" class="presentations">
+<!-- ========================= AULA 02 ========================= -->
+<div class="deck" data-lesson-title="PLAYLING · AULA 02 · O QUE ESTUDAR?" id="deck-2">
+<section class="scene" data-title="Hoje vamos" id="a02-cena-01">
+<div class="scene-inner">
+<span class="scene-label">Cena 01</span>
+<h3>HOJE A GENTE VAI...</h3>
+<ul>
+<li>jogar e improvisar;</li>
+<li>transformar o jogo em um problema de investigação;</li>
+<li>descobrir uma decisão que ajudou a construir a Linguística moderna.</li>
+</ul>
+</div>
+</section>
+<section class="scene center" data-title="O que estudar?" id="a02-cena-02">
+<div class="scene-inner">
+<span class="scene-label">Cena 02</span>
+<div class="huge-question">O QUE ESTUDAR?</div>
+<p class="sub-question">Estudar o que varia ou o que está por trás da variação?</p>
+</div>
+</section>
+<section class="scene center" data-title="Vamos descobrir jogando" id="a02-cena-03">
+<div class="scene-inner">
+<span class="scene-label">Cena 03</span>
+<div class="transition-word">VAMOS DESCOBRIR...<br/>JOGANDO!</div>
+</div>
+</section>
+<section class="scene" data-title="Em Linguística também se improvisa" id="a02-cena-04">
+<div class="scene-inner">
+<span class="scene-label">Cena 04</span>
+<h3>EM LINGUÍSTICA, TAMBÉM SE IMPROVISA</h3>
+<div class="activity-box">
+<h4>COMO VAMOS JOGAR</h4>
+<ul>
+<li>três participantes;</li>
+<li>cada um vai ver vários objetos;</li>
+<li>cada participante improvisa uma história contendo os objetos;</li>
+<li>toda história começa com "Hoje eu acordei e...";</li>
+<li>um participante não ouve a história do outro;</li>
+<li>sem preparação prévia e tem que ter reflexos rápidos.</li>
+</ul>
+</div>
+</div>
+</section>
+<section class="scene" data-title="Refletindo sobre o jogo" id="a02-cena-05">
+<div class="scene-inner">
+<span class="scene-label">Cena 05</span>
+<span class="class1-memory">LEMBRAM DA AULA 01?</span>
+<h3>JOGAR NÃO BASTA.<br/>AGORA VAMOS OLHAR PARA O JOGO.</h3>
+<div class="reflection-box">
+<p><strong>O que podemos dizer sobre os objetos? Eram os mesmos ou eram diferentes?</strong></p>
+<p><strong>E sobre a ordem que eles foram apresentados?</strong></p>
+<p><strong>Mais alguma coisa sobre os objetos?</strong></p>
+<p class="lead">E sobre as histórias contadas: foram as mesmas ou eram diferentes?</p>
+</div>
+<div aria-label="Movimento de investigação" class="flow">
+<span>JOGAR</span><b>→</b><span>OBSERVAR</span><b>→</b><span>PERGUNTAR</span><b>→</b><span>INVESTIGAR</span>
+</div>
+</div>
+</section>
+<section class="scene center" data-title="E se ampliarmos?" id="a02-cena-06">
+<div class="scene-inner">
+<span class="scene-label">Cena 06</span>
+<div class="scale-number">12</div>
+<h3>E SE A GENTE FIZESSE ESSE JOGO EM TODAS AS SALAS DOS 12 ANDARES DESSE PRÉDIO?</h3>
+<p class="lead">Centenas de salas × milhares de participantes × (!!??) novas histórias...</p>
+<p class="sub-question">Quantas histórias diferentes teria no final?</p>
+</div>
+</section>
+<section class="scene center" data-title="A escolha" id="a02-cena-07">
+<div class="scene-inner">
+<span class="scene-label">Cena 07</span>
+<h3>SE VOCÊ SÓ PUDESSE ESCOLHER UM DOS DOIS PARA ESTUDAR...</h3>
+<div class="two-options">
+<div class="option">OS OBJETOS</div>
+<div class="or">OU</div>
+<div class="option">AS HISTÓRIAS</div>
+</div>
+</div>
+</section>
+<section class="scene" data-title="Comparando as opções" id="a02-cena-08">
+<div class="scene-inner">
+<span class="scene-label">Cena 08</span>
+<h3>VAMOS COMPARAR AS DUAS OPÇÕES</h3>
+<div class="live-columns">
+<div class="live-column">
+<h4>OS OBJETOS</h4>
+<div aria-label="Anotações sobre os objetos" class="editable" contenteditable="true" role="textbox"></div>
+</div>
+<div class="live-column">
+<h4>AS HISTÓRIAS</h4>
+<div aria-label="Anotações sobre as histórias" class="editable" contenteditable="true" role="textbox"></div>
+</div>
+</div>
+<p class="live-hint">Sugestão para a discussão: o que conseguimos observar? O que fica difícil? Que conclusões poderíamos tirar?</p>
+</div>
+</section>
+<section class="scene center" data-title="Saussure chegou aqui" id="a02-cena-09">
+<div class="scene-inner">
+<span class="scene-label">Cena 09</span>
+<div class="saussure-name">SAUSSURE</div>
+<p class="lead" style="max-width:900px;text-align:center">
+            chegou a um problema parecido quando precisou decidir qual seria o objeto central da Linguística.
+          </p>
+<p class="sub-question">O que privilegiar quando as realizações concretas variam indefinidamente?</p>
+</div>
+</section>
+<section class="scene center" data-title="A escolha de Saussure" id="a02-cena-10">
+<div class="scene-inner">
+<span class="scene-label">Cena 10</span>
+<h3>E A ESCOLHA FOI...</h3>
+<div class="reveal-box">
+<div class="reveal-answer">A ORGANIZAÇÃO ESTÁVEL POR TRÁS DAS REALIZAÇÕES</div>
+<p><strong>No nosso jogo:</strong> aquilo que permaneceu compartilhado (objetos e a ordem).</p>
+<p><strong>Na língua:</strong> o sistema.</p>
+</div>
+</div>
+</section>
+<section class="scene" data-title="Por que não as histórias?" id="a02-cena-11">
+<div class="scene-inner">
+<span class="scene-label">Cena 11</span>
+<h3>E POR QUE NÃO AS REALIZAÇÕES INDIVIDUAIS?</h3>
+<div class="saussure-box">
+<p>
+              Na visão de Saussure, elas eram numerosas, heterogêneas e variavam
+              de pessoa para pessoa, indefinidamente.
+            </p>
+<p>
+              Isso tornava impossível delimitá-las como o objeto central de uma ciência que buscava regularidades.
+            </p>
+<p class="choice-cost">Saussure afirmou que então foi levado um posicionamento metodológico — e ele sabia toda escolha deixaria alguma coisa de fora.</p>
+<p class="analogy-note"><strong>Importante:</strong> os objetos e as histórias são uma analogia para construir o problema; não são equivalentes literais a língua nem a fala.</p>
+</div>
+</div>
+</section>
+<section class="scene center" data-title="Língua e fala" id="a02-cena-12">
+<div class="scene-inner">
+<span class="scene-label">Cena 12</span>
+<h3>OS NOMES DESSA DISTINÇÃO</h3>
+<div class="terms">
+<div class="term"><strong>LANGUE</strong><span>LÍNGUA<br/>sistema compartilhado</span></div>
+<div class="times">×</div>
+<div class="term"><strong>PAROLE</strong><span>FALA<br/>realizações concretas</span></div>
+</div>
+</div>
+</section>
+<section class="scene" data-title="Hoje vimos" id="a02-cena-13">
+<div class="scene-inner">
+<span class="scene-label">Cena 13</span>
+<h3>O QUE ACONTECEU HOJE...</h3>
+<ul class="checklist">
+<li>jogamos e improvisamos;</li>
+<li>transformamos o jogo em um problema de investigação;</li>
+<li>entendemos um posicionamento metodológico de Saussure;</li>
+<li>conhecemos a dicotomia <strong>língua × fala</strong>.</li>
+</ul>
+</div>
+</section>
+</div>
+<!-- ========================= AULA 03 ========================= -->
+<div class="deck" data-lesson-title="PLAYLING · AULA 03 · E O TEMPO?" id="deck-3">
+<section class="scene" data-title="Hoje vamos" id="a03-cena-01">
+<div class="scene-inner">
+<span class="scene-label">Cena 01</span>
+<h3>HOJE A GENTE VAI...</h3>
+<ul>
+<li>jogar novamente o jogo que já jogamos na última aula;</li>
+<li>transformar o Tempo em um problema de investigação;</li>
+<li>descobrir a outra decisão que ajudou a construir a Linguística moderna.</li>
+</ul>
+</div>
+</section>
+<section class="scene center" data-title="E o tempo?" id="a03-cena-02">
+<div class="scene-inner">
+<span class="scene-label">Cena 02</span>
+<div class="huge-question">E O TEMPO?</div>
+<p class="sub-question">Para entender como é alguma situação em um determinado momento, a gente precisa saber tudo o que aconteceu antes?</p>
+</div>
+</section>
+<section class="scene center" data-title="Vamos descobrir jogando" id="a03-cena-03">
+<div class="scene-inner">
+<span class="scene-label">Cena 03</span>
+<div class="transition-word">VAMOS DESCOBRIR...<br/>JOGANDO!</div>
+</div>
+</section>
+<section class="scene" data-title="Improvisa de novo" id="a03-cena-04">
+<div class="scene-inner">
+<span class="scene-label">Cena 04</span>
+<h3>IMPROVISA DE NOVO!</h3>
+<div class="activity-box">
+<h4>COMO A GENTE VAI JOGAR</h4>
+<ul>
+<li>os mesmos objetos;</li>
+<li>os objetos aparecem na mesma ordem;</li>
+<li>se possível, os mesmos participantes;</li>
+<li>a instrução agora é: <strong>“conte novamente a mesma história”</strong>;</li>
+</ul>
+</div>
+</div>
+</section>
+<section class="scene" data-title="Refletindo sobre o jogo" id="a03-cena-05">
+<div class="scene-inner">
+<span class="scene-label">Cena 05</span>
+<span class="class1-memory">MESMO JOGO, NOVO OLHAR</span>
+<h3>JOGAR NÃO BASTA.<br/>AGORA VAMOS OLHAR PARA O JOGO.</h3>
+<div class="reflection-box">
+<p><strong>Os objetos eram os mesmos.</strong></p>
+<p><strong>A ordem era a mesma.</strong></p>
+<p class="lead">As histórias de hoje são iguais as da aula anterior?</p>
+</div>
+<div aria-label="Movimento de investigação" class="flow">
+<span>JOGAR</span><b>→</b><span>OBSERVAR</span><b>→</b><span>PERGUNTAR</span><b>→</b><span>INVESTIGAR</span>
+</div>
+</div>
+</section>
+<section class="scene center" data-title="E se repetirmos?" id="a03-cena-06">
+<div class="scene-inner">
+<span class="scene-label">Cena 06</span>
+<h3>E SE A GENTE REPETISSE ISSO...</h3>
+<div class="scale-grid">
+<div>AMANHÃ</div>
+<div>DAQUI A UMA SEMANA</div>
+<div>DAQUI A UM MÊS</div>
+<div>DAQUI A UM ANO</div>
+</div>
+<p class="sub-question">Quantas versões teria no total?</p>
+</div>
+</section>
+<section class="scene center" data-title="A escolha" id="a03-cena-07">
+<div class="scene-inner">
+<span class="scene-label">Cena 07</span>
+<h3>SE VOCÊ SÓ PUDESSE ESCOLHER UM DOS DOIS PARA ESTUDAR...</h3>
+<div class="two-options">
+<div class="option">A HISTÓRIA COMO ELA É EM UM MOMENTO</div>
+<div class="or">OU</div>
+<div class="option">COMO ELA VAI MUDANDO AO LONGO DO TEMPO</div>
+</div>
+</div>
+</section>
+<section class="scene" data-title="Comparando as opções" id="a03-cena-08">
+<div class="scene-inner">
+<span class="scene-label">Cena 08</span>
+<h3>VAMOS COMPARAR AS DUAS OPÇÕES</h3>
+<div class="live-columns">
+<div class="live-column">
+<h4>UM ESTADO</h4>
+<div aria-label="Anotações sobre um estado" class="editable" contenteditable="true" role="textbox"></div>
+</div>
+<div class="live-column">
+<h4>A TRAJETÓRIA</h4>
+<div aria-label="Anotações sobre a trajetória" class="editable" contenteditable="true" role="textbox"></div>
+</div>
+</div>
+<p class="live-hint">Sugestão para a discussão: o que conseguimos observar? O que fica difícil? Que conclusões poderíamos tirar?</p>
+</div>
+</section>
+<section class="scene center" data-title="Saussure chegou aqui" id="a03-cena-09">
+<div class="scene-inner">
+<span class="scene-label">Cena 09</span>
+<div class="saussure-name">SAUSSURE</div>
+<p class="lead" style="max-width:900px;text-align:center">
+            chegou também a um problema parecido: seria possível descrever uma língua em determinado momento sem reconstruir  a sua história?
+          </p>
+</div>
+</section>
+<section class="scene center" data-title="A resposta de Saussure" id="a03-cena-10">
+<div class="scene-inner">
+<span class="scene-label">Cena 10</span>
+<h3>E A RESPOSTA FOI...</h3>
+<div class="reveal-box">
+<div class="reveal-answer">SIM! SAUSSURE PERCEBEU UM PROBLEMA CHAMADO "ETERNO RETORNO".</div>
+<p>
+              Se para descrever como um sistema funciona em um momento, a gente precisar saber do momento anterior, quando chegar a vez de descrever esse momento anterior... vamos precisar saber do momento anterior a esse anterior. E assim, vamos indo até... até... ???
+            </p>
+</div>
+</div>
+</section>
+<section class="scene" data-title="Por que não exigir sempre a história?" id="a03-cena-11">
+<div class="scene-inner">
+<span class="scene-label">Cena 11</span>
+<h3>NÃO DÁ PRA EXIGIR SEMPRE A HISTÓRIA ANTERIOR!</h3>
+<div class="saussure-box">
+<p>Para explicar o século XXI, precisaríamos do século XX.</p>
+<p>Para explicar o XX, precisaríamos do XIX.</p>
+<p>Depois XVIII... XVII... latim... latim arcaico... pré-latim...</p>
+<p class="lead">Até onde a gente precisaria voltar?</p>
+<p class="choice-cost">Saussure afirmou que por causa desse problema, é <strong>INEVITÁVEL</strong> que é possível estudar um momento de uma língua sem precisar acessar momentos anteriores.</p>
+<p class="analogy-note"><strong>Importante:</strong> nossa atividade não explica <em>por que</em> as línguas mudam. Ela apenas coloca diante de nós estados diferentes para criar o problema metodológico.</p>
+</div>
+</div>
+</section>
+<section class="scene center" data-title="Sincronia e diacronia" id="a03-cena-12">
+<div class="scene-inner">
+<span class="scene-label">Cena 12</span>
+<h3>OS NOMES DESSA DISTINÇÃO</h3>
+<div class="terms">
+<div class="term"><strong>SINCRONIA</strong><span>um estado da língua considerado em determinado momento</span></div>
+<div class="times">×</div>
+<div class="term"><strong>DIACRONIA</strong><span>relações e mudanças entre estados ao longo do tempo</span></div>
+</div>
+</div>
+</section>
+<section class="scene" data-title="Hoje vimos" id="a03-cena-13">
+<div class="scene-inner">
+<span class="scene-label">Cena 13</span>
+<h3>O QUE ACONTECEU HOJE...</h3>
+<ul class="checklist">
+<li>jogamos novamente com uma atividade conhecida;</li>
+<li>transformamos o Tempo em um problema de investigação;</li>
+<li>entendemos outro posicionamento metodológico de Saussure;</li>
+<li>conhecemos a dicotomia <strong>sincronia × diacronia</strong>.</li>
+</ul>
+</div>
+</section>
+</div>
+</section>
+<div aria-label="Controles da apresentação" class="presentation-ui">
+<div class="presentation-left">
+<button class="control-btn" id="exitPresentation" title="Sair da apresentação" type="button">✕</button>
+<button class="control-btn" id="prevScene" title="Cena anterior" type="button">←</button>
+</div>
+<div class="presentation-title" id="presentationTitle">PLAYLING</div>
+<div class="presentation-right">
+<span class="present-count" id="presentCount">1 / 13</span>
+<button class="control-btn" id="nextScene" title="Próxima cena" type="button">→</button>
+<button class="control-btn" id="fullscreenBtn" title="Tela cheia" type="button">⛶</button>
+</div>
+<div aria-hidden="true" class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+</div>
+<script src="site-config.js"></script>
+<script src="site-nav.js"></script>
+<script>
+    (() => {
+      const body = document.body;
+      const cards = Array.from(document.querySelectorAll('.lesson-card'));
+
+      // Os estados das Aulas 02 e 03 vêm de site-config.js.
+      cards.forEach(card => {
+        const id = `aula-0${card.dataset.lesson}`;
+        if(window.PlayLing) card.dataset.state = PlayLing.state(id);
+      });
+      const decks = {
+        2: document.getElementById('deck-2'),
+        3: document.getElementById('deck-3')
+      };
+
+      const exitBtn = document.getElementById('exitPresentation');
+      const prevBtn = document.getElementById('prevScene');
+      const nextBtn = document.getElementById('nextScene');
+      const fullscreenBtn = document.getElementById('fullscreenBtn');
+      const presentCount = document.getElementById('presentCount');
+      const progressFill = document.getElementById('progressFill');
+      const presentationTitle = document.getElementById('presentationTitle');
+
+      let activeLesson = null;
+      let activeDeck = null;
+      let scenes = [];
+      let current = 0;
+
+      /*
+        ESTADOS DAS AULAS
+        -----------------
+        O botão de apresentação é habilitado automaticamente quando
+        data-state for "current" ou "open".
+
+        Para liberar a Aula 03 mais tarde:
+          - Aula 02: data-state="current" -> data-state="open"
+          - Aula 03: data-state="locked"  -> data-state="current"
+      */
+      function syncCardStates(){
+        cards.forEach(card => {
+          const state = card.dataset.state;
+          const button = card.querySelector('[data-launch]');
+          const lesson = card.dataset.lesson;
+          const available = state === 'current' || state === 'open';
+
+          button.disabled = !available;
+          if(available){
+            button.textContent = `▶ APRESENTAÇÃO AULA 0${lesson}`;
+          }else{
+            button.textContent = '🔒 APRESENTAÇÃO BLOQUEADA';
+          }
+        });
+      }
+
+      function isEditableTarget(target){
+        return target.closest('input, textarea, select, [contenteditable="true"]');
+      }
+
+      function showScene(index){
+        if(!activeDeck) return;
+        current = Math.max(0, Math.min(index, scenes.length - 1));
+        scenes.forEach((scene, i) => scene.classList.toggle('present-active', i === current));
+        presentCount.textContent = `${current + 1} / ${scenes.length}`;
+        progressFill.style.width = `${((current + 1) / scenes.length) * 100}%`;
+        const scene = scenes[current];
+        scene.scrollTop = 0;
+        history.replaceState(null, '', `#${scene.id}`);
+      }
+
+      function startPresentation(lesson){
+        const card = document.querySelector(`.lesson-card[data-lesson="${lesson}"]`);
+        if(!card) return;
+        const state = card.dataset.state;
+        if(!(state === 'current' || state === 'open')) return;
+
+        activeLesson = Number(lesson);
+        activeDeck = decks[activeLesson];
+        scenes = Array.from(activeDeck.querySelectorAll('.scene'));
+        current = 0;
+
+        Object.values(decks).forEach(deck => deck.classList.remove('active-deck'));
+        activeDeck.classList.add('active-deck');
+        presentationTitle.textContent = activeDeck.dataset.lessonTitle;
+        document.querySelector('.presentations').setAttribute('aria-hidden','false');
+        body.classList.add('presentation');
+        showScene(0);
+      }
+
+      function exitPresentation(){
+        body.classList.remove('presentation');
+        document.querySelector('.presentations').setAttribute('aria-hidden','true');
+        Object.values(decks).forEach(deck => {
+          deck.classList.remove('active-deck');
+          deck.querySelectorAll('.scene').forEach(scene => scene.classList.remove('present-active'));
+        });
+        activeLesson = null;
+        activeDeck = null;
+        scenes = [];
+        history.replaceState(null, '', window.location.pathname + window.location.search);
+        if(document.fullscreenElement) document.exitFullscreen().catch(() => {});
+      }
+
+      function next(){ if(current < scenes.length - 1) showScene(current + 1); }
+      function previous(){ if(current > 0) showScene(current - 1); }
+
+      document.querySelectorAll('[data-launch]').forEach(button => {
+        button.addEventListener('click', () => startPresentation(button.dataset.launch));
+      });
+
+      exitBtn.addEventListener('click', exitPresentation);
+      prevBtn.addEventListener('click', previous);
+      nextBtn.addEventListener('click', next);
+      fullscreenBtn.addEventListener('click', () => {
+        if(document.fullscreenElement){
+          document.exitFullscreen().catch(() => {});
+        }else{
+          document.documentElement.requestFullscreen?.().catch(() => {});
+        }
+      });
+
+      document.addEventListener('keydown', event => {
+        if(!body.classList.contains('presentation')) return;
+        if(isEditableTarget(event.target)) return;
+
+        if(['ArrowRight','PageDown',' '].includes(event.key)){
+          event.preventDefault();
+          next();
+        }
+        if(['ArrowLeft','PageUp'].includes(event.key)){
+          event.preventDefault();
+          previous();
+        }
+        if(event.key === 'Home'){
+          event.preventDefault();
+          showScene(0);
+        }
+        if(event.key === 'End'){
+          event.preventDefault();
+          showScene(scenes.length - 1);
+        }
+        if(event.key === 'Escape' && !document.fullscreenElement){
+          exitPresentation();
+        }
+      });
+
+      syncCardStates();
+    })();
+  
+
+    // ============================================================
+    // TÍTULOS DAS CENAS
+    // Títulos longos recebem automaticamente fonte menor.
+    // Regra atual: >5 palavras = long-title; >9 = very-long-title.
+    // Isso evita que títulos em várias linhas dominem a tela no computador.
+    // ============================================================
+    document.querySelectorAll('.scene h3').forEach((title) => {
+      const words = title.textContent.trim().split(/\s+/).filter(Boolean).length;
+      if (words > 9) title.classList.add('very-long-title');
+      else if (words > 5) title.classList.add('long-title');
+    });
+
+</script>
+</body>
+</html>

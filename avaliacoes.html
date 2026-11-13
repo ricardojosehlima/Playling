@@ -1,0 +1,635 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#c96b32">
+  <title>Avaliações | PlayLing</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="site-common.css">
+
+  <style>
+    :root{
+      --bg:#f3f0e8;
+      --paper:#fffdf5;
+      --ink:#171717;
+      --muted:#6e6961;
+      --line:#171717;
+
+      --orange:#c96b32;
+      --orange-dark:#9b4e24;
+      --orange-soft:#f8e8dc;
+      --orange-pale:#fff5ed;
+
+      --green:#25865a;
+      --green-soft:#e4f3ea;
+      --red:#d83b46;
+      --red-soft:#fbe8ea;
+      --purple:#6d5ba8;
+      --purple-soft:#eee9fb;
+
+      --shadow:5px 5px 0 var(--line);
+      --shadow-small:3px 3px 0 var(--line);
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+
+    body{
+      margin:0;
+      background:var(--bg);
+      color:var(--ink);
+      font-family:"Space Mono",monospace;
+    }
+
+    a{color:inherit}
+
+    .wrap{
+      width:min(1080px,93vw);
+      margin:0 auto;
+      padding:24px 0 82px;
+    }
+
+    .topbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom:20px;
+    }
+
+    .back-link,.utility-link{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-height:42px;
+      border:2px solid var(--line);
+      background:var(--paper);
+      padding:9px 12px;
+      text-decoration:none;
+      font-weight:700;
+      box-shadow:var(--shadow-small);
+      transition:transform .14s,box-shadow .14s,background .14s;
+    }
+
+    .back-link:hover,.utility-link:hover,
+    .back-link:focus-visible,.utility-link:focus-visible{
+      transform:translate(2px,2px);
+      box-shadow:1px 1px 0 var(--line);
+      background:#fff;
+      outline:none;
+    }
+
+    .mini-nav{
+      display:flex;
+      gap:9px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+
+    .page-head{
+      position:relative;
+      overflow:hidden;
+      border:3px solid var(--line);
+      background:var(--paper);
+      box-shadow:var(--shadow);
+      padding:30px 30px 27px;
+      margin-bottom:28px;
+    }
+
+    .page-head::before{
+      content:"";
+      position:absolute;
+      left:0;top:0;
+      width:100%;height:10px;
+      background:var(--orange);
+    }
+
+    .eyebrow{
+      font-family:"Press Start 2P",monospace;
+      font-size:9px;
+      line-height:1.6;
+      color:var(--orange-dark);
+      margin:4px 0 14px;
+    }
+
+    h1{
+      font-family:"Press Start 2P",monospace;
+      font-size:clamp(28px,4.8vw,52px);
+      line-height:1.3;
+      color:var(--orange-dark);
+      margin:0;
+    }
+
+    .intro-quote{
+      margin:27px 0 0;
+      border:3px solid var(--line);
+      background:var(--orange-pale);
+      padding:25px 27px;
+      box-shadow:var(--shadow-small);
+    }
+
+    .quote-label{
+      display:block;
+      font-family:"Press Start 2P",monospace;
+      font-size:8px;
+      line-height:1.65;
+      color:var(--orange-dark);
+      margin-bottom:15px;
+    }
+
+    blockquote{
+      margin:0;
+      font-size:clamp(18px,2.15vw,27px);
+      line-height:1.55;
+      font-weight:700;
+    }
+
+    .content-section{
+      margin-top:26px;
+      border:3px solid var(--line);
+      background:var(--paper);
+      box-shadow:var(--shadow-small);
+      padding:24px 26px;
+    }
+
+    .content-section h2{
+      font-family:"Press Start 2P",monospace;
+      color:var(--orange-dark);
+      font-size:clamp(13px,1.85vw,19px);
+      line-height:1.6;
+      margin:0 0 16px;
+    }
+
+    .content-section p{
+      font-size:clamp(14px,1.5vw,17px);
+      line-height:1.7;
+      margin:11px 0;
+    }
+
+    .agreement{
+      margin-top:26px;
+      border:4px solid var(--line);
+      background:var(--orange);
+      color:#fff;
+      box-shadow:var(--shadow);
+      padding:27px 28px;
+      text-align:center;
+    }
+
+    .agreement strong{
+      display:block;
+      font-family:"Press Start 2P",monospace;
+      font-size:clamp(18px,3vw,34px);
+      line-height:1.55;
+      color:#fff;
+    }
+
+    .agreement p{
+      max-width:850px;
+      margin:18px auto 0;
+      font-size:clamp(14px,1.55vw,18px);
+      line-height:1.7;
+      font-weight:700;
+    }
+
+    .notes-box{
+      margin-top:26px;
+      border:3px solid var(--line);
+      background:var(--purple-soft);
+      box-shadow:var(--shadow-small);
+      padding:22px 24px;
+    }
+
+    .notes-box h2{
+      font-family:"Press Start 2P",monospace;
+      color:#56468a;
+      font-size:clamp(12px,1.65vw,17px);
+      line-height:1.6;
+      margin:0 0 13px;
+    }
+
+    .notes-box p{
+      margin:0;
+      font-size:clamp(13px,1.45vw,16px);
+      line-height:1.7;
+    }
+
+    .is-isnt{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:17px;
+      margin-top:26px;
+    }
+
+    .side{
+      border:3px solid var(--line);
+      background:#fff;
+      box-shadow:var(--shadow-small);
+      overflow:hidden;
+    }
+
+    .side h3{
+      margin:0;
+      padding:13px 16px;
+      font-family:"Press Start 2P",monospace;
+      font-size:11px;
+      line-height:1.55;
+    }
+
+    .side.no h3{background:var(--red-soft);color:#a22d36}
+    .side.yes h3{background:var(--green-soft);color:#1d6a48}
+
+    .side ul{
+      margin:0;
+      padding:17px 22px 18px 38px;
+    }
+
+    .side li{
+      margin:8px 0;
+      line-height:1.55;
+      font-size:14px;
+    }
+
+    .assessments-title{
+      margin:38px 0 15px;
+      font-family:"Press Start 2P",monospace;
+      color:var(--orange-dark);
+      font-size:clamp(15px,2vw,21px);
+      line-height:1.55;
+    }
+
+    .accordion-list{
+      display:grid;
+      gap:17px;
+    }
+
+    details.assessment{
+      border:3px solid var(--line);
+      background:var(--paper);
+      box-shadow:var(--shadow-small);
+      overflow:hidden;
+    }
+
+    details.assessment[open]{
+      box-shadow:var(--shadow);
+    }
+
+    summary{
+      list-style:none;
+      cursor:pointer;
+      display:grid;
+      grid-template-columns:68px 1fr auto;
+      gap:15px;
+      align-items:center;
+      padding:18px 20px;
+      background:var(--orange-soft);
+    }
+
+    summary::-webkit-details-marker{display:none}
+
+    summary:focus-visible{
+      outline:4px solid rgba(201,107,50,.24);
+      outline-offset:-5px;
+    }
+
+    .assessment-no{
+      width:58px;
+      height:52px;
+      border:3px solid var(--line);
+      background:var(--orange);
+      color:#fff;
+      box-shadow:2px 2px 0 var(--line);
+      display:grid;
+      place-items:center;
+      font-family:"Press Start 2P",monospace;
+      font-size:10px;
+      line-height:1.45;
+      text-align:center;
+    }
+
+    .assessment-head strong{
+      display:block;
+      font-family:"Press Start 2P",monospace;
+      color:var(--orange-dark);
+      font-size:clamp(12px,1.65vw,17px);
+      line-height:1.55;
+    }
+
+    .assessment-head span{
+      display:block;
+      margin-top:5px;
+      color:var(--muted);
+      font-size:12px;
+      line-height:1.5;
+    }
+
+    .arrow{
+      font-family:"Press Start 2P",monospace;
+      font-size:15px;
+      color:var(--orange-dark);
+      transition:transform .15s;
+    }
+
+    details[open] .arrow{transform:rotate(90deg)}
+
+    .assessment-body{
+      border-top:2px dashed #aaa398;
+      padding:22px 23px 24px;
+    }
+
+    .assessment-body h3{
+      font-family:"Press Start 2P",monospace;
+      color:var(--orange-dark);
+      font-size:10px;
+      line-height:1.55;
+      margin:20px 0 9px;
+    }
+
+    .assessment-body h3:first-child{margin-top:0}
+
+    .assessment-body p,
+    .assessment-body li{
+      font-size:14px;
+      line-height:1.7;
+    }
+
+    .assessment-body p{margin:8px 0}
+
+    .format-free{
+      display:inline-block;
+      border:3px solid var(--line);
+      background:var(--orange);
+      color:#fff;
+      padding:9px 12px;
+      font-family:"Press Start 2P",monospace;
+      font-size:9px;
+      line-height:1.5;
+      margin:5px 0 10px;
+      box-shadow:2px 2px 0 var(--line);
+    }
+
+    .examples{
+      border-left:7px solid var(--orange);
+      background:var(--orange-pale);
+      padding:12px 14px;
+      margin:12px 0;
+    }
+
+    .placeholder{
+      min-height:130px;
+      border:2px dashed #999287;
+      background:#faf8f1;
+      padding:16px;
+      color:#8e887f;
+      font-weight:700;
+      line-height:1.6;
+    }
+
+    .placeholder[contenteditable="true"]:focus{
+      color:var(--ink);
+      background:#fff;
+      outline:3px solid rgba(201,107,50,.2);
+    }
+
+    .closing{
+      margin-top:54px;
+      padding:38px 22px 8px;
+      text-align:center;
+    }
+
+    .closing blockquote{
+      max-width:900px;
+      margin:0 auto;
+      font-size:clamp(20px,2.5vw,31px);
+      line-height:1.55;
+      color:#3d3934;
+    }
+
+    .closing cite{
+      display:block;
+      margin-top:18px;
+      font-style:normal;
+      color:var(--muted);
+      font-size:12px;
+      line-height:1.6;
+    }
+
+    footer{
+      margin-top:34px;
+      text-align:center;
+      color:var(--muted);
+      font-size:11px;
+      line-height:1.5;
+    }
+
+    @media(max-width:760px){
+      .topbar{flex-direction:column;align-items:flex-start}
+      .mini-nav{justify-content:flex-start}
+      .page-head{padding:26px 18px 22px}
+      .intro-quote,.content-section,.agreement,.notes-box{padding-left:18px;padding-right:18px}
+      .is-isnt{grid-template-columns:1fr}
+      summary{grid-template-columns:58px 1fr}
+      .arrow{grid-column:1/-1;justify-self:end}
+    }
+
+    @media print{
+      body{background:#fff}
+      .topbar,footer{display:none}
+      .wrap{width:100%;padding:0}
+      .page-head,.content-section,.agreement,.notes-box,.side,details.assessment{box-shadow:none}
+      details.assessment:not([open]) .assessment-body{display:block}
+      .arrow{display:none}
+    }
+  </style>
+</head>
+
+<body>
+<main class="wrap">
+  <div class="topbar">
+    <a class="back-link" href="index.html">← PORTAL</a>
+    <nav class="mini-nav" aria-label="Acessos rápidos">
+      <a class="utility-link" href="cronograma.html">CRONOGRAMA</a>
+      <a class="utility-link" href="textos.html">TEXTOS</a>
+    </nav>
+  </div>
+
+  <header class="page-head">
+    <p class="eyebrow">LINGUÍSTICA I · 2026.2</p>
+    <h1>AVALIAÇÕES</h1>
+
+    <div class="intro-quote">
+      <span class="quote-label">TEXTO INSPIRADO NAS IDEIAS DE RICHARD FEYNMAN</span>
+      <blockquote>
+        Sua inteligência não pode ser medida por um número. Ela é definida pela sua disposição
+        para aprender, resolver problemas e experimentar coisas novas. Você é mais do que apenas
+        um número. Desenvolva suas habilidades. Compartilhe suas ideias brilhantes. Suas habilidades
+        são mais valiosas do que suas notas.
+      </blockquote>
+    </div>
+  </header>
+
+  <section class="content-section">
+    <h2>AVALIAR NÃO DEVERIA SER SOBRE NÚMEROS</h2>
+    <p>
+      Vocês estão começando a universidade. Por isso, as avaliações dessa disciplina não foram
+      pensadas como instrumentos para punir erros, ranquear estudantes ou descobrir quem “sabe mais”.
+      Elas fazem parte do próprio processo de aprender: são momentos para organizar o que foi visto,
+      perceber o que mudou na sua maneira de pensar sobre língua e experimentar formas próprias de
+      trabalhar com esse conhecimento.
+    </p>
+    <p>
+      E isso combina com a organização do curso em torno de jogos. Alguns jogos têm vencedores
+      e perdedores, mas jogar não precisa significar competir — pense em Minecraft, RPGs ou tantas
+      situações em que o objetivo é explorar, construir, testar possibilidades e avançar. Aqui,
+      avaliar tem mais a ver com esse segundo sentido: observar o percurso, o crescimento e o amadurecimento
+      ao longo do semestre.
+    </p>
+    <p>
+      Mais do que mostrar que você chegou a uma resposta, interessa mostrar o caminho que você construiu
+      para chegar até ela.
+    </p>
+  </section>
+
+  <section class="agreement">
+    <strong>SUA NOTA SERÁ O RESULTADO DE UM COMBINADO NOSSO.</strong>
+    <p>
+      Antes de cada avaliação, a gente vai discutir o que vai ser feito, o que vai ser considerado e como o
+      resultado vai ser transformado em nota. Os critérios para a nota não vão aparecer como surpresa depois
+      que o trabalho estiver pronto.
+    </p>
+  </section>
+
+  <section class="notes-box">
+    <h2>SUAS ANOTAÇÕES FAZEM PARTE DO CURSO</h2>
+    <p>
+      Os slides não foram feitos para funcionar como um material completo. Parte importante do
+      conteúdo vai aparecer nas discussões, atividades, exemplos e respostas construídas em sala.
+      Suas próprias anotações vão ser, portanto, uma das fontes para preparar as avaliações.
+    </p>
+  </section>
+
+  <section class="is-isnt" aria-label="O que a avaliação é e não é">
+    <article class="side no">
+      <h3>NÃO É SOBRE</h3>
+      <ul>
+        <li>decorar slides;</li>
+        <li>reproduzir minhas palavras;</li>
+        <li>descobrir “a resposta que o professor quer”;</li>
+        <li>transformar cada atividade em competição.</li>
+      </ul>
+    </article>
+
+    <article class="side yes">
+      <h3>É SOBRE</h3>
+      <ul>
+        <li>compreender;</li>
+        <li>relacionar;</li>
+        <li>formular;</li>
+        <li>testar;</li>
+        <li>explicar;</li>
+        <li>tomar posição.</li>
+      </ul>
+    </article>
+  </section>
+
+  <h2 class="assessments-title">AS AVALIAÇÕES</h2>
+
+  <section class="accordion-list">
+
+    <details class="assessment" open>
+      <summary>
+        <span class="assessment-no">01</span>
+        <span class="assessment-head">
+          <strong>AVALIAÇÃO 01</strong>
+          <span>Introdução + Ciclo 01</span>
+        </span>
+        <span class="arrow">›</span>
+      </summary>
+
+      <div class="assessment-body">
+        <h3>O QUE FAZER</h3>
+        <p>
+          Você deve elaborar um material sobre os conteúdos da Introdução e do Ciclo 01.
+          O material deve apresentar esses conteúdos e também incluir sua própria reflexão sobre eles:
+          questões, críticas, relações, concordâncias, discordâncias ou consequências que você considere
+          importantes.
+        </p>
+
+        <h3>FORMATO</h3>
+        <div class="format-free">FORMATO: LIVRE</div>
+        <p>
+          O formato fica a seu critério, desde que permita abordar adequadamente o que foi estudado.
+        </p>
+        <div class="examples">
+          Exemplos: texto, áudio, vídeo, material visual, combinação de formatos etc.
+          <strong>Esses são exemplos, não opções fechadas.</strong>
+        </div>
+
+        <h3>CRITÉRIOS</h3>
+        <p>
+          Os detalhes da atividade e os critérios usados para transformar o trabalho em nota vão ser
+          discutidos com a turma mais perto da avaliação.
+        </p>
+
+        <h3>PREVISÃO</h3>
+        <p>
+          Final de dezembro, antes do recesso.
+        </p>
+      </div>
+    </details>
+
+    <details class="assessment">
+      <summary>
+        <span class="assessment-no">02</span>
+        <span class="assessment-head">
+          <strong>AVALIAÇÃO 02</strong>
+          <span>Detalhes a definir</span>
+        </span>
+        <span class="arrow">›</span>
+      </summary>
+
+      <div class="assessment-body">
+        <div class="placeholder" contenteditable="true">
+          Os detalhes dessa avaliação vão ser definidos e publicados posteriormente.
+        </div>
+      </div>
+    </details>
+
+    <details class="assessment">
+      <summary>
+        <span class="assessment-no">AF</span>
+        <span class="assessment-head">
+          <strong>AVALIAÇÃO FINAL</strong>
+          <span>Detalhes a definir</span>
+        </span>
+        <span class="arrow">›</span>
+      </summary>
+
+      <div class="assessment-body">
+        <div class="placeholder" contenteditable="true">
+          Os detalhes da avaliação final vão ser definidos e publicados posteriormente.
+        </div>
+      </div>
+    </details>
+
+  </section>
+
+  <section class="closing">
+    <blockquote>
+      “Estão dizendo que é para competir, mas eu só penso em te ajudar.”
+    </blockquote>
+    <cite>
+      Os Mutantes, “Eu só penso em te ajudar”, <em>Tudo foi feito pelo Sol</em>.
+    </cite>
+  </section>
+
+  <footer>
+    Linguística I · Prof. Ricardo Joseh Lima · Turmas 01 e 02 · 2026.2
+  </footer>
+</main>
+</body>
+</html>
