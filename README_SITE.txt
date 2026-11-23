@@ -12,7 +12,7 @@ ACESSOS PERMANENTES
 BLOCO INTRODUTÓRIO
 - aula-01-jogo.html
 - aulas-02-03-saussure.html
-- aula-04-lingua-linguagem.html
+- aula-04-revisao-proximos-passos.html
 
 CICLOS
 - ciclo-01-lego-gerativismo.html
@@ -39,9 +39,9 @@ ANTERIOR / PRÓXIMO consultam esse mesmo arquivo.
 
 PORTAL DOS TEXTOS
 -----------------
-As páginas de aula não apontam mais diretamente para Google Drive.
-Elas levam a textos.html. Nessa página poderão ser organizadas depois
-as explicações, textos e links externos/Drive de cada parte do curso.
+As páginas de aula apontam diretamente para o Google Drive.
+Os links contextuais de leitura levam diretamente à pasta de textos no Google Drive.
+O link permanente TEXTOS no portal continua levando à página textos.html.
 
 
 AULAS INTERNAS DO CICLO 01
@@ -104,7 +104,7 @@ A Avaliação 01 já está preenchida; Avaliação 02 e Avaliação Final perman
 TEXTOS
 ======
 textos.html apresenta a política de leitura da disciplina, o acesso à pasta do Google Drive,
-orientações de leitura e um interlúdio crítico com a intervenção 'Um texto contra o texto'.
+orientações de leitura da disciplina.
 
 
 ATUALIZAÇÃO DOS LINKS DE LEITURA
@@ -118,3 +118,19 @@ da disciplina, mas não precisa mais ser visitada a cada aula.
 
 O interlúdio "A sombra de um deus morto" e a intervenção "Um texto contra o texto"
 foram removidos de textos.html para manter a página mais concisa.
+
+
+REVISÃO DA AULA 04 (NOVEMBRO DE 2026)
+===================================
+Aula 04 (03/12): Revisão e Próximos Passos.
+A atividade central é a árvore “Quando nasce uma ciência”, promovida de página extra
+para a página oficial da Aula 04. Foram removidos do pacote os arquivos anteriores:
+  aula-04-lingua-linguagem.html
+  quando-nasce-uma-ciencia.html
+O novo arquivo é:
+  aula-04-revisao-proximos-passos.html
+
+Aula 04 consulta seu status em site-config.js como as demais aulas;
+foi definida inicialmente como "locked". Para liberá-la, use "current" ou "open".
+A página index.html, o cronograma e a referência da Aula 01 foram atualizados.
+Não houve mudanças nas páginas dos três ciclos nem em site-nav.js.

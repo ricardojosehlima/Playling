@@ -75,8 +75,8 @@ window.PLAYLING_CONFIG = {
     },
     "aula-04": {
       label: "Aula 04",
-      title: "Língua e linguagem",
-      href: "aula-04-lingua-linguagem.html"
+      title: "Revisão e Próximos Passos",
+      href: "aula-04-revisao-proximos-passos.html"
     },
     "ciclo-01": {
       label: "Ciclo 01",

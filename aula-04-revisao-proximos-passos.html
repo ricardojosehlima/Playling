@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aula 04 — Revisão e Próximos Passos | PlayLing</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Space+Mono:wght@400;700&family=Chewy&family=Baloo+2:wght@500;600;700;800&family=Comic+Neue:wght@700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#27343b;--paper:#fffaf1;--yellow:#ffe05a;--blue:#74cdfd;--green:#82df8e;--pink:#ff91bd;--red:#ff8383;--purple:#b9a0ff;--orange:#ffa25c;--shadow:0 7px 0 rgba(39,52,59,.14);--border:3px solid var(--ink)}
+*{box-sizing:border-box} html{scroll-behavior:smooth}
+body{margin:0;color:var(--ink);font-family:"Baloo 2",system-ui,sans-serif;background:
+radial-gradient(circle at 7% 8%,rgba(255,224,90,.28) 0 4.5%,transparent 4.9%),
+radial-gradient(circle at 92% 11%,rgba(116,205,253,.22) 0 4%,transparent 4.4%),
+radial-gradient(circle at 9% 82%,rgba(255,145,189,.19) 0 5%,transparent 5.4%),
+radial-gradient(circle at 90% 78%,rgba(130,223,142,.15) 0 4%,transparent 4.4%),
+linear-gradient(180deg,#fffdf8,#fff8ed 58%,#fffaf2)}
+a{color:inherit}.page{width:min(1180px,95vw);margin:auto;padding:24px 0 76px;overflow:hidden}
+.topbar{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:22px}
+.pill{display:inline-flex;align-items:center;min-height:44px;padding:9px 14px;border:2px solid var(--ink);border-radius:999px;background:white;text-decoration:none;font-weight:800;box-shadow:0 3px 0 rgba(39,52,59,.12)}
+.pill.alt{background:#fff1a9}
+.hero{position:relative;border:var(--border);border-radius:42px 24px 44px 28px;padding:42px clamp(20px,5vw,64px) 50px;background:linear-gradient(135deg,#fff3a6 0 26%,#ffddea 26% 53%,#dff3ff 53% 77%,#e9ddff 77%);box-shadow:var(--shadow);transform:rotate(-.3deg);margin-bottom:48px}
+.hero:before,.hero:after{content:"";position:absolute;border:3px solid var(--ink)}
+.hero:before{width:55px;height:55px;border-radius:50%;right:42px;top:27px;background:var(--orange);transform:rotate(12deg)}
+.hero:after{width:48px;height:48px;border-radius:14px;right:108px;bottom:24px;background:var(--green);transform:rotate(-14deg)}
+.kicker{font-family:"Comic Neue",cursive;font-weight:700;margin-bottom:6px}
+h1,h2,h3{margin:0}
+.hero .story-title{font-family:"Chewy",cursive;font-size:clamp(2.8rem,7vw,6.8rem);line-height:.9;max-width:900px;text-shadow:2px 2px 0 #fff}
+.w1{color:#ff6f61}.w2{color:#3c9bd1}.w3{color:#7b5fd1}
+.hero p{max-width:820px;font-size:1.18rem;line-height:1.48;font-weight:700;margin:18px 0 0}
+.doodle{font-family:"Comic Neue",cursive;font-weight:700;color:#5d6a71;text-align:center;margin:0 auto 26px}
+.root-question{width:min(850px,100%);margin:0 auto 24px;padding:22px 24px;text-align:center;border:var(--border);border-radius:28px 38px 24px 42px;background:#fff;box-shadow:var(--shadow);font-family:"Chewy",cursive;font-size:clamp(1.8rem,4vw,3rem);line-height:1.05}
+.tree{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:34px;margin-top:42px}
+.tree:before{content:"";position:absolute;left:25%;right:25%;top:-18px;height:4px;background:var(--ink)}
+.trunk{position:relative}.trunk:before{content:"";position:absolute;width:4px;height:22px;background:var(--ink);left:50%;bottom:100%;transform:translateX(-50%)}
+.branch-head{border:var(--border);border-radius:30px 20px 34px 22px;padding:20px 22px;box-shadow:var(--shadow);min-height:170px}
+.trunk.langue .branch-head{background:#def3ff;transform:rotate(-.5deg)}
+.trunk.parole .branch-head{background:#fff0b5;transform:rotate(.5deg)}
+.branch-head h3{font-family:"Chewy",cursive;font-size:clamp(1.8rem,3vw,2.6rem);line-height:1}
+.branch-head p{font-weight:700;line-height:1.45;margin:8px 0 0}
+.branch-head .tag{display:inline-block;margin-top:12px;padding:5px 10px;border:2px solid var(--ink);border-radius:999px;background:white;font-weight:800}
+.second-question{margin:24px auto 16px;width:max-content;max-width:100%;padding:8px 13px;border:2px dashed var(--ink);border-radius:999px;background:#fff;font-family:"Comic Neue",cursive;font-weight:700}
+.subbranches{display:grid;grid-template-columns:1fr 1fr;gap:16px;position:relative}
+.subbranches:before{content:"";position:absolute;left:25%;right:25%;top:-12px;height:3px;background:var(--ink)}
+.sub{position:relative;border:var(--border);border-radius:24px 17px 26px 19px;padding:18px;box-shadow:0 5px 0 rgba(39,52,59,.12);min-height:285px}
+.sub:before{content:"";position:absolute;width:3px;height:14px;background:var(--ink);left:50%;bottom:100%;transform:translateX(-50%)}
+.sub.sync{background:#e6dcff}.sub.diac{background:#ffdfe9}
+.sub h3{font-family:"Chewy",cursive;font-size:1.6rem;line-height:1;margin-bottom:8px}
+.sub p{font-weight:700;line-height:1.42;margin:0}
+.combo{display:inline-block;margin:10px 0;padding:5px 9px;border:2px solid var(--ink);border-radius:999px;background:#fff;font-weight:900;font-size:.86rem}
+.result{margin-top:12px;padding:12px;border:2px solid var(--ink);border-radius:16px;background:#fff;font-weight:800;line-height:1.35}
+.result.saussure{background:#dff4df}.result.yellow{background:#fff2a2}.result.green{background:#d7f4dc}.result.red{background:#ffd0d0}.result.other{background:#f0eee9}
+.maybe{font-family:"Comic Neue",cursive;font-weight:700;color:#5c6970;margin-top:8px;font-size:.93rem}
+.warning{width:min(930px,100%);margin:50px auto 0;padding:24px 26px;border:var(--border);border-radius:36px 24px 38px 26px;background:linear-gradient(135deg,#fff1b5,#e9ddff);box-shadow:var(--shadow);transform:rotate(.2deg)}
+.warning h2{font-family:"Chewy",cursive;font-size:clamp(1.9rem,4vw,3.2rem);color:#cf6b3d}
+.warning p{font-weight:750;line-height:1.5;margin:8px 0 0}
+.cycle-wrap{margin-top:58px}.cycle-title{text-align:center;max-width:860px;margin:0 auto 24px}
+.cycle-title h2{font-family:"Chewy",cursive;font-size:clamp(2.2rem,4.8vw,3.8rem);color:#4b94c0}
+.cycle-title p{font-weight:750;color:#55636b}
+.cycle{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;align-items:stretch}
+.cycle-card{border:var(--border);border-radius:30px 20px 34px 22px;padding:22px;box-shadow:var(--shadow);min-height:265px}
+.cycle-card:nth-child(1){background:#fff0a2;transform:rotate(-.5deg)}
+.cycle-card:nth-child(2){background:#d7f4dc;transform:rotate(.45deg)}
+.cycle-card:nth-child(3){background:#ffd0d0;transform:rotate(-.35deg)}
+.cycle-card h3{font-family:"Chewy",cursive;font-size:1.8rem;line-height:1;margin-bottom:9px}
+.cycle-card .sees{display:block;width:max-content;max-width:100%;margin-bottom:10px;padding:5px 9px;border:2px solid var(--ink);border-radius:999px;background:#fff;font-weight:900;font-size:.82rem}
+.cycle-card p{font-weight:750;line-height:1.42;margin:0}
+.cycle-card .blind{margin-top:14px;padding:11px 12px;border:2px dashed var(--ink);border-radius:15px;background:rgba(255,255,255,.75);font-weight:800;font-size:.94rem}
+.arrowline{margin:24px auto 0;max-width:900px;text-align:center;font-family:"Comic Neue",cursive;font-weight:700;font-size:clamp(1rem,2.4vw,1.55rem);line-height:1.6}
+.loop{width:min(920px,100%);margin:54px auto 0;padding:28px;border:var(--border);border-radius:44px 26px 42px 24px;background:linear-gradient(135deg,#dfd2ff,#ffe3a9,#d9efff);box-shadow:var(--shadow);text-align:center;transform:rotate(.2deg)}
+.loop h2{font-family:"Chewy",cursive;font-size:clamp(2rem,4.5vw,3.7rem)}
+.loop p{max-width:740px;margin:10px auto 0;line-height:1.5;font-weight:800}
+.loopline{font-family:"Comic Neue",cursive;font-weight:700;font-size:clamp(1.1rem,2.6vw,1.7rem);margin-top:18px}
+footer{text-align:center;margin-top:42px;color:#66757c;font-size:.92rem;font-weight:700}
+@media(max-width:980px){.tree{grid-template-columns:1fr}.tree:before,.trunk:before{display:none}}
+@media(max-width:760px){.subbranches,.cycle{grid-template-columns:1fr}.subbranches:before,.sub:before{display:none}.hero{transform:none}}
+
+/* Identidade do curso: a árvore original permanece com sua apresentação própria. */
+.course-intro{position:relative;border:3px solid #171717;background:#fffdf5;box-shadow:5px 5px 0 #171717;padding:26px clamp(18px,3vw,32px);margin-bottom:26px}
+.course-intro:before{content:"";position:absolute;left:0;top:0;width:100%;height:9px;background:#3154d8}
+.course-kicker{font-family:"Press Start 2P",monospace;font-size:9px;color:#3154d8;line-height:1.7;margin:7px 0 13px}
+.course-title{font-family:"Press Start 2P",monospace;font-size:clamp(18px,3.1vw,32px);line-height:1.45;color:#3154d8;letter-spacing:-.02em;margin:0}
+.course-intro p{font-size:clamp(15px,1.6vw,18px);font-weight:700;line-height:1.55;max-width:920px;margin:12px 0}
+.course-status{display:inline-flex;border:2px solid #171717;background:#f2f0e9;padding:6px 11px;margin-top:8px;font-family:"Space Mono",monospace;font-size:12px;font-weight:700}
+.course-status[data-state="current"]{background:#dce5ff;color:#2441ae}
+.course-status[data-state="open"]{background:#dff4e6;color:#246b49}
+.course-status[data-state="next"]{background:#fff3ce;color:#8a6500}
+.course-status[data-state="locked"]{background:#efefef;color:#656565}
+.page-utils{display:flex;gap:8px;flex-wrap:wrap}
+.page-utils .pill{font-family:"Space Mono",monospace;font-size:11px;box-shadow:3px 3px 0 #171717;border-radius:0}
+.course-review{border:3px solid #27343b;border-radius:22px;background:#fff;box-shadow:0 5px 0 rgba(39,52,59,.12);padding:20px 23px;margin:28px 0}
+.course-review h2{font-family:"Press Start 2P",monospace;font-size:12px;line-height:1.6;color:#3154d8;margin-bottom:11px}
+.course-review p{font-size:1.04rem;font-weight:700;line-height:1.55;margin:7px 0}
+.course-restricted{border:3px solid #171717;background:#fffdf5;padding:24px;box-shadow:3px 3px 0 #171717;font-weight:700;line-height:1.6}
+.course-restricted[hidden],.class-content[hidden]{display:none!important}
+.story-footer{text-align:center;margin-top:42px;color:#66757c;font-size:.92rem;font-weight:700}
+.page .course-sequence-nav{width:100%;margin-top:28px}
+.page .text-portal-callout{font-family:"Space Mono",monospace;font-size:13px}
+@media(max-width:760px){.course-intro{padding:24px 18px}.page-utils{width:100%}.page-utils .pill{font-size:10px}}
+</style>
+<link rel="stylesheet" href="site-common.css">
+</head>
+<body>
+<main class="page">
+<nav class="topbar" aria-label="Navegação da aula">
+  <a class="pill" href="index.html">← PORTAL</a>
+  <div class="page-utils">
+    <a class="pill" href="avaliacoes.html">AVALIAÇÕES</a>
+    <a class="pill" href="cronograma.html">CRONOGRAMA</a>
+    <a class="pill" href="textos.html">TEXTOS</a>
+  </div>
+</nav>
+<header class="course-intro">
+  <div class="course-kicker">PLAYLING · BLOCO INTRODUTÓRIO · AULA 04</div>
+  <h1 class="course-title">REVISÃO E PRÓXIMOS PASSOS</h1>
+  <p>Retomamos as escolhas que orientaram as Aulas 02 e 03 e observamos como diferentes perguntas abrem caminhos para os três ciclos do curso.</p>
+  <span class="course-status" data-state="locked" id="aula04Status">🔒 BLOQUEADO</span>
+</header>
+<section class="course-restricted" id="aula04Restricted" role="status">
+  A Aula 04 ainda não está liberada. Consulte o cronograma e retorne quando aparecer como LIBERADA ou AGORA.
+</section>
+<div class="class-content" id="aula04Content" hidden>
+<section class="course-review" aria-label="Revisão">
+  <h2>O QUE REVISAMOS HOJE?</h2>
+  <p>Como as distinções <strong>língua / fala</strong> e <strong>sincronia / diacronia</strong> nos ajudaram a delimitar um objeto e escolher uma perspectiva de investigação?</p>
+  <p>Qual é a diferença entre organizar um campo de pesquisa e oferecer uma explicação completa sobre tudo o que acontece com a língua?</p>
+</section>
+
+<section class="hero">
+<div class="kicker">PlayLing apresenta uma história com escolhas, bifurcações e uns desvios no caminho...</div>
+<h2 class="story-title"><span class="w1">Quando</span><span class="w2"> nasce</span><span class="w3"> uma ciência</span>...</h2>
+<p>A ciência não recebe um mapa pronto. Ela escolhe o que olhar, escolhe como olhar e depois descobre que toda escolha mostra alguma coisa — e esconde outra.</p>
+</section>
+
+<p class="doodle">e sim: isso aqui é uma árvore de decisões. Só que nenhuma placa diz “fim”.</p>
+
+<section>
+<div class="root-question">Primeira bifurcação: o que a gente vai privilegiar?</div>
+<div class="tree">
+
+<article class="trunk langue">
+<div class="branch-head">
+<h3>Escolhe a LÍNGUA</h3>
+<p>Procura a organização relativamente estável, aquilo que permite tratar a língua como sistema.</p>
+<span class="tag">o lado mais “arrumadinho”</span>
+</div>
+<div class="second-question">Se escolhe a língua, duas coisas podem acontecer...</div>
+<div class="subbranches">
+<article class="sub sync">
+<h3>Congela o momento</h3>
+<span class="combo">LÍNGUA + SINCRONIA</span>
+<p>Descreve o sistema em determinado estado, sem exigir que toda explicação volte para a história anterior.</p>
+<div class="result saussure"><strong>Saussure fica bem aqui.</strong></div>
+<div class="result yellow"><strong>E daqui pode dar no Gerativismo:</strong><br>se existe uma organização, o que o falante sabe? Onde essa gramática está?</div>
+</article>
+<article class="sub diac">
+<h3>Segue o filme</h3>
+<span class="combo">LÍNGUA + DIACRONIA</span>
+<p>Compara estados do sistema e acompanha transformações através do tempo.</p>
+<div class="result other"><strong>E daqui também saem caminhos:</strong><br>Linguística Histórica, mudança estrutural, gramaticalização...</div>
+<div class="maybe">Neste curso, esse galho não vira um ciclo próprio — mas ele continua existindo.</div>
+</article>
+</div>
+</article>
+
+<article class="trunk parole">
+<div class="branch-head">
+<h3>Escolhe a FALA</h3>
+<p>Vai para as realizações concretas: quem fala, como fala, onde fala, o que muda e o que aquilo faz significar.</p>
+<span class="tag">o lado mais “acontecendo agora”</span>
+</div>
+<div class="second-question">Se escolhe a fala, duas coisas podem acontecer...</div>
+<div class="subbranches">
+<article class="sub sync">
+<h3>Congela o momento</h3>
+<span class="combo">FALA + SINCRONIA</span>
+<p>Olha para enunciados, situações, posições e sentidos em condições concretas de produção.</p>
+<div class="result red"><strong>E daqui pode dar na Análise do Discurso:</strong><br>como um sentido se torna possível, natural, legítimo ou dominante?</div>
+<div class="maybe">“Pode dar” — não quer dizer que a teoria caiba inteira nesta caixinha.</div>
+</article>
+<article class="sub diac">
+<h3>Segue o filme</h3>
+<span class="combo">FALA + DIACRONIA</span>
+<p>Observa usos variáveis, grupos, gerações e mudanças enquanto elas se distribuem no tempo e na sociedade.</p>
+<div class="result green"><strong>E daqui pode dar na Sociolinguística:</strong><br>e se a variação tiver padrão? Dá para medir? Dá para acompanhar mudança?</div>
+<div class="maybe">De novo: é ponto de partida, não endereço definitivo.</div>
+</article>
+</div>
+</article>
+
+</div>
+</section>
+
+<section class="warning">
+<h2>Mas calma: isso é um mapa, logo uma simplificação.</h2>
+<p>Gerativismo, Sociolinguística e Análise do Discurso não “moram” definitivamente nesses quadrinhos. Estamos usando as escolhas de Saussure como <strong>pontos de partida para localizar perguntas</strong>. Depois, cada teoria vai complicar o mapa.</p>
+</section>
+
+<section class="cycle-wrap">
+<div class="cycle-title">
+<h2>E como não dá para ver tudo ao mesmo tempo...</h2>
+<p>...cada teoria acende uma lanterna diferente. O problema é que toda lanterna também deixa alguma coisa fora do foco. É aí que a próxima pergunta aparece.</p>
+</div>
+
+<div class="cycle">
+<article class="cycle-card">
+<h3>LEGO · Gerativismo</h3>
+<span class="sees">ILUMINA: GRAMÁTICA</span>
+<p>Ajuda a perguntar como uma língua pode ter organização própria e o que um falante sabe quando sabe uma língua.</p>
+<div class="blind">Mas isso, sozinho, não explica por que formas diferentes se distribuem por grupos, situações e tempos.</div>
+</article>
+
+<article class="cycle-card">
+<h3>LingBet · Sociolinguística</h3>
+<span class="sees">ILUMINA: VARIAÇÃO + MUDANÇA</span>
+<p>Ajuda a mostrar que a fala variável não é uma bagunça: tem padrões, probabilidades, grupos e mudanças em andamento.</p>
+<div class="blind">Mas frequência e distribuição, sozinhas, não dizem tudo sobre como sentidos e autoridades se constroem.</div>
+</article>
+
+<article class="cycle-card">
+<h3>UnoLing · Análise do Discurso</h3>
+<span class="sees">ILUMINA: SENTIDO + PODER</span>
+<p>Ajuda a perguntar como enunciados significam em situações históricas e por que certas interpretações conseguem “vencer”.</p>
+<div class="blind">Mas isso não substitui uma teoria da organização gramatical nem uma análise quantitativa da variação.</div>
+</article>
+</div>
+
+<div class="arrowline">GRAMÁTICA → “e a variação?” → VARIAÇÃO → “e o sentido?” → DISCURSO → “e a organização?” → GRAMÁTICA ↺</div>
+</section>
+
+<section class="loop">
+<h2>Então a história não termina.</h2>
+<p>Quando uma ciência escolhe, ela consegue enxergar melhor. Quando enxerga melhor, descobre o que ainda não explicou. Quando descobre isso, nasce outra pergunta. E quando nasce outra pergunta...</p>
+<div class="loopline">...a ciência começa de novo. ↺</div>
+</section>
+
+<footer class="story-footer">PlayLing · Linguística I · Aula 04 · Revisão e Próximos Passos</footer>
+<section class="text-portal-callout" aria-label="Textos da aula">
+  <strong>TEM TEXTO SOBRE ESTE ASSUNTO.</strong><br>
+  Os materiais de leitura estão na pasta da disciplina no Google Drive.<br>
+  <a class="text-portal-link" href="https://drive.google.com/drive/folders/1tIUsTf-qjTyWiIr1S74jszs9MIUOoq1M?usp=sharing" target="_blank" rel="noopener noreferrer">▤ ABRIR TEXTOS NO DRIVE →</a>
+</section>
+</div>
+<nav class="course-sequence-nav" aria-label="Aula anterior e próximo ciclo" data-course-nav data-current="aula-04"></nav>
+</main>
+<script src="site-config.js"></script>
+<script src="site-nav.js"></script>
+<script>
+(() => {
+  const state = window.PlayLing ? PlayLing.state('aula-04') : 'locked';
+  const status = document.getElementById('aula04Status');
+  const content = document.getElementById('aula04Content');
+  const restricted = document.getElementById('aula04Restricted');
+  const names = {current:'▶ AGORA', open:'✓ LIBERADO', next:'→ A SEGUIR', locked:'🔒 BLOQUEADO'};
+  status.textContent = names[state] || names.locked;
+  status.dataset.state = state;
+  const available = state === 'open' || state === 'current';
+  content.hidden = !available;
+  restricted.hidden = available;
+})();
+</script>
+</body>
+</html>
