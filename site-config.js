@@ -33,9 +33,9 @@
 
 window.PLAYLING_CONFIG = {
   states: {
-    "aula-01": "current",
-    "aula-02": "next",
-    "aula-03": "locked",
+    "aula-01": "open",
+    "aula-02": "current",
+    "aula-03": "next",
     "aula-04": "locked",
     "ciclo-01": "locked",
     "ciclo-02": "locked",
